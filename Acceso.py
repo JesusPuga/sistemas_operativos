@@ -167,6 +167,107 @@ class GroupsInscription:
         returnButton = Button(bottomFrame, text="Regresar")
         returnButton.grid(row = 1, column = 3)
 
+class StudentSchedule:
+    def __init__(self, root):
+        self.root = root
+        #Se define el nombre de la ventana y se restringe el tamaño de la misma
+        root.title("Horario")
+        root.geometry('{}x{}'.format(500, 300))
+        root.resizable(0,0)
+        # layout all of the main containers
+        root.grid_rowconfigure(1, weight=1)
+        root.grid_columnconfigure(0, weight=1)
+
+        #Frames a usar, algo así como div b:
+        topFrame = Frame(root, width=500, height=200)
+        topFrame.grid(row=0,column=0)
+
+        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame.grid(row=1,column=0)
+
+        subjectListENY = Entry(topFrame)
+        subjectListENY.grid(row=0, column=0)
+
+        subjectListENY = Entry(topFrame)
+        subjectListENY.grid(row=1, column=0)
+
+        #Botones
+        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton.grid(row = 1, column = 3)
+
+class AdministrativeSchedule:
+    def __init__(self, root):
+        self.root = root
+        #Se define el nombre de la ventana y se restringe el tamaño de la misma
+        root.title("Consulta | Horario")
+        root.geometry('{}x{}'.format(500, 300))
+        root.resizable(0,0)
+        # layout all of the main containers
+        root.grid_rowconfigure(1, weight=1)
+        root.grid_columnconfigure(0, weight=1)
+
+        #Frames a usar, algo así como div b:
+        topFrame = Frame(root, width=500, height=200)
+        topFrame.grid(row=0,column=0)
+
+        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame.grid(row=1,column=0)
+
+        #selección
+        subjectCveLB = Label(topFrame, text="Matrícula:")
+        subjectCveLB.grid(row=0, column=0)
+        subjectCveENY = Entry(topFrame)
+        subjectCveENY.grid(row=0, column=1)
+
+        #Top Button
+        selectButton = Button(topFrame, text="Consultar")
+        selectButton.grid(row = 0, column = 2)
+
+        subjectListENY = Entry(topFrame)
+        subjectListENY.grid(row=1, column=0)
+
+        subjectListENY = Entry(topFrame)
+        subjectListENY.grid(row=2, column=0)
+
+        #Bottom buttons
+        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton.grid(row = 1, column = 3)
+
+class AdministrativeSubject:
+    def __init__(self, root):
+        self.root = root
+        #Se define el nombre de la ventana y se restringe el tamaño de la misma
+        root.title("Consulta | Alumnos por materia")
+        root.geometry('{}x{}'.format(500, 300))
+        root.resizable(0,0)
+        # layout all of the main containers
+        root.grid_rowconfigure(1, weight=1)
+        root.grid_columnconfigure(0, weight=1)
+
+        #Frames a usar, algo así como div b:
+        topFrame = Frame(root, width=500, height=200)
+        topFrame.grid(row=0,column=0)
+
+        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame.grid(row=1,column=0)
+
+        #selección
+        subjectCveLB = Label(topFrame, text="Matrícula:")
+        subjectCveLB.grid(row=0, column=0)
+        subjectCveENY = Entry(topFrame)
+        subjectCveENY.grid(row=0, column=1)
+
+        #Top Button
+        selectButton = Button(topFrame, text="Buscar:")
+        selectButton.grid(row = 0, column = 2)
+
+        subjectListENY = Entry(topFrame)
+        subjectListENY.grid(row=1, column=0)
+
+        #Bottom buttons
+        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton.grid(row = 0, column = 0)
+
 
 if __name__ == '__main__':
     """ CREACIÓN DE LA VENTANA DE ACCESO AL SISTEMA"""
@@ -174,7 +275,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = GroupsInscription(root)# prueba de nueva ventana
+    aplicacion = AdministrativeSubject(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
