@@ -1,5 +1,4 @@
 import sys
-import tkinter
 from tkinter import *
 from tkinter import ttk
 
@@ -9,7 +8,6 @@ class Access:
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Acceso")
         root.resizable(0,0)
-
 
         frame = Frame(root, width=500, heigh=300)
         frame.grid(row=0,column=0, padx=(150,150), pady=(150,100))
@@ -43,7 +41,15 @@ class Access:
         contraseniaENY.config(show="*")
 
         #Botón Ingresar
-        Button(root, text="Ingresar")
+        userButton = Button(frame, text="Ingresar", command= self.quit)
+        userButton.grid(row = 3, column = 0)
+
+    def quit(self):
+        ##Add validations to return or close and open the other window
+        new_root = Tk()
+        self.app = StudentAccess(new_root)
+        self.app = AdministrativeAccess(new_root)
+        self.root.destroy()
 
 class StudentAccess:
     def __init__(self, root):
@@ -67,12 +73,25 @@ class StudentAccess:
         rightFrame.grid(row=0,column=1)
 
         #Botones
-        inscriptionButton = Button(leftFrame, text="Ingresar")
+        inscriptionButton = Button(leftFrame, text="Ingresar", command= self.openInscription)
         inscriptionButton.grid(row = 1, column = 0)
-        scheduleButton = Button(leftFrame, text="Horario")
+        scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
         scheduleButton.grid(row = 2, column = 0)
-        sessionButton = Button(leftFrame, text="Sesión")
+        sessionButton = Button(leftFrame, text="Sesión", command= self.quit)
         sessionButton.grid(row = 3, column = 0)
+
+    def quit(self):
+        ##Add validations to return or close and open the other window
+        self.app = Access(Tk())
+        self.root.destroy()
+
+    def openInscription(self):
+        self.app = Inscription(Tk())
+        self.root.destroy()
+
+    def openSchedule(self):
+        self.app = StudentSchedule(Tk())
+        self.root.destroy()
 
 class AdministrativeAccess:
     def __init__(self, root):
@@ -96,12 +115,25 @@ class AdministrativeAccess:
         rightFrame.grid(row=0,column=1)
 
         #Botones
-        scheduleButton = Button(leftFrame, text="Horario")
+        scheduleButton = Button(leftFrame, text="Horario", command=self.openSchedule)
         scheduleButton.grid(row = 2, column = 0)
-        subjectButton = Button(leftFrame, text="Materias")
+        subjectButton = Button(leftFrame, text="Materias", command=self.openSubjects)
         subjectButton.grid(row = 1, column = 0)
-        sessionButton = Button(leftFrame, text="Sesión")
+        sessionButton = Button(leftFrame, text="Sesión", command=self.closeSession)
         sessionButton.grid(row = 3, column = 0)
+
+    def closeSession(self):
+        ##Add validations to return or close and open the other window
+        self.app = Access(Tk())
+        self.root.destroy()
+
+    def openSubjects(self):
+        self.app = AdministrativeSubject(Tk())
+        self.root.destroy()
+
+    def openSchedule(self):
+        self.app = AdministrativeSchedule(Tk())
+        self.root.destroy()
 
 class Inscription:
     def __init__(self, root):
@@ -132,8 +164,13 @@ class Inscription:
         #Botones
         selectButton = Button(bottomFrame, text="Seleccionar")
         selectButton.grid(row = 0, column = 2)
-        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton = Button(bottomFrame, text="Regresar", command=returnStudentHome)
         returnButton.grid(row = 1, column = 3)
+
+    def returnStudentHome(self):
+        ##Add validations to return or close and open the other window
+        self.app = Access(Tk())
+        self.root.destroy()
 
 class GroupsInscription:
     def __init__(self, root):
@@ -164,8 +201,13 @@ class GroupsInscription:
         #Botones
         selectButton = Button(bottomFrame, text="Inscribir")
         selectButton.grid(row = 0, column = 2)
-        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton = Button(bottomFrame, text="Regresar", command=self.returnInscription)
         returnButton.grid(row = 1, column = 3)
+
+    def returnInscription(self):
+        ##Add validations to return or close and open the other window
+        self.app = Inscription(Tk())
+        self.root.destroy()
 
 class StudentSchedule:
     def __init__(self, root):
@@ -192,8 +234,13 @@ class StudentSchedule:
         subjectListENY.grid(row=1, column=0)
 
         #Botones
-        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton = Button(bottomFrame, text="Regresar", command= self.returnStudentHome)
         returnButton.grid(row = 1, column = 3)
+
+    def returnStudentHome(self):
+        ##Add validations to return or close and open the other window
+        self.app = Access(Tk())
+        self.root.destroy()
 
 class AdministrativeSchedule:
     def __init__(self, root):
@@ -230,8 +277,13 @@ class AdministrativeSchedule:
         subjectListENY.grid(row=2, column=0)
 
         #Bottom buttons
-        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 1, column = 3)
+
+    def returnAdministrativeHome(self):
+        ##Add validations to return or close and open the other window
+        self.app = AdministrativeAccess(Tk())
+        self.root.destroy()
 
 class AdministrativeSubject:
     def __init__(self, root):
@@ -265,8 +317,13 @@ class AdministrativeSubject:
         subjectListENY.grid(row=1, column=0)
 
         #Bottom buttons
-        returnButton = Button(bottomFrame, text="Regresar")
+        returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 0, column = 0)
+
+    def returnAdministrativeHome(self):
+        ##Add validations to return or close and open the other window
+        self.app = AdministrativeAccess(Tk())
+        self.root.destroy()
 
 
 if __name__ == '__main__':
@@ -275,7 +332,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = AdministrativeSubject(root)# prueba de nueva ventana
+    aplicacion = Access(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
