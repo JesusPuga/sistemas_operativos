@@ -257,7 +257,7 @@ class StudentSchedule:
         bottomFrame = Frame(root,width=500, height=100)
         bottomFrame.grid(row=1,column=0)
         #primer tabla
-        tbTopTreeView = ttk.Treeview(topFrame)
+        tbTopTreeView = ttk.Treeview(topFrame, height=5)
         tbTopTreeView.grid(row=0, column=0)
 
         tbTopTreeView["columns"]=("Martes","Miércoles","Jueves")
@@ -272,7 +272,7 @@ class StudentSchedule:
         tbTopTreeView.heading('Jueves', text='Jueves')
 
         #segunda tabla
-        tbBottomTreeView = ttk.Treeview(topFrame)
+        tbBottomTreeView = ttk.Treeview(topFrame,height=5)
         tbBottomTreeView.grid(row=1, column=0)
 
         tbBottomTreeView["columns"]=("Materia","Docente")
@@ -322,7 +322,7 @@ class AdministrativeSchedule:
         selectButton.grid(row = 0, column = 2)
 
         #primer tabla
-        tbTopTreeView = ttk.Treeview(bottomFrame)
+        tbTopTreeView = ttk.Treeview(bottomFrame, height=5)
         tbTopTreeView.grid(row=1, column=0)
 
         tbTopTreeView["columns"]=("Martes","Miércoles","Jueves")
@@ -337,7 +337,7 @@ class AdministrativeSchedule:
         tbTopTreeView.heading('Jueves', text='Jueves')
 
         #segunda tabla
-        tbBottomTreeView = ttk.Treeview(bottomFrame)
+        tbBottomTreeView = ttk.Treeview(bottomFrame, height=5)
         tbBottomTreeView.grid(row=2, column=0)
 
         tbBottomTreeView["columns"]=("Materia","Docente")
@@ -417,7 +417,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Access(root)# prueba de nueva ventana
+    aplicacion = StudentSchedule(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
