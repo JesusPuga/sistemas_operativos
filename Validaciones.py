@@ -9,7 +9,7 @@ def student_inf():
 
 def validate_user(type,user, password):
 
-    if type != "Alumnos" and type != "Administrativos":
+    if type != "Alumno" and type != "Administrativo" and type != "Docente":
         return "Tipo de usuario inexistente"
 
     query = """SELECT carnetUsuario, tipoUsuario
@@ -28,6 +28,8 @@ def validate_user(type,user, password):
     if result == None:
         return "Contraseña equivocada"
     return "ok"
+
+def
 
 print(validate_user("Alumnos","user","password"))
 student_inf()

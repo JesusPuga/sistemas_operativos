@@ -420,7 +420,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Inscription(root)# prueba de nueva ventana
+    aplicacion = Access(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
