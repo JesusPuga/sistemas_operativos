@@ -22,35 +22,62 @@ class Access:
         tipoUsuarioLBL = Label(frame, text="Tipo de Usuario:")
         tipoUsuarioLBL.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 
-        tipoUsuarioCBX = ttk.Combobox(frame)
-        tipoUsuarioCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
-        tipoUsuarioCBX["values"] = ["Alumno", "Docente", "Administrativo"]
+        self.tipoUsuarioCBX = ttk.Combobox(frame)
+        self.tipoUsuarioCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        self.tipoUsuarioCBX["values"] = ["Alumno", "Administrativo"]
+        self.tipoUsuarioCBX.current(0)
+
+        self.tipoUsuarioErrorLBL = Label(frame, text="")
+        self.tipoUsuarioErrorLBL.grid(row=0, column=2, sticky="e", padx=5, pady=5)
 
         #Campo Usuario
         usuarioLB = Label(frame, text="Usuario:")
         usuarioLB.grid(row=1, column=0, sticky="e", padx=5, pady=5)
 
-        usuarioENY = Entry(frame)
-        usuarioENY.grid(row=1, column=1, sticky="e", padx=5, pady=5)
+        self.usuarioENY = Entry(frame)
+        self.usuarioENY.grid(row=1, column=1, sticky="e", padx=5, pady=5)
+
+        self.usuarioErrorLBL = Label(frame, text="")
+        self.usuarioErrorLBL.grid(row=1, column=2, sticky="e", padx=5, pady=5)
 
         #Campo Contraseña
         contraseniaLB = Label(frame, text="Contraseña:")
         contraseniaLB.grid(row=2, column=0, sticky="e", padx=5, pady=5)
 
-        contraseniaENY = Entry(frame)
-        contraseniaENY.grid(row=2, column=1, sticky="e", padx=5, pady=5)
-        contraseniaENY.config(show="*")
+        self.contraseniaENY = Entry(frame)
+        self.contraseniaENY.grid(row=2, column=1, sticky="e", padx=5, pady=5)
+        self.contraseniaENY.config(show="*")
+
+        self.contraseniaErrorLBL = Label(frame, text="")
+        self.contraseniaErrorLBL.grid(row=2, column=2, sticky="e", padx=5, pady=5)
 
         #Botón Ingresar
-        userButton = Button(frame, text="Ingresar", command= self.quit)
+        userButton = Button(frame, text="Ingresar", command= self.validateInput)
         userButton.grid(row = 3, column = 2)
 
-    def quit(self):
-        ##Add validations to return or close and open the other window
-        new_root = Tk()
-        self.app = StudentAccess(new_root)
-        self.app = AdministrativeAccess(new_root)
-        self.root.destroy()
+    def validateInput(self):
+        ##type, user, password
+        result = validateUser(self.tipoUsuarioCBX.get(), self.usuarioENY.get(),self.contraseniaENY.get())
+        self.contraseniaErrorLBL["text"] = ""
+        self.usuarioErrorLBL["text"] =  ""
+        self.tipoUsuarioErrorLBL["text"] = ""
+
+
+        if result == "ok":
+            new_root = Tk()
+            if self.tipoUsuarioCBX.get() == "Administrativo":
+                self.app = AdministrativeAccess(new_root)
+            elif self.tipoUsuarioCBX.get() == "Alumno":
+                self.app = StudentAccess(new_root)
+            self.root.destroy()
+        else:
+            if "Contraseña" in result:
+                self.contraseniaErrorLBL["text"] = result
+            elif "Usuario" in result:
+                self.usuarioErrorLBL["text"] =  result
+            else:
+                self.tipoUsuarioErrorLBL["text"] = result
+
 
 class StudentAccess:
     def __init__(self, root):
@@ -419,7 +446,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Inscription(root)# prueba de nueva ventana
+    aplicacion = Access(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()

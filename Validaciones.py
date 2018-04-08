@@ -3,28 +3,25 @@ from BDConexion import *
 
 con = Conexion("root","run maria run","FacultadBD")
 
-def validateUser(type,user, password):
+def validateUser(type, user, password):
 
-    if type != "Alumno" and type != "Administrativo" and type != "Docente":
+    if type != "Alumno" and type != "Docente" and type != "Administrativo":
         return "Tipo de usuario inexistente"
 
-    query = """SELECT carnetUsuario, tipoUsuario
+    query = """SELECT carnetUsuario
                FROM Usuario
-               WHERE carnetUsuario = %s and tipoUsuario = %s"""
-    result = con.execute_query(query, (user,type))
+               WHERE carnetUsuario = %s"""
+    result = con.execute_query(query,(user,))
 
-    if result == None:
+    if result == 0:
         return "Usuario equivocado"
 
     query = """SELECT carnetUsuario, tipoUsuario, contrasenia
                FROM Usuario
-               WHERE contrasenia = %s and tipoUsuario = %s and carnetUsuario= %s"""
-    result = con.execute_query(query, (password, type, user))
+               WHERE contrasenia = %s  and carnetUsuario= %s"""
+    result = con.execute_query(query, (password,user))
 
-    if result == None:
+    if result == 0:
         return "Contraseña equivocada"
 
     return "ok"
-
-
-print(validateUser("Alumnos","user","password"))

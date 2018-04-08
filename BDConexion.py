@@ -20,3 +20,4 @@ class Conexion:
     def execute_query(self, query_p, parametros =()):
         cursor = self.conn.cursor()
         result = cursor.execute(query_p, parametros)
+        return result
