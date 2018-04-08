@@ -149,12 +149,30 @@ class Inscription:
         #Frames a usar, algo así como div b:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
-
         bottomFrame = Frame(root, bg='lavender', width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=0, column=0)
+        tableTreeView = ttk.Treeview(topFrame)
+        tableTreeView.grid(row=0, column=0)
+
+        tableTreeView["columns"]=("Materia","Semestre","Créditos")
+        tableTreeView.column("#0",width=120)
+        tableTreeView.column("Materia",width=120)
+        tableTreeView.column("Semestre",width=120)
+        tableTreeView.column("Créditos",width=120)
+
+        tableTreeView.heading('#0',text='Clave')
+        tableTreeView.heading('Materia', text='Materia')
+        tableTreeView.heading('Semestre', text='Semestre')
+        tableTreeView.heading('Créditos', text='Créditos')
+
+        ##en prueba, creo que es pa' los datos xD
+        ysb = ttk.Scrollbar(orient="vertical", command= tableTreeView.yview)
+        xsb = ttk.Scrollbar(orient="horizontal", command= tableTreeView.xview)
+        tableTreeView['yscroll'] = ysb.set
+        tableTreeView['xscroll'] = xsb.set
+        tableTreeView.insert('','0','item1',text = 'First Item')
+        
         #selección
         subjectCveLB = Label(bottomFrame, text="Clave de materia:")
         subjectCveLB.grid(row=0, column=0)
@@ -164,7 +182,7 @@ class Inscription:
         #Botones
         selectButton = Button(bottomFrame, text="Seleccionar")
         selectButton.grid(row = 0, column = 2)
-        returnButton = Button(bottomFrame, text="Regresar", command=returnStudentHome)
+        returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
         returnButton.grid(row = 1, column = 3)
 
     def returnStudentHome(self):
@@ -332,7 +350,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Access(root)# prueba de nueva ventana
+    aplicacion = Inscription(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
