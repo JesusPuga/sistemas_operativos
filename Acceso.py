@@ -24,7 +24,7 @@ class Access:
 
         self.tipoUsuarioCBX = ttk.Combobox(frame)
         self.tipoUsuarioCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
-        self.tipoUsuarioCBX["values"] = ["Alumno", "Administrativo"]
+        self.tipoUsuarioCBX["values"] = ["Alumno","Docente", "Administrativo"]
         self.tipoUsuarioCBX.current(0)
 
         self.tipoUsuarioErrorLBL = Label(frame, text="")
