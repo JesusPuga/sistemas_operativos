@@ -3,11 +3,7 @@ from BDConexion import *
 
 con = Conexion("root","run maria run","FacultadBD")
 
-def student_inf():
-    query = "SELECT * FROM Alumno"
-    con.execute_query(query)
-
-def validate_user(type,user, password):
+def validateUser(type,user, password):
 
     if type != "Alumno" and type != "Administrativo" and type != "Docente":
         return "Tipo de usuario inexistente"
@@ -24,12 +20,11 @@ def validate_user(type,user, password):
                FROM Usuario
                WHERE contrasenia = %s and tipoUsuario = %s and carnetUsuario= %s"""
     result = con.execute_query(query, (password, type, user))
-    print(result)
+
     if result == None:
         return "Contraseña equivocada"
+
     return "ok"
 
-def
 
-print(validate_user("Alumnos","user","password"))
-student_inf()
+print(validateUser("Alumnos","user","password"))

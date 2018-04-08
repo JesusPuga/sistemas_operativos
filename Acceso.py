@@ -1,4 +1,5 @@
 import sys
+from Validaciones import *
 from tkinter import *
 from tkinter import ttk
 
@@ -142,8 +143,6 @@ class Inscription:
         root.title("Sistema de Inscripción | Inscripción")
         root.geometry('{}x{}'.format(500, 300))
         root.resizable(0,0)
-        style = ttk.Style(root)
-        style.configure('Treeview', rowheight=50)
         # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
         root.grid_columnconfigure(0, weight=1)
@@ -173,8 +172,7 @@ class Inscription:
         xsb = ttk.Scrollbar(orient="horizontal", command= tableTreeView.xview)
         tableTreeView['yscroll'] = ysb.set
         tableTreeView['xscroll'] = xsb.set
-        tableTreeView.insert('','0','item1',text="0xD\nd\ndd",values=("1","2","3"))
-        tableTreeView.insert('','0','item2',text="0xD\nd\ndd",values=("1","2","3"))
+        tableTreeView.insert('','0','item1',text="0xD",values=("1","2","3"))
 
         #selección
         subjectCveLB = Label(bottomFrame, text="Clave de materia:")
@@ -408,6 +406,7 @@ class AdministrativeSubject:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 1, column = 0)
 
+
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
         self.app = AdministrativeAccess(Tk())
@@ -420,7 +419,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Access(root)# prueba de nueva ventana
+    aplicacion = Inscription(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
