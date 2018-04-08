@@ -42,7 +42,7 @@ class Access:
 
         #Botón Ingresar
         userButton = Button(frame, text="Ingresar", command= self.quit)
-        userButton.grid(row = 3, column = 0)
+        userButton.grid(row = 3, column = 2)
 
     def quit(self):
         ##Add validations to return or close and open the other window
@@ -77,7 +77,7 @@ class StudentAccess:
         inscriptionButton.grid(row = 1, column = 0)
         scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
         scheduleButton.grid(row = 2, column = 0)
-        sessionButton = Button(leftFrame, text="Sesión", command= self.quit)
+        sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
         sessionButton.grid(row = 3, column = 0)
 
     def quit(self):
@@ -119,7 +119,7 @@ class AdministrativeAccess:
         scheduleButton.grid(row = 2, column = 0)
         subjectButton = Button(leftFrame, text="Materias", command=self.openSubjects)
         subjectButton.grid(row = 1, column = 0)
-        sessionButton = Button(leftFrame, text="Sesión", command=self.closeSession)
+        sessionButton = Button(leftFrame, text="Cerrar Sesión", command=self.closeSession)
         sessionButton.grid(row = 3, column = 0)
 
     def closeSession(self):
@@ -149,7 +149,7 @@ class Inscription:
         #Frames a usar, algo así como div b:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
-        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
         tableTreeView = ttk.Treeview(topFrame)
@@ -205,11 +205,23 @@ class GroupsInscription:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
-        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=0, column=0)
+        tableTreeView = ttk.Treeview(topFrame)
+        tableTreeView.grid(row=0, column=0)
+
+        tableTreeView["columns"]=("Aula","Docente","Días(l-v)")
+        tableTreeView.column("#0",width=120)
+        tableTreeView.column("Aula",width=120)
+        tableTreeView.column("Docente",width=120)
+        tableTreeView.column("Días(l-v)",width=120)
+
+        tableTreeView.heading('#0',text='Grupo')
+        tableTreeView.heading('Aula', text='Aula')
+        tableTreeView.heading('Docente', text='Docente')
+        tableTreeView.heading('Días(l-v)', text='Días(l-v)')
+
         #selección
         subjectCveLB = Label(bottomFrame, text="Grupo:")
         subjectCveLB.grid(row=0, column=0)
@@ -242,14 +254,35 @@ class StudentSchedule:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
-        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame = Frame(root,width=500, height=100)
         bottomFrame.grid(row=1,column=0)
+        #primer tabla
+        tbTopTreeView = ttk.Treeview(topFrame)
+        tbTopTreeView.grid(row=0, column=0)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=0, column=0)
+        tbTopTreeView["columns"]=("Martes","Miércoles","Jueves")
+        tbTopTreeView.column("#0",width=120)
+        tbTopTreeView.column("Martes",width=120)
+        tbTopTreeView.column("Miércoles",width=120)
+        tbTopTreeView.column("Jueves",width=120)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=1, column=0)
+        tbTopTreeView.heading('#0',text='Lunes')
+        tbTopTreeView.heading('Martes', text='Martes')
+        tbTopTreeView.heading('Miércoles', text='Miércoles')
+        tbTopTreeView.heading('Jueves', text='Jueves')
+
+        #segunda tabla
+        tbBottomTreeView = ttk.Treeview(topFrame)
+        tbBottomTreeView.grid(row=1, column=0)
+
+        tbBottomTreeView["columns"]=("Materia","Docente")
+        tbBottomTreeView.column("#0",width=166)
+        tbBottomTreeView.column("Materia",width=166)
+        tbBottomTreeView.column("Docente",width=166)
+
+        tbBottomTreeView.heading('#0',text='Clave')
+        tbBottomTreeView.heading('Materia', text='Materia')
+        tbBottomTreeView.heading('Docente', text='Docente')
 
         #Botones
         returnButton = Button(bottomFrame, text="Regresar", command= self.returnStudentHome)
@@ -275,7 +308,7 @@ class AdministrativeSchedule:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
-        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
         #selección
@@ -288,11 +321,33 @@ class AdministrativeSchedule:
         selectButton = Button(topFrame, text="Consultar")
         selectButton.grid(row = 0, column = 2)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=1, column=0)
+        #primer tabla
+        tbTopTreeView = ttk.Treeview(bottomFrame)
+        tbTopTreeView.grid(row=1, column=0)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=2, column=0)
+        tbTopTreeView["columns"]=("Martes","Miércoles","Jueves")
+        tbTopTreeView.column("#0",width=120)
+        tbTopTreeView.column("Martes",width=120)
+        tbTopTreeView.column("Miércoles",width=120)
+        tbTopTreeView.column("Jueves",width=120)
+
+        tbTopTreeView.heading('#0',text='Lunes')
+        tbTopTreeView.heading('Martes', text='Martes')
+        tbTopTreeView.heading('Miércoles', text='Miércoles')
+        tbTopTreeView.heading('Jueves', text='Jueves')
+
+        #segunda tabla
+        tbBottomTreeView = ttk.Treeview(bottomFrame)
+        tbBottomTreeView.grid(row=2, column=0)
+
+        tbBottomTreeView["columns"]=("Materia","Docente")
+        tbBottomTreeView.column("#0",width=166)
+        tbBottomTreeView.column("Materia",width=166)
+        tbBottomTreeView.column("Docente",width=166)
+
+        tbBottomTreeView.heading('#0',text='Clave')
+        tbBottomTreeView.heading('Materia', text='Materia')
+        tbBottomTreeView.heading('Docente', text='Docente')
 
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
@@ -318,7 +373,7 @@ class AdministrativeSubject:
         topFrame = Frame(root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
-        bottomFrame = Frame(root, bg='lavender', width=500, height=100)
+        bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
         #selección
@@ -331,12 +386,24 @@ class AdministrativeSubject:
         selectButton = Button(topFrame, text="Buscar:")
         selectButton.grid(row = 0, column = 2)
 
-        subjectListENY = Entry(topFrame)
-        subjectListENY.grid(row=1, column=0)
+        #primer tabla
+        tbTopTreeView = ttk.Treeview(bottomFrame)
+        tbTopTreeView.grid(row=0, column=0)
+
+        tbTopTreeView["columns"]=("Nombre","Apellido Paterno","Apellido Materno")
+        tbTopTreeView.column("#0",width=120)
+        tbTopTreeView.column("Nombre",width=120)
+        tbTopTreeView.column("Apellido Paterno",width=120)
+        tbTopTreeView.column("Apellido Materno",width=120)
+
+        tbTopTreeView.heading('#0',text='Matrícula')
+        tbTopTreeView.heading('Nombre', text='Nombre')
+        tbTopTreeView.heading('Apellido Paterno', text='Apellido Paterno')
+        tbTopTreeView.heading('Apellido Materno', text='Apellido Materno')
 
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 0, column = 0)
+        returnButton.grid(row = 1, column = 0)
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
@@ -350,7 +417,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Inscription(root)# prueba de nueva ventana
+    aplicacion = Access(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
