@@ -126,13 +126,14 @@ CREATE TABLE Horario (
 );
 
 CREATE TABLE Usuario_Horario (
-	claveGrupo  BIGINT UNSIGNED NOT NULL,
+	carnetAlumno  INT UNSIGNED NOT NULL,
 	claveHorario BIGINT UNSIGNED NOT NULL,
+	periodo VARCHAR(40) NOT NULL,
 
-	CONSTRAINT claveUsuarioHorario_PK PRIMARY KEY (claveGrupo, claveHorario),
+	CONSTRAINT claveUsuarioHorario_PK PRIMARY KEY (carnetAlumno, claveHorario),
 
-	CONSTRAINT claveGrupoH_FK FOREIGN KEY (claveGrupo)
-	REFERENCES Grupo(IDGrupo)
+	CONSTRAINT carnetAlumnoH_FK FOREIGN KEY (carnetAlumno)
+	REFERENCES Usuario(carnetUsuario)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE,
 

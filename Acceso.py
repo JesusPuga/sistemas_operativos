@@ -208,14 +208,19 @@ class Inscription:
         subjectCveENY.grid(row=0, column=1)
 
         #Botones
-        selectButton = Button(bottomFrame, text="Seleccionar")
+        selectButton = Button(bottomFrame, text="Seleccionar", command=self.openGroupsInscription)
         selectButton.grid(row = 0, column = 2)
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
         returnButton.grid(row = 1, column = 3)
 
+    def openGroupsInscription(self):
+        ##Add validations to return or close and open the other window
+        self.app = GroupsInscription(Tk())
+        self.root.destroy()
+
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = Access(Tk())
+        self.app = StudentAccess(Tk())
         self.root.destroy()
 
 class GroupsInscription:
@@ -318,7 +323,7 @@ class StudentSchedule:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = Access(Tk())
+        self.app = StudentAccess(Tk())
         self.root.destroy()
 
 class AdministrativeSchedule:
