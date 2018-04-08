@@ -27,6 +27,7 @@ def validate_user(type,user, password):
     print(result)
     if result == None:
         return "Contraseña equivocada"
+    return "ok"
 
 print(validate_user("Alumnos","user","password"))
 student_inf()
