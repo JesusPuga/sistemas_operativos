@@ -171,8 +171,8 @@ class Inscription:
         xsb = ttk.Scrollbar(orient="horizontal", command= tableTreeView.xview)
         tableTreeView['yscroll'] = ysb.set
         tableTreeView['xscroll'] = xsb.set
-        tableTreeView.insert('','0','item1',text = 'First Item')
-        
+        tableTreeView.insert('','0','item1',text="0xD",values=("1","2","3"))
+
         #selección
         subjectCveLB = Label(bottomFrame, text="Clave de materia:")
         subjectCveLB.grid(row=0, column=0)
