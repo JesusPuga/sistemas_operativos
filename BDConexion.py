@@ -17,7 +17,11 @@ class Conexion:
         except MariaDB.Error as e:
             print(e)
 
-    def execute_query(self, query_p, parametros =()):
+    def execute_query(self, query_p, parametros =(), cursor = False):
         cursor = self.conn.cursor()
         result = cursor.execute(query_p, parametros)
+        #Nos permite recuperar la inf
+        if cursor:
+            return cursor
+
         return result

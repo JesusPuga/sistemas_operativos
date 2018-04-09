@@ -68,7 +68,7 @@ class Access:
             if self.tipoUsuarioCBX.get() == "Administrativo":
                 self.app = AdministrativeAccess(new_root)
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                self.app = StudentAccess(new_root)
+                self.app = StudentAccess(new_root, self.usuarioENY.get())
             self.root.destroy()
         else:
             if "Contraseña" in result:
@@ -78,10 +78,10 @@ class Access:
             else:
                 self.tipoUsuarioErrorLBL["text"] = result
 
-
 class StudentAccess:
-    def __init__(self, root):
+    def __init__(self, root, clave):
         self.root = root
+        self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Alumno")
         root.geometry('{}x{}'.format(500, 300))
@@ -114,7 +114,7 @@ class StudentAccess:
         self.root.destroy()
 
     def openInscription(self):
-        self.app = Inscription(Tk())
+        self.app = Inscription(Tk(),self.clave)
         self.root.destroy()
 
     def openSchedule(self):
@@ -164,8 +164,10 @@ class AdministrativeAccess:
         self.root.destroy()
 
 class Inscription:
-    def __init__(self, root):
+    def __init__(self, root, clave):
         self.root = root
+        self.clave = clave
+        self.subject = None
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Inscripción")
         root.geometry('{}x{}'.format(500, 300))
@@ -175,57 +177,102 @@ class Inscription:
         root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
+        counterFrame = Frame(root, width=500, height=50)
+        counterFrame.grid(row=0,column=0)
         topFrame = Frame(root, width=500, height=200)
-        topFrame.grid(row=0,column=0)
+        topFrame.grid(row=1,column=0)
         bottomFrame = Frame(root, width=500, height=100)
-        bottomFrame.grid(row=1,column=0)
+        bottomFrame.grid(row=2,column=0)
 
-        tableTreeView = ttk.Treeview(topFrame)
-        tableTreeView.grid(row=0, column=0)
+        #créditos utilizados
+        self.subjectCveLB = Label(counterFrame, text="Créditos utilizados: ")
+        self.subjectCveLB.grid(row=0, column=0)
+        ##espacio a la izquierda xD
+        subject1CveLB = Label(counterFrame,
+                                  text="""
+                                  """)
+        subject2CveLB = Label(counterFrame,
+                                  text="""
+                                  """)
+        subject1CveLB.grid(row=0, column=1)
+        subject2CveLB.grid(row=0, column=2)
 
-        tableTreeView["columns"]=("Materia","Semestre","Créditos")
-        tableTreeView.column("#0",width=120)
-        tableTreeView.column("Materia",width=120)
-        tableTreeView.column("Semestre",width=120)
-        tableTreeView.column("Créditos",width=120)
+        #configuración de tabla
+        self.tableTreeView = ttk.Treeview(topFrame)
+        self.tableTreeView.grid(row=0, column=0)
 
-        tableTreeView.heading('#0',text='Clave')
-        tableTreeView.heading('Materia', text='Materia')
-        tableTreeView.heading('Semestre', text='Semestre')
-        tableTreeView.heading('Créditos', text='Créditos')
+        self.tableTreeView["columns"]=("Materia","Semestre","Créditos")
+        self.tableTreeView.column("#0",width=50)
+        self.tableTreeView.column("Materia",width=270)
+        self.tableTreeView.column("Semestre",width=80)
+        self.tableTreeView.column("Créditos",width=80)
+
+        self.tableTreeView.heading('#0',text='Clave')
+        self.tableTreeView.heading('Materia', text='Materia')
+        self.tableTreeView.heading('Semestre', text='Semestre')
+        self.tableTreeView.heading('Créditos', text='Créditos')
+
+        self.tableTreeView.bind('<ButtonRelease-1>', self.selectItem)
 
         ##en prueba, creo que es pa' los datos xD
-        ysb = ttk.Scrollbar(orient="vertical", command= tableTreeView.yview)
-        xsb = ttk.Scrollbar(orient="horizontal", command= tableTreeView.xview)
-        tableTreeView['yscroll'] = ysb.set
-        tableTreeView['xscroll'] = xsb.set
-        tableTreeView.insert('','0','item1',text="0xD",values=("1","2","3"))
+        ysb = ttk.Scrollbar(orient="vertical", command= self.tableTreeView.yview)
+        xsb = ttk.Scrollbar(orient="horizontal", command= self.tableTreeView.xview)
+        self.tableTreeView['yscroll'] = ysb.set
+        self.tableTreeView['xscroll'] = xsb.set
 
-        #selección
-        subjectCveLB = Label(bottomFrame, text="Clave de materia:")
-        subjectCveLB.grid(row=0, column=0)
-        subjectCveENY = Entry(bottomFrame)
-        subjectCveENY.grid(row=0, column=1)
+        #cargar inf en tabla
+        self.showAvailableSubjects()
+
+        #selección, checar, para usar es necesario obtener el id en la tb
+        #subjectCveLB = Label(bottomFrame, text="Materia:")
+        #subjectCveLB.grid(row=0, column=0)
+        ##self.subjectCveENY = Entry(bottomFrame)
+        #self.subjectCveENY.grid(row=0, column=1)
 
         #Botones
         selectButton = Button(bottomFrame, text="Seleccionar", command=self.openGroupsInscription)
-        selectButton.grid(row = 0, column = 2)
+        selectButton.grid(row = 1, column = 4)
+        select1CveLB = Label(bottomFrame,
+                                  text="""                                """)
+        select2CveLB = Label(bottomFrame,
+                                  text="""                                """)
+        select1CveLB.grid(row=1, column=2)
+        select2CveLB.grid(row=1, column=3)
+
+        self.erroMsgLB = Label(bottomFrame, text="")
+        self.erroMsgLB.grid(row=0, column=4)
+
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
-        returnButton.grid(row = 1, column = 3)
+        returnButton.grid(row = 0, column = 1)
+
+    def showAvailableSubjects(self):
+        subjects = findAvailableSubjects(self.clave)
+        for cvMateria, nom, sem, creditos in subjects:
+            self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
+
+    def selectItem(self,_event):
+        curItem = self.tableTreeView.focus()
+        #selecciona el nombre de la matera
+        self.subject = self.tableTreeView.item(curItem)["values"][0]
 
     def openGroupsInscription(self):
         ##Add validations to return or close and open the other window
-        self.app = GroupsInscription(Tk())
-        self.root.destroy()
+        if self.subject == None:
+            self.erroMsgLB["text"] = "Selecciona una materia"
+        else:
+            self.app = GroupsInscription(Tk(), self.clave, self.subject)
+            self.root.destroy()
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk())
+        self.app = StudentAccess(Tk(), self.clave)
         self.root.destroy()
 
 class GroupsInscription:
-    def __init__(self, root):
+    def __init__(self, root,clave, subject):
         self.root = root
+        self.clave = clave
+        self.subject = subject
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Inscripción de grupos")
         root.geometry('{}x{}'.format(500, 300))
@@ -241,19 +288,19 @@ class GroupsInscription:
         bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
-        tableTreeView = ttk.Treeview(topFrame)
-        tableTreeView.grid(row=0, column=0)
+        self.tableTreeView = ttk.Treeview(topFrame)
+        self.tableTreeView.grid(row=0, column=0)
 
-        tableTreeView["columns"]=("Aula","Docente","Días(l-v)")
-        tableTreeView.column("#0",width=120)
-        tableTreeView.column("Aula",width=120)
-        tableTreeView.column("Docente",width=120)
-        tableTreeView.column("Días(l-v)",width=120)
+        self.tableTreeView["columns"]=("Aula","Docente","Días(l-v)")
+        self.tableTreeView.column("#0",width=120)
+        self.tableTreeView.column("Aula",width=120)
+        self.tableTreeView.column("Docente",width=120)
+        self.tableTreeView.column("Días(l-v)",width=120)
 
-        tableTreeView.heading('#0',text='Grupo')
-        tableTreeView.heading('Aula', text='Aula')
-        tableTreeView.heading('Docente', text='Docente')
-        tableTreeView.heading('Días(l-v)', text='Días(l-v)')
+        self.tableTreeView.heading('#0',text='Grupo')
+        self.tableTreeView.heading('Aula', text='Aula')
+        self.tableTreeView.heading('Docente', text='Docente')
+        self.tableTreeView.heading('Días(l-v)', text='Días(l-v)')
 
         #selección
         subjectCveLB = Label(bottomFrame, text="Grupo:")
@@ -267,9 +314,21 @@ class GroupsInscription:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnInscription)
         returnButton.grid(row = 1, column = 3)
 
+        ##carga información
+        self.showAvailableTeachers()
+
+    def showAvailableTeachers(self):
+        teachers = findAvailableTeachers(self.subject)
+        for grupo, aula, docente, horarios in teachers:
+            self.tableTreeView.insert('','0',grupo,text=grupo,values=(aula,docente,horarios))
+
+    def selectItem(self):
+        curItem = self.tableTreeView.focus()
+        print(self.tableTreeView.item(curItem))
+
     def returnInscription(self):
         ##Add validations to return or close and open the other window
-        self.app = Inscription(Tk())
+        self.app = Inscription(Tk(), self.clave)
         self.root.destroy()
 
 class StudentSchedule:
@@ -434,6 +493,7 @@ class AdministrativeSubject:
         tbTopTreeView.heading('Apellido Paterno', text='Apellido Paterno')
         tbTopTreeView.heading('Apellido Materno', text='Apellido Materno')
 
+
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 1, column = 0)
@@ -451,7 +511,7 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Access(root)# prueba de nueva ventana
+    aplicacion = Inscription(root,1)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()

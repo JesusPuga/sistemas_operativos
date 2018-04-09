@@ -25,3 +25,7 @@ INSERT INTO `Grupo` (`IDGrupo`, `claveGrupo`,`aula`,`carnetEmpleado`,`contador`,
 INSERT INTO `Horario` (`claveHorario`, `dia`,`horaInicio`,`horaFin`,`claveMateria`,`claveOportunidad`,`claveGrupo`) VALUES
 (1, 1, '15:30:00', '16:30:00', 1, 1, 1),
 (2, 1, '17:30:00', '18:30:00', 1, 1, 1);
+
+INSERT INTO `Usuario_Horario` (`carnetAlumno`, `claveHorario`,`periodo`) VALUES
+(1,1, 'Administrativo'),
+(2,1, 'Docente');
