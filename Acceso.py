@@ -57,7 +57,8 @@ class Access:
 
     def validateInput(self):
         ##type, user, password
-        result = validateUser(self.tipoUsuarioCBX.get(), self.usuarioENY.get(),self.contraseniaENY.get())
+        clave =self.usuarioENY.get()
+        result = validateUser(self.tipoUsuarioCBX.get(), clave,self.contraseniaENY.get())
         self.contraseniaErrorLBL["text"] = ""
         self.usuarioErrorLBL["text"] =  ""
         self.tipoUsuarioErrorLBL["text"] = ""
@@ -66,9 +67,9 @@ class Access:
         if result == "ok":
             new_root = Tk()
             if self.tipoUsuarioCBX.get() == "Administrativo":
-                self.app = AdministrativeAccess(new_root)
+                self.app = AdministrativeAccess(new_root,clave)
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                self.app = StudentAccess(new_root, self.usuarioENY.get())
+                self.app = StudentAccess(new_root, clave)
             self.root.destroy()
         else:
             if "Contraseña" in result:
@@ -122,8 +123,9 @@ class StudentAccess:
         self.root.destroy()
 
 class AdministrativeAccess:
-    def __init__(self, root):
+    def __init__(self, root,clave):
         self.root = root
+        self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Administrativo")
         root.geometry('{}x{}'.format(500, 300))
@@ -152,15 +154,15 @@ class AdministrativeAccess:
 
     def closeSession(self):
         ##Add validations to return or close and open the other window
-        self.app = Access(Tk())
+        self.app = Access(Tk(),self.clave)
         self.root.destroy()
 
     def openSubjects(self):
-        self.app = AdministrativeSubject(Tk())
+        self.app = AdministrativeSubject(Tk(),self.clave)
         self.root.destroy()
 
     def openSchedule(self):
-        self.app = AdministrativeSchedule(Tk())
+        self.app = AdministrativeSchedule(Tk(),self.clave)
         self.root.destroy()
 
 class Inscription:
@@ -332,8 +334,9 @@ class GroupsInscription:
         self.root.destroy()
 
 class StudentSchedule:
-    def __init__(self, root):
+    def __init__(self, root,clave):
         self.root = root
+        self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Horario")
         root.geometry('{}x{}'.format(500, 300))
@@ -382,12 +385,13 @@ class StudentSchedule:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk())
+        self.app = StudentAccess(Tk(),self.clave)
         self.root.destroy()
 
 class AdministrativeSchedule:
-    def __init__(self, root):
+    def __init__(self, root,clave):
         self.root = root
+        self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Consulta | Horario")
         root.geometry('{}x{}'.format(500, 300))
@@ -447,12 +451,13 @@ class AdministrativeSchedule:
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
-        self.app = AdministrativeAccess(Tk())
+        self.app = AdministrativeAccess(Tk(),self.clave)
         self.root.destroy()
 
 class AdministrativeSubject:
-    def __init__(self, root):
+    def __init__(self, root,clave):
         self.root = root
+        self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Consulta | Alumnos por materia")
         root.geometry('{}x{}'.format(500, 300))
@@ -501,7 +506,7 @@ class AdministrativeSubject:
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
-        self.app = AdministrativeAccess(Tk())
+        self.app = AdministrativeAccess(Tk(),self.clave)
         self.root.destroy()
 
 
