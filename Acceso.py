@@ -74,7 +74,7 @@ class Access:
             self.root.destroy()
         else:
             messagebox.showwarning("Error",result)
-            
+
 class StudentAccess:
     def __init__(self, root, clave):
         self.root = root
@@ -98,7 +98,7 @@ class StudentAccess:
         rightFrame.grid(row=0,column=1)
 
         #Botones
-        inscriptionButton = Button(leftFrame, text="Ingresar", command= self.openInscription)
+        inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
         inscriptionButton.grid(row = 1, column = 0)
         scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
         scheduleButton.grid(row = 2, column = 0)
@@ -168,7 +168,7 @@ class Inscription:
         self.subject = None
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Inscripción")
-        root.geometry('{}x{}'.format(500, 300))
+        root.geometry('{}x{}'.format(600, 300))
         root.resizable(0,0)
         # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
@@ -210,7 +210,8 @@ class Inscription:
         self.tableTreeView.heading('Semestre', text='Semestre')
         self.tableTreeView.heading('Créditos', text='Créditos')
 
-        self.tableTreeView.bind('<ButtonRelease-1>', self.selectItem)
+        # Función para el double clic
+        self.tableTreeView.bind("<Double-1>", self.onDoubleClick)
 
         ##en prueba, creo que es pa' los datos xD
         ysb = ttk.Scrollbar(orient="vertical", command= self.tableTreeView.yview)
@@ -218,8 +219,9 @@ class Inscription:
         self.tableTreeView['yscroll'] = ysb.set
         self.tableTreeView['xscroll'] = xsb.set
 
-        #cargar inf en tabla
+        #Cargar inf en tabla
         self.showAvailableSubjects()
+
 
         #selección, checar, para usar es necesario obtener el id en la tb
         #subjectCveLB = Label(bottomFrame, text="Materia:")
@@ -228,17 +230,6 @@ class Inscription:
         #self.subjectCveENY.grid(row=0, column=1)
 
         #Botones
-        selectButton = Button(bottomFrame, text="Seleccionar", command=self.openGroupsInscription)
-        selectButton.grid(row = 1, column = 4)
-        select1CveLB = Label(bottomFrame,
-                                  text="""                                """)
-        select2CveLB = Label(bottomFrame,
-                                  text="""                                """)
-        select1CveLB.grid(row=1, column=2)
-        select2CveLB.grid(row=1, column=3)
-
-        self.erroMsgLB = Label(bottomFrame, text="")
-        self.erroMsgLB.grid(row=0, column=4)
 
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
         returnButton.grid(row = 0, column = 1)
@@ -248,23 +239,20 @@ class Inscription:
         for cvMateria, nom, sem, creditos in subjects:
             self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
 
-    def selectItem(self,_event):
-        curItem = self.tableTreeView.focus()
-        #selecciona el nombre de la matera
-        self.subject = self.tableTreeView.item(curItem)["values"][0]
-
-    def openGroupsInscription(self):
+    def returnStudentHome(self):
         ##Add validations to return or close and open the other window
+        self.app = StudentAccess(Tk(), self.clave)
+        self.root.destroy()
+
+    def onDoubleClick(self, event):
+        cursoItem = self.tableTreeView.focus()
+        self.subject = self.tableTreeView.item(cursoItem)["values"][0]
         if self.subject == None:
             self.erroMsgLB["text"] = "Selecciona una materia"
         else:
             self.app = GroupsInscription(Tk(), self.clave, self.subject)
             self.root.destroy()
 
-    def returnStudentHome(self):
-        ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk(), self.clave)
-        self.root.destroy()
 
 class GroupsInscription:
     def __init__(self, root,clave, subject):
@@ -530,9 +518,9 @@ if __name__ == '__main__':
     root = Tk()
 
     #LLamado a la aplicación mediante la ventana de acceso al sistema
-    app = Access(root)
+    #app = Access(root)
 
-    #aplicacion = Inscription(root,1)# prueba de nueva ventana
+    aplicacion = Inscription(root,1)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
