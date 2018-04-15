@@ -2,6 +2,7 @@ import sys
 from Validaciones import *
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 class Access:
     def __init__(self, root):
@@ -72,13 +73,8 @@ class Access:
                 self.app = StudentAccess(new_root, clave)
             self.root.destroy()
         else:
-            if "Contraseña" in result:
-                self.contraseniaErrorLBL["text"] = result
-            elif "Usuario" in result:
-                self.usuarioErrorLBL["text"] =  result
-            else:
-                self.tipoUsuarioErrorLBL["text"] = result
-
+            messagebox.showwarning("Error",result)
+            
 class StudentAccess:
     def __init__(self, root, clave):
         self.root = root
@@ -533,7 +529,10 @@ if __name__ == '__main__':
     #Declara ventana de aplicación
     root = Tk()
 
-    aplicacion = Inscription(root,1)# prueba de nueva ventana
+    #LLamado a la aplicación mediante la ventana de acceso al sistema
+    app = Access(root)
+
+    #aplicacion = Inscription(root,1)# prueba de nueva ventana
 
     #Bucle de la aplicación
     root.mainloop()
