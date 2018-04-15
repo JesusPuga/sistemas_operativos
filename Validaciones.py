@@ -52,57 +52,57 @@ def findAvailableTeachers(subject, availableGroup = True):
     print(subject)
     if "FUNDAMENTOS DE ELECTROMAGNETISMO" in subject and availableGroup:
         values.extend([(1,2,3,
-                        {"l":"1:30","m":"1:30"}),
+                        {"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),
                        (5,6,7,
-                        {"l":"1:30","m":"1:30"})])
+                        {"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "FUNDAMENTOS DE ALGORITMOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ARQUITECTURA DE COMPUTADORAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "PROGRAMACIÓN ESTRUCTURADA" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "MATEMÁTICAS I" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "MATEMÁTICAS II" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "SISTEMAS ELECTRÓNICOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "FUNDAMENTOS DE REDES" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "PROGRAMACIÓN ORIENTADA A OBJETOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "FUNDAMENTOS DE ESTADÁSTICA" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "MATEMÁTICAS DISCRETAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "CIRCUITOS DIGITALES" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ESTRUCTURA DE DATOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ANÁLISIS DE SISTEMAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "TEORÍA DE AUTÁMATAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ANÁLISIS NUMÉRICO" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ADMINISTRACIÓN DE PROYECTOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "SISTEMAS OPERATIVOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "ADMINISTRACIÓN DE REDES" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "MODELOS ESTADÍSTICOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "SISTEMAS EMBEBIDOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "MINERÍA DE Datos" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "SISTEMA DISTRIBUIDOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "INTELIGENCIA ARTIFICIAL" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
     elif "BIG DATA" in subject and availableGroup:
-        values.extend([(1,2,3,{"l":"1:30","m":"1:30"}),(5,6,7,{"l":"1:30","m":"1:30"})])
+        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
 
     return values
 
@@ -179,5 +179,3 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
         return "Materia inscrita"
 
     return "Lo sentimos, grupo lleno, elige otra opción"
-
-print(isScheduleUsed("15:30:00","16:00:00",1))#prueba

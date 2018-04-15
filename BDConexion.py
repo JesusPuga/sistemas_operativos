@@ -21,7 +21,7 @@ class Conexion:
         cursor = self.conn.cursor()
         result = cursor.execute(query_p, parametros)
 
-        #updates, deltes, insert
+        #updates, deletes, insert
         if commit:
             self.conn.commit()
         #Nos permite recuperar la inf
