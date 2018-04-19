@@ -38,7 +38,7 @@ CREATE TABLE MateriaSeriada (
 	CONSTRAINT claveMateria_FK FOREIGN KEY (claveMateria)
 	REFERENCES Materia(claveMateria)
 	ON DELETE RESTRICT
-	ON UPDATE CASCADE
+	ON UPDATE CASCADE,
 	
 	CONSTRAINT claveMateriaSeriada_FK FOREIGN KEY (claveMateriaSeriada)
 	REFERENCES Materia(claveMateria)
@@ -115,20 +115,14 @@ CREATE TABLE Horario (
 	horaInicio TIME NOT NULL,
 	horaFin TIME NOT NULL,
 	claveMateria INT UNSIGNED NOT NULL,
-	claveOportunidad BIGINT UNSIGNED NOT NULL,
 	claveGrupo BIGINT UNSIGNED NOT NULL,
 	calificacion TINYINT NOT NULL,
 	numOportunidad TINYINT NOT NULL,
 
 	CONSTRAINT claveHorario_PK PRIMARY KEY (claveHorario),
 
-	CONSTRAINT claveMateria_FK FOREIGN KEY (claveMateria)
+	CONSTRAINT claveMateriaHorario_FK FOREIGN KEY (claveMateria)
 	REFERENCES Materia(claveMateria)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE,
-
-	CONSTRAINT claveOportunidad_FK FOREIGN KEY (claveOportunidad)
-	REFERENCES Oportunidad(IDOportunidad)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE,
 
