@@ -113,10 +113,10 @@ CREATE TABLE Oportunidad (
 CREATE TABLE Grupo (
 	IDGrupo  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	claveGrupo TINYINT ZEROFILL,
-	aula INT ZEROFILL,
+	aula INT,
 	capacidad TINYINT,
 	contador TINYINT,
-	perdio DATE,
+	periodo DATE,
 	carnetEmpleado INT UNSIGNED NOT NULL,
 	claveMateria INT UNSIGNED ZEROFILL NOT NULL,
 
@@ -135,7 +135,6 @@ CREATE TABLE Grupo (
 
 CREATE TABLE Horario (
 	IDHorario BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia CHAR(10) NOT NULL,
 	horaInicio TIME NOT NULL,
 	horaFin TIME NOT NULL,
 	claveGrupo BIGINT UNSIGNED NOT NULL,
@@ -146,6 +145,13 @@ CREATE TABLE Horario (
 	REFERENCES Grupo(IDGrupo)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE
+);
+
+CREATE TABLE Dia (
+	IDDia TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia CHAR(10) NOT NULL,
+
+	CONSTRAINT IDDia_PK PRIMARY KEY (IDDia)
 );
 
 CREATE TABLE Alumno_Grupo (
@@ -165,10 +171,38 @@ CREATE TABLE Alumno_Grupo (
 	ON UPDATE CASCADE
 );
 
-INSERT INTO `Carrera` (`claveCarrera`, `nombre`) VALUES
+CREATE TABLE Dia_Horario (
+	IDDia  TINYINT UNSIGNED NOT NULL,
+	IDHorario BIGINT UNSIGNED NOT NULL,
+
+	CONSTRAINT claveAlumnoGrupo_PK PRIMARY KEY (IDDia, IDHorario),
+
+	CONSTRAINT IDDiaRel_FK FOREIGN KEY (IDDIa)
+	REFERENCES Dia(IDDia)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT IDHorarioRel_FK FOREIGN KEY (IDHorario)
+	REFERENCES Horario(IDHorario)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE
+);
+
+/*CREACIÓN DE LOS DÍAS*/
+INSERT INTO Dia (dia) VALUES
+('LUNES'),
+('MARTES'),
+('MIÉRCOLES'),
+('JUEVES'),
+('VIERNES'),
+('SÁBADO');
+
+/* CREACIÓN DE LA CARRERA */
+INSERT INTO Carrera (claveCarrera, nombre) VALUES
 (001, 'CIENCIAS DE LA COMPUTACIÓN');
 
-INSERT INTO `Materia` (`claveMateria`, `nombre`, `creditos`, `numeroSemestre`, `claveCarrera`) VALUES
+ /* CREACIÓN DE LA MATERIAS PARA LA CARRERA DE CIENCIAS DE LA COMPUTACIÓN*/
+INSERT INTO Materia (claveMateria, nombre, creditos, semestre, claveCarrera) VALUES
 (001, 'MATEMÁTICAS I', 1, 1, 1),
 (002, 'FUNDAMENTOS DE ELECTROMAGNETISMO', 1, 1, 1),
 (003, 'FUNDAMENTOS DE ALGORITMOS', 1, 1, 1),
@@ -197,3 +231,127 @@ INSERT INTO `Materia` (`claveMateria`, `nombre`, `creditos`, `numeroSemestre`, `
 (026, 'BIG DATA', 1, 5, 1),
 (027, 'REDES NEURONALES', 1, 5, 1),
 (028, 'SERVICIO SOCIAL', 1, 5, 1);
+
+ /*MATERIAS SERIADAS*/
+INSERT INTO Materia_Seriada (claveMateria, claveMateriaSeriada) VALUES
+(1, 6),
+(2, 7),
+(5, 10);
+
+/* CREACIÓN DE ALUMNOS (EJEMPLO)*/
+INSERT INTO Inscripcion (claveInscripcion, fechaInscripcion) VALUES
+(1, '2018-04-07 15:30:00'),
+(2, '2018-04-07 14:30:00');
+
+INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
+(001, 'H', 5512345678, 'unodostres', 'Francisco', 'Gutierrez', 'Quinza', 1),
+(002, 'H', 7772345678, 123, 'Jose', 'Martinez', 'Diaz', 1),
+(003, 'M', 7572345678, 'unotres', 'Angelica', 'Lopez', 'Garza', 1);
+
+INSERT INTO Alumno (carnetAlumno, estatus, claveCarrera, claveInscripcion) VALUES
+(1, 'Estudiando',1,1),
+(2, 'Estudiando',1,2),
+(3, 'Estudiando',1,1);
+
+/*CREACIÓN DE DOCENTES (EJEMPLO)*/
+INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
+(004, 'H', 7752345678, 'contra', 'Noe', 'Espinoza', 'Perez', 2),
+(005, 'M', 7372345678, 'senia', 'Aracely', 'Gomez', 'Trujillo', 2);
+
+INSERT INTO Empleado (carnetEmpleado, tipoEmpleado) VALUES
+(4, 'Docente'),
+(5, 'Docente');
+
+/* CREACIÓN DE LOS GRUPOS*/
+
+/*PRIMER SEMESTRE*/
+
+/*GRUPOS*/
+INSERT INTO Grupo (claveGrupo, aula, capacidad, contador, periodo, carnetEmpleado, claveMateria) VALUES
+(01,104,1,0,'180116',4,1),	/*MATEMÁTICAS I*/
+(01,104,1,0,'180116',4,2),	/*FUNDAMENTOS	DE ELECTROMAGNETISMO*/
+(01,104,1,0,'180116',4,3),	/*FUNDAMENTOS DE ALGORITMOS*/
+(01,104,1,0,'180116',4,4),	/*ARQUITECTURA DE COMPUTADORAS*/
+(01,104,1,0,'180116',4,5);	/*PROGRAMACIÓN ESTRUCTURADA*/
+
+INSERT INTO Horario (horaInicio, horaFin, claveGrupo) VALUES
+(150000,160000,1),	/*MATEMÁTICAS I*/
+(180000,190000,2),	/*FUNDAMENTOS DE ELECTROMAGNETISMO*/
+(160000,170000,3),	/*FUNDAMENTOS DE COMPUTADORAS*/
+(160000,180000,4),	/*ARQUITECTURA DE COMPUTADORAS*/
+(170000,180000,5);	/*PROGRAMACIÓN ESTRUCTURADA*/
+
+INSERT INTO Dia_Horario(IDDIa, IDHorario) VALUES
+/*MATEMÁTICAS I*/
+(1,1),
+(3,1),
+(4,1),
+(5,1),
+ /*FUNDAMENTOS DE ELECTROMAGNETISMO*/
+(1,2),
+(3,2),
+(4,2),
+(5,2),
+/*FUNDAMENTOS DE ALGORITMOS*/
+(1,3),
+(3,3),
+(5,3),
+/*ARQUITECTURA DE COMPUTADORAS*/
+(2,4),
+(4,4),
+/*PROGRAMACIÓN ESTRUCTURADA*/
+(1,5),
+(3,5),
+(5,5);
+
+/*SEGUNDO SEMESTRE*/
+/*GRUPOS*/
+INSERT INTO Grupo (claveGrupo, aula, capacidad, contador, periodo, carnetEmpleado, claveMateria) VALUES
+(01,409,1,0,'180116',4,6),
+(01,408,1,0,'180116',4,7),
+(01,409,1,0,'180116',4,8),
+(01,409,1,0,'180116',4,9),
+(01,411,1,0,'180116',4,10),
+(01,409,1,0,'180116',4,11),
+(02,407,1,0,'180116',4,6),
+(02,407,1,0,'180116',4,8),
+(02,407,1,0,'180116',4,11);
+
+INSERT INTO Horario (horaInicio, horaFin, claveGrupo) VALUES
+(170000,180000,6),	/*MATEMÁTICAS II*/
+(150000,180000,7),	/*SISTEMAS ELECTRÓNICOS*/
+(160000,170000,8),	/*FUNDAMENTOS DE REDES*/
+(140000,150000,9),	/*BASES DE DATOS*/
+(180000,210000,10),	/*PROGRAMACIÓN ORIENTADA A OBJETOS*/
+(110000,120000,11),	/*MATEMÁTICAS II*/
+(70000,100000,12),	/*FUNDAMENTOS DE REDES*/
+(150000,180000,13);	/*FUNDAMENTOS DE ESTADÁSTICA*/
+
+
+INSERT INTO Dia_Horario(IDDIa, IDHorario) VALUES
+/*MATEMÁTICAS II*/
+(1,6),
+(3,6),
+(5,6),
+/*SISTEMAS ELECTRÓNICOS*/
+(4,7),
+/*FUNDAMENTOS DE REDES*/
+(1,8),
+(3,8),
+(5,8),
+/*BASES DE DATOS*/
+(1,9),
+(2,9),
+(3,9),
+(4,9),
+(5,9),
+/*PROGRAMACIÓN ORIENTADA A OBJETOS*/
+(1,10),
+/*MATEMÁTICAS II*/
+(1,11),
+(3,11),
+(5,11),
+/*FUNDAMENTOS DE REDES*/
+(6,12),
+/*FUNDAMENTOS DE ESTADÁSTICA*/
+(2,13);
