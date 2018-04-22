@@ -1,5 +1,5 @@
 CREATE TABLE Inscripcion (
-	claveInscripcion BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	claveInscripcion BIGINT UNSIGNED AUTO_INCREMENT,
 	fechaInscripcion TIMESTAMP,
 
 	CONSTRAINT claveInscripcion_PK PRIMARY KEY (claveInscripcion)
@@ -12,40 +12,6 @@ CREATE TABLE Carrera (
 	CONSTRAINT claveCarrera_PK PRIMARY KEY (claveCarrera)
 );
 
-
-
-CREATE TABLE Materia (
-	claveMateria INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(50) NOT NULL,
-	creditos TINYINT NOT NULL,
-	numeroSemestre TINYINT NOT NULL,
-	claveCarrera INT UNSIGNED NOT NULL,
-
-	CONSTRAINT claveMateria_PK PRIMARY KEY (claveMateria),
-
-	CONSTRAINT claveCarrera_FK FOREIGN KEY (claveCarrera)
-	REFERENCES Carrera(claveCarrera)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE
-);
-
-CREATE TABLE MateriaSeriada (
-	claveMateria INT UNSIGNED  NOT NULL,
-	claveMateriaSeriada INT UNSIGNED  NOT NULL,
-
-	CONSTRAINT claveMateria_PK PRIMARY KEY (claveMateria, claveMateriaSeriada),
-
-	CONSTRAINT claveMateria_FK FOREIGN KEY (claveMateria)
-	REFERENCES Materia(claveMateria)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE,
-	
-	CONSTRAINT claveMateriaSeriada_FK FOREIGN KEY (claveMateriaSeriada)
-	REFERENCES Materia(claveMateria)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE
-);
-
 CREATE TABLE Usuario (
 	carnetUsuario INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	sexo CHAR(1),
@@ -55,31 +21,8 @@ CREATE TABLE Usuario (
 	apellidoPaterno VARCHAR(30) NOT NULL,
 	apellidoMaterno VARCHAR(30) NOT NULL,
 	tipoUsuario TINYINT NOT NULL,
-	claveCarrera INT UNSIGNED NULL,
-	claveInscripcion BIGINT UNSIGNED NULL,
 
-	CONSTRAINT carnetUsuario_PK PRIMARY KEY (carnetUsuario),
-
-	CONSTRAINT claveCarreraU_FK FOREIGN KEY (claveCarrera)
-	REFERENCES Carrera(claveCarrera)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE,
-
-	CONSTRAINT claveInscripcionU_FK FOREIGN KEY (claveInscripcion)
-	REFERENCES Inscripcion(claveInscripcion)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE
-);
-
-CREATE TABLE Alumno (
-	carnetAlumno INT UNSIGNED NOT NULL PRIMARY KEY,
-	estatus VARCHAR (30) NOT NULL,
-
-	CONSTRAINT carnetAlumno_FK FOREIGN KEY (carnetAlumno)
-	REFERENCES Usuario(carnetUsuario)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE
-
+	CONSTRAINT carnetUsuario_PK PRIMARY KEY (carnetUsuario)
 );
 
 CREATE TABLE Empleado (
@@ -93,38 +36,111 @@ CREATE TABLE Empleado (
 
 );
 
+CREATE TABLE Alumno (
+	carnetAlumno INT UNSIGNED NOT NULL PRIMARY KEY,
+	estatus VARCHAR (30) NOT NULL,
+	claveCarrera INT UNSIGNED ZEROFILL NOT NULL,
+	claveInscripcion BIGINT UNSIGNED,
+
+	CONSTRAINT carnetAlumno_FK FOREIGN KEY (carnetAlumno)
+	REFERENCES Usuario(carnetUsuario)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT claveCarrera_FK FOREIGN KEY (claveCarrera)
+	REFERENCES Carrera(claveCarrera)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT claveInscripcion_FK FOREIGN KEY (claveInscripcion)
+	REFERENCES Inscripcion(claveInscripcion)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE
+);
+
+CREATE TABLE Materia (
+	claveMateria INT UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	creditos TINYINT NOT NULL,
+	semestre TINYINT NOT NULL,
+	claveCarrera INT UNSIGNED NOT NULL,
+
+	CONSTRAINT claveMateria_PK PRIMARY KEY (claveMateria),
+
+	CONSTRAINT claveCarreraMateria_FK FOREIGN KEY (claveCarrera)
+	REFERENCES Carrera(claveCarrera)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE
+);
+
+CREATE TABLE Materia_Seriada (
+	claveMateria INT UNSIGNED  NOT NULL,
+	claveMateriaSeriada INT UNSIGNED  NOT NULL,
+
+	CONSTRAINT claveMateria_PK PRIMARY KEY (claveMateria, claveMateriaSeriada),
+
+	CONSTRAINT claveMateria_FK FOREIGN KEY (claveMateria)
+	REFERENCES Materia(claveMateria)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT claveMateriaSeriada_FK FOREIGN KEY (claveMateriaSeriada)
+	REFERENCES Materia(claveMateria)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE
+);
+
+CREATE TABLE Oportunidad (
+	IDOportunidad BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	calificacion TINYINT DEFAULT NULL,
+	numOportunidad TINYINT NOT NULL,
+	carnetAlumno INT UNSIGNED NOT NULL,
+	claveMateria INT UNSIGNED ZEROFILL NOT NULL,
+
+	CONSTRAINT IDOportunidad_PK PRIMARY KEY (IDOportunidad),
+
+	CONSTRAINT carnetAlumnoOportunidad_FK FOREIGN KEY (carnetAlumno)
+	REFERENCES Alumno(carnetAlumno)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT claveMateriaOportunidad_FK FOREIGN KEY (claveMateria)
+	REFERENCES Materia(claveMateria)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE
+);
+
 CREATE TABLE Grupo (
 	IDGrupo  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	claveGrupo TINYINT ZEROFILL,
 	aula INT ZEROFILL,
-	carnetEmpleado INT UNSIGNED NOT NULL,
+	capacidad TINYINT,
 	contador TINYINT,
-	claveEmpleado INT UNSIGNED NOT NULL,
+	perdio DATE,
+	carnetEmpleado INT UNSIGNED NOT NULL,
+	claveMateria INT UNSIGNED ZEROFILL NOT NULL,
 
 	CONSTRAINT IDGrupo_PK PRIMARY KEY (IDGrupo),
 
-	CONSTRAINT carnetEmpleadoG_FK FOREIGN KEY (claveEmpleado)
-	REFERENCES Usuario(carnetUsuario)
+	CONSTRAINT carnetEmpleadoG_FK FOREIGN KEY (carnetEmpleado)
+	REFERENCES Empleado(carnetEmpleado)
+	ON DELETE RESTRICT
+	ON UPDATE CASCADE,
+
+	CONSTRAINT claveMateriaGrupo_FK FOREIGN KEY (claveMateria)
+	REFERENCES Materia(claveMateria)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE
 );
 
 CREATE TABLE Horario (
-	claveHorario BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	IDHorario BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia CHAR(10) NOT NULL,
 	horaInicio TIME NOT NULL,
 	horaFin TIME NOT NULL,
-	claveMateria INT UNSIGNED NOT NULL,
 	claveGrupo BIGINT UNSIGNED NOT NULL,
-	calificacion TINYINT NOT NULL,
-	numOportunidad TINYINT NOT NULL,
 
-	CONSTRAINT claveHorario_PK PRIMARY KEY (claveHorario),
-
-	CONSTRAINT claveMateriaHorario_FK FOREIGN KEY (claveMateria)
-	REFERENCES Materia(claveMateria)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE,
+	CONSTRAINT Horario_PK PRIMARY KEY (IDHorario),
 
 	CONSTRAINT claveGrupo_FK FOREIGN KEY (claveGrupo)
 	REFERENCES Grupo(IDGrupo)
@@ -132,30 +148,25 @@ CREATE TABLE Horario (
 	ON UPDATE CASCADE
 );
 
-CREATE TABLE Usuario_Horario (
-	carnetAlumno  INT UNSIGNED NOT NULL,
-	claveHorario BIGINT UNSIGNED NOT NULL,
-	periodo VARCHAR(40) NOT NULL,
+CREATE TABLE Alumno_Grupo (
+	claveGrupo  BIGINT UNSIGNED NOT NULL,
+	carnetAlumno INT UNSIGNED NOT NULL,
 
-	CONSTRAINT claveUsuarioHorario_PK PRIMARY KEY (carnetAlumno, claveHorario),
+	CONSTRAINT claveAlumnoGrupo_PK PRIMARY KEY (claveGrupo, carnetAlumno),
 
-	CONSTRAINT carnetAlumnoH_FK FOREIGN KEY (carnetAlumno)
-	REFERENCES Usuario(carnetUsuario)
+	CONSTRAINT claveGrupoRel_FK FOREIGN KEY (claveGrupo)
+	REFERENCES Grupo(IDGrupo)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE,
 
-	CONSTRAINT claveHorario_FK FOREIGN KEY (claveHorario)
-	REFERENCES Horario(claveHorario)
+	CONSTRAINT carnetAlumnoRel_FK FOREIGN KEY (carnetAlumno)
+	REFERENCES Alumno(carnetAlumno)
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE
 );
 
 INSERT INTO `Carrera` (`claveCarrera`, `nombre`) VALUES
 (001, 'CIENCIAS DE LA COMPUTACIÓN');
-
-INSERT INTO `Inscripcion` (`claveInscripcion`, `fechaInscripcion`) VALUES
-(1, '2018-04-07 15:30:00'),
-(2, '2018-04-07 14:30:00');
 
 INSERT INTO `Materia` (`claveMateria`, `nombre`, `creditos`, `numeroSemestre`, `claveCarrera`) VALUES
 (001, 'MATEMÁTICAS I', 1, 1, 1),
