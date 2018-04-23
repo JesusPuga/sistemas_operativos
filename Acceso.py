@@ -97,13 +97,29 @@ class StudentAccess:
         rightFrame = Frame(root, bg='lavender', width=400, height=300)
         rightFrame.grid(row=0,column=1)
 
+        #REVISAR ESTATUS DE ALUMNO
+        query= """SELECT Alumno.estatus FROM Alumno WHERE Alumno.carnetAlumno = %s"""
+        result = con.execute_query(query,(clave,),True)
+
+        #CAPTURA DEL CONTENIDO DE LA CONSULTA. SE GUARDA EL ESTATUS DEL ALUMNO ("PRIMER INGRESO", "REINGRESO", "NO INSCRITO")"
+        for x in result: estatus=x[0]
+
         #Botones
-        inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
-        inscriptionButton.grid(row = 1, column = 0)
-        scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
-        scheduleButton.grid(row = 2, column = 0)
-        sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
-        sessionButton.grid(row = 3, column = 0)
+        if estatus == 'PRIMER INGRESO':
+            inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription)
+            inscriptionButton.grid(row = 1, column = 0)
+            scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
+            scheduleButton.grid(row = 2, column = 0)
+            sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
+            sessionButton.grid(row = 3, column = 0)
+        elif estatus == 'REINGRESO':
+            inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
+            inscriptionButton.grid(row = 1, column = 0)
+            scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
+            scheduleButton.grid(row = 2, column = 0)
+            sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
+            sessionButton.grid(row = 3, column = 0)
+
 
     def quit(self):
         ##Add validations to return or close and open the other window
@@ -518,9 +534,9 @@ if __name__ == '__main__':
     root = Tk()
 
     #LLamado a la aplicación mediante la ventana de acceso al sistema
-    #app = Access(root)
+    app = Access(root)
 
-    aplicacion = Inscription(root,1)# prueba de nueva ventana
+    #aplicacion = Inscription(root,2)# prueba de nueva ventana
 
     #Bucle de la aplicación
-    root.mainloop()
+root.mainloop()

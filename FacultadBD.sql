@@ -253,14 +253,14 @@ INSERT INTO Alumno (carnetAlumno, estatus, claveCarrera, claveInscripcion) VALUE
 (2, 'Estudiando',1,2),
 (3, 'Estudiando',1,1);
 
-/*CREACIÓN DE DOCENTES (EJEMPLO)*/
+/*CREACIÓN DE EMPLEADOS (EJEMPLO)*/
 INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
 (004, 'H', 7752345678, 'contra', 'Noe', 'Espinoza', 'Perez', 2),
 (005, 'M', 7372345678, 'senia', 'Aracely', 'Gomez', 'Trujillo', 2);
 
 INSERT INTO Empleado (carnetEmpleado, tipoEmpleado) VALUES
 (4, 'Docente'),
-(5, 'Docente');
+(5, 'Administrativo');
 
 /* CREACIÓN DE LOS GRUPOS*/
 
@@ -355,3 +355,15 @@ INSERT INTO Dia_Horario(IDDIa, IDHorario) VALUES
 (6,12),
 /*FUNDAMENTOS DE ESTADÁSTICA*/
 (2,13);
+
+/*AÑADIENDO ALUMNOS A MATERIAS */
+/*NOTA: SI SE AÑADE UNA OPORTUNIDAD SE DEBE AGREGAR EN LA RELACION ALUMNO_GRUPO*/
+INSERT INTO `Alumno_Grupo` (`claveGrupo`, `carnetAlumno`) VALUES
+(1, 1),
+(1, 2),
+(2, 1);
+
+INSERT INTO Oportunidad (IDOportunidad, calificacion, numOportunidad, carnetAlumno, claveMateria) VALUES
+(1, 69, 1, 1, 0000000001),
+(2, 80, 1, 1, 0000000002),
+(3, 80, 1, 2, 0000000001);

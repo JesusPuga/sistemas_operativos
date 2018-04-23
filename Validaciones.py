@@ -4,10 +4,10 @@ from BDConexion import *
 con = Conexion("root","FCFM","FacultadBD")
 
 def validateUser(type, user, password):
-    typeUser = {"Alumno":"1","Docente":"2","Adminstrativo":"3"}
+    typeUser = {"Alumno":"1","Docente":"2","Administrativo":"3"}
 
     if type != "Alumno" and type != "Docente" and type != "Administrativo":
-        return "Tipo de usuario inexistente"
+        return "TIPO DE USUARIO INEXISTENTE"
 
     query = """SELECT carnetUsuario, tipoUsuario
                FROM Usuario
@@ -28,21 +28,46 @@ def validateUser(type, user, password):
     return "ok"
 
 def findAvailableSubjects(clave):
-    ##no se toma en cuenta el periodo del Usuario_Horario
-    query = """SELECT Materia.ClaveMateria, Materia.nombre,
-                      Materia.numeroSemestre, Materia.creditos
-               FROM  Usuario_Horario
-               INNER JOIN Horario ON Usuario_Horario.carnetAlumno = %s and
-                                     Horario.claveHorario = Usuario_Horario.claveHorario
-               INNER JOIN Oportunidad ON Oportunidad.IDOportunidad = Horario.claveOportunidad  and
-                                         Oportunidad.calificacion >69
-               INNER JOIN Materia ON Materia.ClaveMateria != Horario.ClaveMateria
-               ORDER BY Materia.ClaveMateria desc;
-            """
-    result = con.execute_query(query, (clave,),True)
-    ##¿NO HAY MATERIAS POR CURSAR? V:, YA VALIÓ
+    """ Función que busca las materias disponibles a cursar del alumno
+
+    El primer paso es verificar el ESTATUS del alumno. Esto ayudará a determinar si el
+    alumno
+        a) Está inscrito al periodo vigente
+            -Si es de primer ingreso
+            -Si es de reingreso
+        b) No está inscrito al periodo vigente
+
+    Si el alumno es de primer ingreso, no registra materias. Previamente hubo algún proceso
+    administrativo en el cual se le asignó un horario definido.
+
+    Si el alumno es de reingreso, se hará un despliegue de:
+        -Materias reprobadas, en su n-ésima oportunidad
+        -Materias de semestres siguientes
+
+    Si el alumno no está inscrito, el sistema simplemente da aviso de ello e invalida la opción
+    de inscripción.
+    """
+
+    #REVISAR ESTATUS DE ALUMNO
+    query= """SELECT Alumno.estatus FROM Alumno WHERE Alumno.carnetAlumno = %s"""
+    result = con.execute_query(query,(clave,),True)
+
+    #CAPTURA DEL CONTENIDO DE LA CONSULTA. SE GUARDA EL ESTATUS DEL ALUMNO ("PRIMER INGRESO", "REINGRESO", "NO INSCRITO")"
+    for x in result: estatus=x[0]
+
+    #CASO ALUMNO INSCRITO Y DE REINGRESO
+    if  estatus == 'REINGRESO':
+        query="""SELECT Materia.claveMateria, Materia.nombre,
+                        Materia.semestre, Materia.creditos
+                FROM Materia
+                INNER JOIN Oportunidad
+                ON Oportunidad.claveMateria != Materia.claveMateria AND Oportunidad.calificacion > 70 AND Oportunidad.carnetAlumno = %s
+                ORDER BY ClaveMateria DESC
+        """
+        result = con.execute_query(query,(clave,),True)
+
     if result == 0:
-        return "Parece que ha habido algún problema, shales, wait a moment"
+        print("HUBO UN ERROR")
 
     return result
 
@@ -163,8 +188,8 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
     period = "Administrativo"
 
     query = """INSERT INTO `Horario` (`dia`,`horaInicio`,`horaFin`,
-                           `claveMateria`,`claveOportunidad`,`claveGrupo`)
-               VALUES ("day", '15:30:00', '16:30:00', %s, %s, %s);
+                           `claveMateria`, `claveGrupo`)
+               VALUES ("day", '15:30:00', '16:30:00', %s, %s);
             """
     #Validar empalme de horario
     if isScheduleUsed(startHour, finishHour, studentClave, period):
