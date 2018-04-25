@@ -6,7 +6,7 @@ CREATE TABLE Inscripcion (
 );
 
 CREATE TABLE Carrera (
-	claveCarrera INT UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+	claveCarrera INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 
 	CONSTRAINT claveCarrera_PK PRIMARY KEY (claveCarrera)
@@ -39,7 +39,7 @@ CREATE TABLE Empleado (
 CREATE TABLE Alumno (
 	carnetAlumno INT UNSIGNED NOT NULL PRIMARY KEY,
 	estatus VARCHAR (30) NOT NULL,
-	claveCarrera INT UNSIGNED ZEROFILL NOT NULL,
+	claveCarrera INT UNSIGNED  NOT NULL,
 	claveInscripcion BIGINT UNSIGNED,
 
 	CONSTRAINT carnetAlumno_FK FOREIGN KEY (carnetAlumno)
@@ -59,7 +59,7 @@ CREATE TABLE Alumno (
 );
 
 CREATE TABLE Materia (
-	claveMateria INT UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+	claveMateria INT UNSIGNED  NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 	creditos TINYINT NOT NULL,
 	semestre TINYINT NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE Oportunidad (
 	calificacion TINYINT DEFAULT NULL,
 	numOportunidad TINYINT NOT NULL,
 	carnetAlumno INT UNSIGNED NOT NULL,
-	claveMateria INT UNSIGNED ZEROFILL NOT NULL,
+	claveMateria INT UNSIGNED  NOT NULL,
 
 	CONSTRAINT IDOportunidad_PK PRIMARY KEY (IDOportunidad),
 
@@ -112,13 +112,13 @@ CREATE TABLE Oportunidad (
 
 CREATE TABLE Grupo (
 	IDGrupo  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	claveGrupo TINYINT ZEROFILL,
+	claveGrupo TINYINT ,
 	aula INT,
 	capacidad TINYINT,
 	contador TINYINT,
 	periodo DATE,
 	carnetEmpleado INT UNSIGNED NOT NULL,
-	claveMateria INT UNSIGNED ZEROFILL NOT NULL,
+	claveMateria INT UNSIGNED  NOT NULL,
 
 	CONSTRAINT IDGrupo_PK PRIMARY KEY (IDGrupo),
 
