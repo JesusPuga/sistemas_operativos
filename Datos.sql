@@ -43,10 +43,17 @@ INSERT INTO Materia (claveMateria, nombre, creditos, semestre, claveCarrera) VAL
 (028, 'SERVICIO SOCIAL', 1, 5, 1);
 
  /*MATERIAS SERIADAS*/
-INSERT INTO Materia_Seriada (claveMateria, claveMateriaSeriada) VALUES
-(1, 6),
-(2, 7),
-(5, 10);
+ INSERT INTO Materia_Seriada (claveMateria, claveMateriaSeriada) VALUES
+ (1,6),
+ (2,7),
+ (5,10),
+ (7,13),
+ (8,20),
+ (11,21),
+ (13,22),
+ (20,24),
+ (21,26),
+ (23,26);
 
 /* CREACIÓN DE ALUMNOS (EJEMPLO)*/
 INSERT INTO Inscripcion (claveInscripcion, fechaInscripcion) VALUES
