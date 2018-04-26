@@ -204,3 +204,21 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
         return "Materia inscrita"
 
     return "Lo sentimos, grupo lleno, elige otra opción"
+
+
+def simpleShowRegisteredSubject(studentClave):
+    """Función que busca las metrias inscritas de un alumno"""
+
+    query="""SELECT Materia.claveMateria, Materia.nombre
+        FROM Materia
+        INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
+        INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
+        INNER JOIN Alumno ON Alumno_Grupo.carnetAlumno = Alumno.carnetAlumno
+        WHERE Alumno.carnetAlumno = %s
+    """
+    result = con.execute_query(query,(studentClave,),True)
+
+    if result == 0:
+        print("HUBO UN ERROR")
+
+    return result

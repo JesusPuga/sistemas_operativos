@@ -17,7 +17,7 @@ class Conexion:
         except MariaDB.Error as e:
             print(e)
 
-    def execute_query(self, query_p, parametros =(), returnCursor = False, commit= False):
+    def execute_query(self, query_p, parametros=(), returnCursor = False, commit= False):
         cursor = self.conn.cursor()
         result = cursor.execute(query_p, parametros)
 
