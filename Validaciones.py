@@ -215,6 +215,7 @@ def simpleShowRegisteredSubject(studentClave):
         INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
         INNER JOIN Alumno ON Alumno_Grupo.carnetAlumno = Alumno.carnetAlumno
         WHERE Alumno.carnetAlumno = %s
+        ORDER BY  claveMateria DESC
     """
     result = con.execute_query(query,(studentClave,),True)
 
