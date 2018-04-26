@@ -30,10 +30,13 @@ class EraseSubject:
         self.tableTreeView.grid(row=0, column=0)
         self.tableTreeView["columns"]=("Materia")
         self.tableTreeView.column("#0",width=50)
-        self.tableTreeView.column("Materia",width=270)
+        self.tableTreeView.column("Materia",width=500)
 
         self.tableTreeView.heading('#0',text='Clave')
         self.tableTreeView.heading('Materia', text='Materia')
+
+        # Función para borrar con doble clic
+        self.tableTreeView.bind("<Double-1>", self.deleteSubject)
 
         ##en prueba, creo que es pa' los datos xD
         ysb = ttk.Scrollbar(orient="vertical", command= self.tableTreeView.yview)
@@ -50,8 +53,15 @@ class EraseSubject:
 
     def showAvailableSubjects(self):
         subjects = simpleShowRegisteredSubject(self.clave)
-        for cvMateria, nom in subjects:
-            self.tableTreeView.insert('','0',text=cvMateria, value=(nom,'',''))
+        for cvMateria, nom, grupo in subjects:
+            self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
+
+    def deleteSubject(self, event):
+        curItem = self.tableTreeView.item(self.tableTreeView.focus())
+        subjectClave = curItem['text']
+        IDGrupo = curItem['values'][1]
+        eraseSubjet(self.clave,IDGrupo,subjectClave)
+        self.root.destroy()
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
