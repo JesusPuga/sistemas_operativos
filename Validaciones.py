@@ -209,7 +209,7 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
 def simpleShowRegisteredSubject(studentClave):
     """Función que busca las metrias inscritas de un alumno"""
 
-    query="""SELECT Materia.claveMateria, Materia.nombre
+    query="""SELECT Materia.claveMateria, Materia.nombre, Grupo.IDGrupo
         FROM Materia
         INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
         INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
@@ -223,3 +223,16 @@ def simpleShowRegisteredSubject(studentClave):
         print("HUBO UN ERROR")
 
     return result
+
+def eraseSubjet(studentClave, groupClave,subjectClave):
+    query="""DELETE FROM Alumno_Grupo
+        WHERE Alumno_Grupo.claveGrupo = %s AND Alumno_Grupo.carnetAlumno = %s
+    """
+    con.execute_query(query,(groupClave,studentClave), False, True)
+
+    query="""
+        UPDATE Oportunidad
+        SET Oportunidad.numOportunidad = (Oportunidad.numOportunidad - 1)
+        WHERE Oportunidad.carnetAlumno = %s AND Oportunidad.claveMateria = %s
+    """
+    con.execute_query(query,(studentClave, subjectClave), False, True)
