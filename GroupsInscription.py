@@ -4,7 +4,6 @@ from Validaciones import *
 from tkinter import *
 from tkinter import ttk
 
-
 class GroupsInscription:
     def __init__(self, root,clave, subject):
         self.root = root
@@ -131,5 +130,6 @@ class GroupsInscription:
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
-        self.app = Inscription(Tk(), self.clave)
+        window = __import__('Inscription')
+        self.app = window.Inscription(Tk(), self.clave)
         self.root.destroy()

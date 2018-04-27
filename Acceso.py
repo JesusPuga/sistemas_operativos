@@ -1,6 +1,4 @@
 import sys
-from StudentAccess import *
-from AdministrativeAccess import *
 from Validaciones import *
 from tkinter import *
 from tkinter import ttk
@@ -62,16 +60,18 @@ class Access:
         ##type, user, password
         clave =self.usuarioENY.get()
         result = validateUser(self.tipoUsuarioCBX.get(), clave,self.contraseniaENY.get())
-        self.contraseniaErrorLBL["text"] = ""
-        self.usuarioErrorLBL["text"] =  ""
-        self.tipoUsuarioErrorLBL["text"] = ""
 
         if result == "ok":
-            new_root = Tk()
+            window = None
             if self.tipoUsuarioCBX.get() == "Administrativo":
-                self.app = AdministrativeAccess(new_root,clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
+                window = __import__('AdministrativeAccess')
+                self.app = window.AdministrativeAccess(Tk(),clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                self.app = StudentAccess(new_root, clave)                       #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
+                window = __import__('StudentAccess')
+                self.app = window.StudentAccess(Tk(), clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
+            else:
+                messagebox.showwarning("Aviso","Proceso no disponible shavo, pícale a otra opción")
+                return 0
             self.root.destroy()
         else:
             messagebox.showwarning("Error",result)

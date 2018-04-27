@@ -57,5 +57,6 @@ class AdministrativeSubject:
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
-        self.app = AdministrativeAccess(Tk(),self.clave)
+        window = __import__('AdministrativeAccess')
+        self.app = window.AdministrativeAccess(Tk(),self.clave)
         self.root.destroy()

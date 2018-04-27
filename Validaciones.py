@@ -1,7 +1,10 @@
 import BDConexion
 from BDConexion import *
+import os
 
-con = Conexion("root","FCFM","FacultadBD")
+con = Conexion(os.environ['USER_SISTEMAS'],
+               os.environ['PASSWORD_SISTEMAS'],
+               "FacultadBD")
 
 def validateUser(type, user, password):
     typeUser = {"Alumno":"1","Docente":"2","Administrativo":"3"}

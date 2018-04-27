@@ -1,5 +1,4 @@
 import sys
-from StudentAccess import *
 from Validaciones import *
 from tkinter import *
 from tkinter import ttk
@@ -56,5 +55,6 @@ class StudentSchedule:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk(),self.clave)
+        window = __import__('StudentAccess')
+        self.app = window.StudentAccess(Tk(),self.clave)
         self.root.destroy()

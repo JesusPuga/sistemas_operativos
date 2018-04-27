@@ -1,6 +1,4 @@
 import sys
-from StudentAccess import *
-from GroupsInscription import *
 from Validaciones import *
 from tkinter import *
 from tkinter import ttk
@@ -65,16 +63,7 @@ class Inscription:
 
         #Cargar inf en tabla
         self.showAvailableSubjects()
-
-
-        #selección, checar, para usar es necesario obtener el id en la tb
-        #subjectCveLB = Label(bottomFrame, text="Materia:")
-        #subjectCveLB.grid(row=0, column=0)
-        ##self.subjectCveENY = Entry(bottomFrame)
-        #self.subjectCveENY.grid(row=0, column=1)
-
         #Botones
-
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
         returnButton.grid(row = 0, column = 1)
 
@@ -85,7 +74,8 @@ class Inscription:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk(), self.clave)
+        window = __import__('StudentAccess')
+        self.app = window.StudentAccess(Tk(), self.clave)
         self.root.destroy()
 
     def onDoubleClick(self, event):
@@ -95,5 +85,6 @@ class Inscription:
         if self.subject == None:
             self.erroMsgLB["text"] = "Selecciona una materia"
         else:
-            self.app = GroupsInscription(Tk(), self.clave, self.subject)
+            window = __import__('GroupsInscription')
+            self.app = window.GroupsInscription(Tk(), self.clave, self.subject)
             self.root.destroy()
