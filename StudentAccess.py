@@ -1,7 +1,4 @@
 import sys
-from Inscription import *
-from EraseSubject import *
-from StudentSchedule import *
 from Validaciones import *
 from Acceso import *
 from tkinter import *
@@ -39,29 +36,28 @@ class StudentAccess:
         #Botones
         if estatus == 'PRIMER INGRESO':
             inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription)
-            inscriptionButton.grid(row = 1, column = 0)
-            scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
-            scheduleButton.grid(row = 2, column = 0)
-            sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
-            sessionButton.grid(row = 3, column = 0)
         elif estatus == 'REINGRESO':
             inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
-            inscriptionButton.grid(row = 1, column = 0)
-            scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
-            scheduleButton.grid(row = 2, column = 0)
-            sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
-            sessionButton.grid(row = 3, column = 0)
+
+        inscriptionButton.grid(row = 1, column = 0)
+        scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
+        scheduleButton.grid(row = 2, column = 0)
+        sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
+        sessionButton.grid(row = 3, column = 0)
 
 
     def quit(self):
         ##Add validations to return or close and open the other window
-        self.app = Access(Tk())
+        window = __import__('Acceso')
+        self.app = window.Access(Tk())
         self.root.destroy()
 
     def openInscription(self):
-        self.app = Inscription(Tk(),self.clave)
+        window = __import__('Inscription')
+        self.app = window.Inscription(Tk(),self.clave)
         self.root.destroy()
 
     def openSchedule(self):
-        self.app = StudentSchedule(Tk())
+        window = __import__('StudentSchedule')
+        self.app = window.StudentSchedule(Tk(),self.clave)
         self.root.destroy()

@@ -65,5 +65,6 @@ class EraseSubject:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        self.app = StudentAccess(Tk(), self.clave)
+        window = __import__('StudentAccess')
+        self.app = window.StudentAccess(Tk(), self.clave)
         self.root.destroy()

@@ -1,3 +1,8 @@
+from Validaciones import *
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+
 class AdministrativeAccess:
     def __init__(self, root,clave):
         self.root = root
@@ -30,13 +35,16 @@ class AdministrativeAccess:
 
     def closeSession(self):
         ##Add validations to return or close and open the other window
-        self.app = Access(Tk(),self.clave)
+        window = __import__('Acceso')
+        self.app = window.Access(Tk())
         self.root.destroy()
 
     def openSubjects(self):
-        self.app = AdministrativeSubject(Tk(),self.clave)
+        window = __import__('AdministrativeSubject')
+        self.app = window.AdministrativeSubject(Tk(),self.clave)
         self.root.destroy()
 
     def openSchedule(self):
-        self.app = AdministrativeSchedule(Tk(),self.clave)
+        window = __import__('AdministrativeSchedule')
+        self.app = window.AdministrativeSchedule(Tk(),self.clave)
         self.root.destroy()

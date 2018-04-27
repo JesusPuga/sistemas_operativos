@@ -12,7 +12,7 @@ if __name__ == '__main__':
     #LLamado a la aplicación mediante la ventana de acceso al sistema
     #Access(root)
 
-    EraseSubject(root,1)# prueba de nueva ventana
+    Access(root)# prueba de nueva ventana
 
     #Bucle de la aplicación
 root.mainloop()
