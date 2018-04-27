@@ -12,7 +12,7 @@ class GroupsInscription:
         self.subject = subject
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Sistema de Inscripción | Inscripción de grupos")
-        root.geometry('{}x{}'.format(1100, 300))
+        root.geometry('{}x{}'.format(1500, 300))
         root.resizable(0,0)
         # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
@@ -33,12 +33,12 @@ class GroupsInscription:
         self.tableTreeView.column("#0",width=10)
         self.tableTreeView.column("Aula",width=50)
         self.tableTreeView.column("Docente",width=200)
-        self.tableTreeView.column("Lunes",width=100)
-        self.tableTreeView.column("Martes",width=100)
-        self.tableTreeView.column("Miércoles",width=100)
-        self.tableTreeView.column("Jueves",width=100)
-        self.tableTreeView.column("Viernes",width=100)
-        self.tableTreeView.column("Sábado",width=100)
+        self.tableTreeView.column("Lunes",width=150)
+        self.tableTreeView.column("Martes",width=150)
+        self.tableTreeView.column("Miércoles",width=150)
+        self.tableTreeView.column("Jueves",width=150)
+        self.tableTreeView.column("Viernes",width=150)
+        self.tableTreeView.column("Sábado",width=150)
 
         self.tableTreeView.heading('#0',text='')
         self.tableTreeView.heading('Grupo', text='Grupo')
@@ -70,11 +70,60 @@ class GroupsInscription:
         return False
 
     def showAvailableTeachers(self):
-        teachers = findAvailableTeachers(self.subject)
-        index = 1
-        for grupo, aula, docente, horarios in teachers:
-            self.tableTreeView.insert('','0',index,text=index,values=(grupo,aula,docente,horarios))
-            index += 1
+        groupsID = []
+        groups = findAvailableGroups(self.subject)
+        index = 0
+        contador = 0
+        """Este primer iterador solo obtiene primeros valores para poder hacer comparaciones posteriores"""
+        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
+            groupsID.append(IDGrupo)
+            break
+
+        """Con este segundo iterador sabremos cuantos grupos existen y su ID"""
+        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
+            if IDGrupo != groupsID[contador]:
+                contador +=1
+                groupsID.append(IDGrupo)
+        """Con este segundo iterador guardaremos los datos de los n grupos"""
+        contador=0
+        horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
+        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
+            if IDGrupo != groupsID[contador]:
+                self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
+                contador +=1
+                index +=1
+                horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
+                horario['GRUPO']= grupoClave
+                if dia == 'LUNES':
+                    horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
+                if dia == 'MARTES':
+                    horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                if dia == 'MIÉRCOLES':
+                    horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                if dia == 'JUEVES':
+                    horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                if dia == 'VIERNES':
+                    horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                if dia == 'SÁBADO':
+                    horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+            else:
+                if IDGrupo == groupsID[contador]:
+                    horario['GRUPO']= grupoClave
+                    horario['AULA']=aula
+                    horario['DOCENTE']=docente
+                    if dia == 'LUNES':
+                        horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
+                    if dia == 'MARTES':
+                        horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                    if dia == 'MIÉRCOLES':
+                        horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                    if dia == 'JUEVES':
+                        horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                    if dia == 'VIERNES':
+                        horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
+                    if dia == 'SÁBADO':
+                        horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+        self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
     def selectItem(self):
         curItem = self.tableTreeView.focus()
