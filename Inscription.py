@@ -90,7 +90,8 @@ class Inscription:
 
     def onDoubleClick(self, event):
         curItem = self.tableTreeView.item(self.tableTreeView.focus())
-        self.subject = curItem["values"][0]
+        self.subject = curItem["text"]
+
         if self.subject == None:
             self.erroMsgLB["text"] = "Selecciona una materia"
         else:
