@@ -71,65 +71,25 @@ def findAvailableSubjects(clave):
 
     return result
 
-def findAvailableTeachers(subject, availableGroup = True):
-    #Datos aleatorios
-    values = []
-    print(subject)
-    if "FUNDAMENTOS DE ELECTROMAGNETISMO" in subject and availableGroup:
-        values.extend([(1,2,3,
-                        {"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),
-                       (5,6,7,
-                        {"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "FUNDAMENTOS DE ALGORITMOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ARQUITECTURA DE COMPUTADORAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "PROGRAMACIÓN ESTRUCTURADA" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "MATEMÁTICAS I" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "MATEMÁTICAS II" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "SISTEMAS ELECTRÓNICOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "FUNDAMENTOS DE REDES" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "PROGRAMACIÓN ORIENTADA A OBJETOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "FUNDAMENTOS DE ESTADÁSTICA" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "MATEMÁTICAS DISCRETAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "CIRCUITOS DIGITALES" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ESTRUCTURA DE DATOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ANÁLISIS DE SISTEMAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "TEORÍA DE AUTÁMATAS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ANÁLISIS NUMÉRICO" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ADMINISTRACIÓN DE PROYECTOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "SISTEMAS OPERATIVOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "ADMINISTRACIÓN DE REDES" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "MODELOS ESTADÍSTICOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "SISTEMAS EMBEBIDOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "MINERÍA DE Datos" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "SISTEMA DISTRIBUIDOS" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "INTELIGENCIA ARTIFICIAL" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
-    elif "BIG DATA" in subject and availableGroup:
-        values.extend([(1,2,3,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]}),(5,6,7,{"Lunes":["1:30","2:30"],"Martes":["1:30","2:30"]})])
+def findAvailableGroups(subject):
+    query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
+        Dia.dia, Horario.horaInicio, Horario.horaFin, Grupo.claveMateria, Grupo.IDGrupo
+        FROM Grupo
+        INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+        INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
+        INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
+        INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
+        INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
+        INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
+        WHERE Materia.claveMateria = %s
+        ORDER BY Grupo.claveGrupo  DESC
+    """
+    result = con.execute_query(query,(subject,),True)
 
-    return values
+    if result == 0:
+        print("HUBO UN ERROR")
+
+    return result
 
 def findSubjectOportunity(studentClave, subjectClave):
     #Número de veces que se ha registrado la materia
@@ -209,12 +169,13 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
 def simpleShowRegisteredSubject(studentClave):
     """Función que busca las metrias inscritas de un alumno"""
 
-    query="""SELECT Materia.claveMateria, Materia.nombre
+    query="""SELECT Materia.claveMateria, Materia.nombre, Grupo.IDGrupo
         FROM Materia
         INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
         INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
         INNER JOIN Alumno ON Alumno_Grupo.carnetAlumno = Alumno.carnetAlumno
         WHERE Alumno.carnetAlumno = %s
+        ORDER BY  claveMateria DESC
     """
     result = con.execute_query(query,(studentClave,),True)
 
@@ -222,3 +183,16 @@ def simpleShowRegisteredSubject(studentClave):
         print("HUBO UN ERROR")
 
     return result
+
+def eraseSubjet(studentClave, groupClave,subjectClave):
+    query="""DELETE FROM Alumno_Grupo
+        WHERE Alumno_Grupo.claveGrupo = %s AND Alumno_Grupo.carnetAlumno = %s
+    """
+    con.execute_query(query,(groupClave,studentClave), False, True)
+
+    query="""
+        UPDATE Oportunidad
+        SET Oportunidad.numOportunidad = (Oportunidad.numOportunidad - 1)
+        WHERE Oportunidad.carnetAlumno = %s AND Oportunidad.claveMateria = %s
+    """
+    con.execute_query(query,(studentClave, subjectClave), False, True)

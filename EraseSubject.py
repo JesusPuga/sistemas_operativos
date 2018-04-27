@@ -13,7 +13,7 @@ class EraseSubject:
         root.title("Sistema de Inscripción | Dar de baja")
         root.geometry('{}x{}'.format(600, 300))
         root.resizable(0,0)
-        #Layout all of the main containers
+        # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
         root.grid_columnconfigure(0, weight=1)
 
@@ -25,20 +25,20 @@ class EraseSubject:
         bottomFrame = Frame(root, width=500, height=100)
         bottomFrame.grid(row=2,column=0)
 
-
-        #Configuración de tabla
         #configuración de tabla
         self.tableTreeView = ttk.Treeview(topFrame)
         self.tableTreeView.grid(row=0, column=0)
-
         self.tableTreeView["columns"]=("Materia")
         self.tableTreeView.column("#0",width=50)
-        self.tableTreeView.column("Materia",width=270)
+        self.tableTreeView.column("Materia",width=500)
 
         self.tableTreeView.heading('#0',text='Clave')
         self.tableTreeView.heading('Materia', text='Materia')
 
-        ##En prueba, creo que es pa' los datos xD
+        # Función para borrar con doble clic
+        self.tableTreeView.bind("<Double-1>", self.deleteSubject)
+
+        ##en prueba, creo que es pa' los datos xD
         ysb = ttk.Scrollbar(orient="vertical", command= self.tableTreeView.yview)
         xsb = ttk.Scrollbar(orient="horizontal", command= self.tableTreeView.xview)
         self.tableTreeView['yscroll'] = ysb.set
@@ -53,8 +53,15 @@ class EraseSubject:
 
     def showAvailableSubjects(self):
         subjects = simpleShowRegisteredSubject(self.clave)
-        for cvMateria, nom in subjects:
-            self.tableTreeView.insert('','0',text=cvMateria,values=(nom))
+        for cvMateria, nom, grupo in subjects:
+            self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
+
+    def deleteSubject(self, event):
+        curItem = self.tableTreeView.item(self.tableTreeView.focus())
+        subjectClave = curItem['text']
+        IDGrupo = curItem['values'][1]
+        eraseSubjet(self.clave,IDGrupo,subjectClave)
+        self.root.destroy()
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
