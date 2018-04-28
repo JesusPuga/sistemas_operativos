@@ -10,7 +10,7 @@ class AdministrativeSchedule:
         self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Consulta | Horario")
-        root.geometry('{}x{}'.format(500, 300))
+        root.geometry('{}x{}'.format(500, 350))
         root.resizable(0,0)
         # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
@@ -63,7 +63,7 @@ class AdministrativeSchedule:
 
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 1, column = 3)
+        returnButton.grid(row = 3, column = 0)
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
