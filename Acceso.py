@@ -28,18 +28,12 @@ class Access:
         self.tipoUsuarioCBX["values"] = ["Alumno","Docente", "Administrativo"]
         self.tipoUsuarioCBX.current(0)
 
-        self.tipoUsuarioErrorLBL = Label(frame, text="")
-        self.tipoUsuarioErrorLBL.grid(row=0, column=2, sticky="e", padx=5, pady=5)
-
         #Campo Usuario
         usuarioLB = Label(frame, text="Usuario:")
         usuarioLB.grid(row=1, column=0, sticky="e", padx=5, pady=5)
 
         self.usuarioENY = Entry(frame)
         self.usuarioENY.grid(row=1, column=1, sticky="e", padx=5, pady=5)
-
-        self.usuarioErrorLBL = Label(frame, text="")
-        self.usuarioErrorLBL.grid(row=1, column=2, sticky="e", padx=5, pady=5)
 
         #Campo Contraseña
         contraseniaLB = Label(frame, text="Contraseña:")
@@ -48,9 +42,6 @@ class Access:
         self.contraseniaENY = Entry(frame)
         self.contraseniaENY.grid(row=2, column=1, sticky="e", padx=5, pady=5)
         self.contraseniaENY.config(show="*")
-
-        self.contraseniaErrorLBL = Label(frame, text="")
-        self.contraseniaErrorLBL.grid(row=2, column=2, sticky="e", padx=5, pady=5)
 
         #Botón Ingresar
         userButton = Button(frame, text="Ingresar", command= self.validateInput)

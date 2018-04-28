@@ -1,5 +1,5 @@
 import sys
-from Acceso import *
+from AdministrativeAccess import *
 from tkinter import *
 from tkinter import ttk
 
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     #LLamado a la aplicación mediante la ventana de acceso al sistema
     #Access(root)
 
-    Access(root)# prueba de nueva ventana
+    AdministrativeAccess(root,5)# prueba de nueva ventana
 
     #Bucle de la aplicación
 root.mainloop()
