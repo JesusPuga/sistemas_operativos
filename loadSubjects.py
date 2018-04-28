@@ -12,3 +12,14 @@ def loadAllSubjects():
     result = con.execute_query(query,(), True)
 
     return result
+
+def loadSubjectGroups(subject):
+
+    query = """SELECT Grupo.claveGrupo
+               FROM  Grupo
+               INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
+                                     Materia.nombre = %s"""
+
+    result = con.execute_query(query,(subject,), True)
+
+    return result

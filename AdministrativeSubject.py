@@ -33,11 +33,19 @@ class AdministrativeSubject:
         #subjectCveENY.grid(row=0, column=1)
         self.subjectCBX = ttk.Combobox(topFrame)
         self.subjectCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        self.subjectCBX.bind("<<ComboboxSelected>>", self.showSubjectGroups)
+
+        groupCveLB = Label(topFrame, text="Grupos:")
+        groupCveLB.grid(row=0, column=2)
+        #subjectCveENY = Entry(topFrame)
+        #subjectCveENY.grid(row=0, column=1)
+        self.groupCBX = ttk.Combobox(topFrame)
+        self.groupCBX.grid(row=0, column=3, sticky="e", padx=5, pady=5)
         self.showSubjects()
 
         #Top Button
         selectButton = Button(topFrame, text="Buscar:", command=self.showStudentsForSubject)
-        selectButton.grid(row = 0, column = 2)
+        selectButton.grid(row = 0, column = 4)
 
         #primer tabla
         self.tbTopTreeView = ttk.Treeview(bottomFrame)
@@ -69,9 +77,19 @@ class AdministrativeSubject:
         self.subjectCBX["values"] = mappedSubjects
         self.subjectCBX.current(0)
 
+    def showSubjectGroups(self, var):
+        groups = loadSubjectGroups(self.subjectCBX.get())
+        mappedGroups = []
+
+        for group in groups:
+            mappedGroups.append(group[0])
+
+        self.groupCBX["values"] = mappedGroups
+        self.groupCBX.current(0)
+
     def showStudentsForSubject(self):
         self.tbTopTreeView.delete(*self.tbTopTreeView.get_children())
-        students = loadStudentsForSubject(self.subjectCBX.get())
+        students = loadStudentsForGroup(self.groupCBX.get(), self.subjectCBX.get())
 
         for clave, nombre, appellidoPaterno, appelidoMaterno in students:
             self.tbTopTreeView.insert('','0',clave,text=clave,values=(clave,nombre,appellidoPaterno, appellidoPaterno))

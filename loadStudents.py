@@ -6,7 +6,7 @@ con = Conexion(os.environ['USER_SISTEMAS'],
                os.environ['PASSWORD_SISTEMAS'],
                "FacultadBD")
 #¿por grupo o por materia?
-def loadStudentsForGroup():
+def loadStudentsForStudent():
 
     query = """SELECT Grupo.periodo,Alumno_Grupo.carnetAlumno, Grupo.claveMateria,Dia.dia, Horario.horaFin, Horario.horaInicio
                FROM  Alumno_Grupo
@@ -20,17 +20,18 @@ def loadStudentsForGroup():
     return result
 
 ##Agregar selección de grupo
-def loadStudentsForSubject(subject):
+def loadStudentsForGroup(group,subject):
 
     query = """SELECT DISTINCT Alumno_Grupo.carnetAlumno,Usuario.nombre, Usuario.apellidoPaterno,Usuario.apellidoMaterno
                FROM Materia_Seriada
                INNER JOIN Materia ON Materia.ClaveMateria = Materia_Seriada.ClaveMateria AND
                                      Materia.nombre = %s
-               INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
+               INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
+                                   Grupo.claveGrupo = %s
                INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo
                INNER JOIN Usuario ON Alumno_Grupo.carnetAlumno = Usuario.carnetUsuario
                ORDER BY Alumno_Grupo.carnetAlumno DESC"""
 
-    result = con.execute_query(query,(subject,), True)
+    result = con.execute_query(query,(subject,group), True)
 
     return result
