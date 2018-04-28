@@ -65,6 +65,10 @@ class AdministrativeSchedule:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 3, column = 0)
 
+    def showScheduleForStudent:
+        ##Método de Memo vv:
+        return True
+
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
         window = __import__('AdministrativeAccess')
