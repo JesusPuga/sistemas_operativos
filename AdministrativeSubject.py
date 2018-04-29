@@ -13,7 +13,7 @@ class AdministrativeSubject:
         self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         root.title("Consulta | Alumnos por materia")
-        root.geometry('{}x{}'.format(500, 300))
+        root.geometry('{}x{}'.format(500, 320))
         root.resizable(0,0)
         # layout all of the main containers
         root.grid_rowconfigure(1, weight=1)
@@ -36,16 +36,16 @@ class AdministrativeSubject:
         self.subjectCBX.bind("<<ComboboxSelected>>", self.showSubjectGroups)
 
         groupCveLB = Label(topFrame, text="Grupos:")
-        groupCveLB.grid(row=0, column=2)
+        groupCveLB.grid(row=1, column=0)
         #subjectCveENY = Entry(topFrame)
         #subjectCveENY.grid(row=0, column=1)
         self.groupCBX = ttk.Combobox(topFrame)
-        self.groupCBX.grid(row=0, column=3, sticky="e", padx=5, pady=5)
+        self.groupCBX.grid(row=1, column=1, sticky="e", padx=5, pady=5)
         self.showSubjects()
 
         #Top Button
-        selectButton = Button(topFrame, text="Buscar:", command=self.showStudentsForSubject)
-        selectButton.grid(row = 0, column = 4)
+        selectButton = Button(topFrame, text="Buscar", command=self.showStudentsForSubject)
+        selectButton.grid(row = 0, column = 2)
 
         #primer tabla
         self.tbTopTreeView = ttk.Treeview(bottomFrame)
@@ -86,6 +86,8 @@ class AdministrativeSubject:
 
         self.groupCBX["values"] = mappedGroups
         self.groupCBX.current(0)
+        messagebox.showwarning("Aviso","La matrícula debe ser un número")
+
 
     def showStudentsForSubject(self):
         self.tbTopTreeView.delete(*self.tbTopTreeView.get_children())
