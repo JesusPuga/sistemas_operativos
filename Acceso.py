@@ -5,13 +5,14 @@ from tkinter import ttk
 from tkinter import messagebox
 
 class Access:
-    def __init__(self, root):
-        self.root = root
+    def __init__(self, old_root):
+        old_root.destroy()
+        self.new_root = Tk()
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        root.title("Sistema de Inscripción | Acceso")
-        root.resizable(0,0)
+        self.new_root.title("Sistema de Inscripción | Acceso")
+        self.new_root.resizable(0,0)
 
-        frame = Frame(root, width=500, heigh=300)
+        frame = Frame(self.new_root, width=500, heigh=300)
         frame.grid(row=0,column=0, padx=(150,150), pady=(150,100))
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0,weight=1)
@@ -47,6 +48,8 @@ class Access:
         userButton = Button(frame, text="Ingresar", command= self.validateInput)
         userButton.grid(row = 3, column = 2)
 
+        self.new_root.mainloop()
+
     def validateInput(self):
         ##type, user, password
         clave =self.usuarioENY.get()
@@ -56,13 +59,12 @@ class Access:
             window = None
             if self.tipoUsuarioCBX.get() == "Administrativo":
                 window = __import__('AdministrativeAccess')
-                self.app = window.AdministrativeAccess(Tk(),clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
+                self.app = window.AdministrativeAccess(self.new_root,clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
             elif self.tipoUsuarioCBX.get() == "Alumno":
                 window = __import__('StudentAccess')
-                self.app = window.StudentAccess(Tk(), clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
+                self.app = window.StudentAccess(self.new_root, clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
             else:
                 messagebox.showwarning("Aviso","Proceso no disponible shavo, pícale a otra opción")
                 return 0
-            self.root.destroy()
         else:
             messagebox.showwarning("Error",result)

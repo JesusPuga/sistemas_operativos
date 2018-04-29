@@ -69,7 +69,7 @@ class AdministrativeSubject:
         returnButton.grid(row = 1, column = 0)
 
         self.new_root.mainloop()
-        #Carga valores defecto
+
 
     def showSubjects(self):
         subjects = loadAllSubjects()
@@ -80,6 +80,7 @@ class AdministrativeSubject:
 
         self.subjectCBX["values"] = mappedSubjects
         self.subjectCBX.current(0)
+        #Carga los grupos de la materia seleccionada
         self.showSubjectGroups(self.subjectCBX.get())
 
 
