@@ -5,22 +5,23 @@ from tkinter import ttk
 from tkinter import messagebox
 
 class AdministrativeSchedule:
-    def __init__(self, root,clave):
-        self.root = root
+    def __init__(self, old_root,clave):
+        old_root.destroy()
+        self.new_root = Tk()
         self.clave = clave
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        root.title("Consulta | Horario")
-        root.geometry('{}x{}'.format(500, 350))
-        root.resizable(0,0)
+        self.new_root.title("Consulta | Horario")
+        self.new_root.geometry('{}x{}'.format(500, 350))
+        self.new_root.resizable(0,0)
         # layout all of the main containers
-        root.grid_rowconfigure(1, weight=1)
-        root.grid_columnconfigure(0, weight=1)
+        self.new_root.grid_rowconfigure(1, weight=1)
+        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
-        topFrame = Frame(root, width=500, height=200)
+        topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
-        bottomFrame = Frame(root, width=500, height=100)
+        bottomFrame = Frame(self.new_root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
 
         #selección
@@ -65,13 +66,13 @@ class AdministrativeSchedule:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
         returnButton.grid(row = 3, column = 0)
 
+        self.new_root.mainloop()
+
     def showScheduleForStudent(self):
         if not self.subjectCveENY.get():
-            messagebox.showwarning("Aviso","Escribe alguna matrícula")
-            print("im here")
+            messagebox.showinfo("Aviso","Debes escribir la matrícula")
         elif not self.subjectCveENY.get().isdigit():
-            messagebox.showwarning("Aviso","La matrícula debe ser un número")
-            print("im here 2")
+            messagebox.showinfo("Aviso","La matrícula debe ser un número")
         else:
             ##Método de Memo vv:
             self.showSubjectsForStudent()
@@ -88,5 +89,4 @@ class AdministrativeSchedule:
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
         window = __import__('AdministrativeAccess')
-        self.app = window.AdministrativeAccess(Tk(),self.clave)
-        self.root.destroy()
+        self.app = window.AdministrativeAccess(self.new_root,self.clave)

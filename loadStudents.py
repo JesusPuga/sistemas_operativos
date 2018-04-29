@@ -1,6 +1,8 @@
 import BDConexion
 from BDConexion import *
 import os
+from tkinter import messagebox
+
 
 con = Conexion(os.environ['USER_SISTEMAS'],
                os.environ['PASSWORD_SISTEMAS'],
