@@ -3,7 +3,9 @@ from BDConexion import *
 from datetime import *
 
 
-con = Conexion("root","run maria run","FacultadBD")
+con = Conexion(os.environ['USER_SISTEMAS'],
+               os.environ['PASSWORD_SISTEMAS'],
+               "FacultadBD")
 
 ##Retorna True si es posible continuar inscribiendo
 ##        False en caso contrario
@@ -21,5 +23,3 @@ def validateInscriptionHour(carnetAlumno):
             return False
 
     return True
-
-validateInscriptionHour(1)

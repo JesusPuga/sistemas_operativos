@@ -3,26 +3,28 @@ from StudentAccess import *
 from Validaciones import *
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 class EraseSubject:
-    def __init__(self, root, clave):
-        self.root = root
+    def __init__(self, old_root, clave):
+        old_root.destroy()
+        self.new_root = Tk()
         self.clave = clave
         self.subject = None
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        root.title("Sistema de Inscripción | Dar de baja")
-        root.geometry('{}x{}'.format(600, 300))
-        root.resizable(0,0)
+        self.new_root.title("Sistema de Inscripción | Dar de baja")
+        self.new_root.geometry('{}x{}'.format(600, 300))
+        self.new_root.resizable(0,0)
         # layout all of the main containers
-        root.grid_rowconfigure(1, weight=1)
-        root.grid_columnconfigure(0, weight=1)
+        self.new_root.grid_rowconfigure(1, weight=1)
+        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
-        counterFrame = Frame(root, width=500, height=50)
+        counterFrame = Frame(self.new_root, width=500, height=50)
         counterFrame.grid(row=0,column=0)
-        topFrame = Frame(root, width=500, height=200)
+        topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=1,column=0)
-        bottomFrame = Frame(root, width=500, height=100)
+        bottomFrame = Frame(self.new_root, width=500, height=100)
         bottomFrame.grid(row=2,column=0)
 
         #configuración de tabla
@@ -51,8 +53,11 @@ class EraseSubject:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnStudentHome)
         returnButton.grid(row = 0, column = 1)
 
+        self.new_root.mainloop()
+
     def showAvailableSubjects(self):
         subjects = simpleShowRegisteredSubject(self.clave)
+
         for cvMateria, nom, grupo in subjects:
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
 
@@ -61,10 +66,8 @@ class EraseSubject:
         subjectClave = curItem['text']
         IDGrupo = curItem['values'][1]
         eraseSubjet(self.clave,IDGrupo,subjectClave)
-        self.root.destroy()
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
         window = __import__('StudentAccess')
-        self.app = window.StudentAccess(Tk(), self.clave)
-        self.root.destroy()
+        self.app = window.StudentAccess(self.new_root, self.clave)
