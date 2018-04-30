@@ -10,7 +10,6 @@ if __name__ == '__main__':
 
 
     #LLamado a la aplicación mediante la ventana de acceso al sistema
-    #Access(root)    
 
     Access(Tk())# prueba de nueva ventana
 

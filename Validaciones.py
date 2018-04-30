@@ -187,15 +187,6 @@ def simpleShowRegisteredSubject(studentClave):
 
     return result
 
-def eraseSubjet(studentClave, groupClave,subjectClave):
-    query="""DELETE FROM Alumno_Grupo
-        WHERE Alumno_Grupo.claveGrupo = %s AND Alumno_Grupo.carnetAlumno = %s
-    """
-    con.execute_query(query,(groupClave,studentClave), False, True)
-
-    query="""
-        UPDATE Oportunidad
-        SET Oportunidad.numOportunidad = (Oportunidad.numOportunidad - 1)
-        WHERE Oportunidad.carnetAlumno = %s AND Oportunidad.claveMateria = %s
-    """
-    con.execute_query(query,(studentClave, subjectClave), False, True)
+def eraseSubject(studentClave, groupClave, subjectClave):
+    args = (studentClave, groupClave, subjectClave)
+    con.call_procedures('borradoGrupo', args)
