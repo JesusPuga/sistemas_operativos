@@ -29,3 +29,12 @@ class Conexion:
             return cursor
 
         return result
+
+    def call_procedures(self, nameProcedure, args=()):
+        cursor = self.conn.cursor()
+
+        result_args = cursor.callproc(nameProcedure, args)
+
+        self.conn.commit()
+
+        return result_args

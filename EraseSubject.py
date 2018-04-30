@@ -65,7 +65,10 @@ class EraseSubject:
         curItem = self.tableTreeView.item(self.tableTreeView.focus())
         subjectClave = curItem['text']
         IDGrupo = curItem['values'][1]
-        eraseSubjet(self.clave,IDGrupo,subjectClave)
+        eraseSubject(self.clave,IDGrupo,subjectClave)
+        self.showAvailableSubjects()                            #LLAMADO A LA FUNCIÓN DE BORRADO EN LA BASE DE DATOS
+        EraseSubject(self.new_root, self.clave)
+
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
