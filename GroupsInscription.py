@@ -52,15 +52,9 @@ class GroupsInscription:
         self.tableTreeView.heading('Viernes', text='Viernes')
         self.tableTreeView.heading('Sábado', text='Sábado')
 
-        #selección
-        subjectCveLB = Label(bottomFrame, text="Grupo:")
-        subjectCveLB.grid(row=0, column=0)
-        subjectCveENY = Entry(bottomFrame)
-        subjectCveENY.grid(row=0, column=1)
+        # Función para el double clic
+        self.tableTreeView.bind("<Double-1>", self.onDoubleClick)
 
-        #Botones
-        selectButton = Button(bottomFrame, text="Inscribir", command = self.addToSchedule)
-        selectButton.grid(row = 0, column = 2)
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnInscription)
         returnButton.grid(row = 1, column = 3)
 
@@ -68,7 +62,7 @@ class GroupsInscription:
         self.showAvailableTeachers()
         self.new_root.mainloop()
 
-    def addToSchedule(self):
+    def onDoubleClick(self, event):
         groupClave = self.tableTreeView.item(self.tableTreeView.focus())["values"][0]
         message = addSubjectToSchedule(self.clave, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
