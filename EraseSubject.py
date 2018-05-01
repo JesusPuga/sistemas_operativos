@@ -62,11 +62,31 @@ class EraseSubject:
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
 
     def deleteSubject(self, event):
+        '''Función que borra un grupo inscrito mediante el evento doble clic
+
+        Parametros:
+            event           -   Tipo de evento que acciona la función. En ese caso <Double-1> , para doble clic
+
+        Variables:
+            curItem         -   Contiene los registros de la fila del elemento seleccionado con doble clic
+            subjectClave    -   Contiene la clave de la materia obtenido mediante la función
+                                simpleShowRegisteredSubject() en el método showAvailableSubjects()
+            IDGrupo         -   Contiene el IDGrupo (no su clave, véase Nota)
+                                obtenido mediante la función simpleShowRegisteredSubject() en método showAvailableSubjects()
+
+            Nota: El IDGrupo en el modelo de base de datos, es el registro llave que permite alamacenar n cantidad de grupos
+            independiente de la materia, la claveGrupo es el registro que permite alamcenar para una materia n cantidad de grupos
+        '''
+
         curItem = self.tableTreeView.item(self.tableTreeView.focus())
         subjectClave = curItem['text']
         IDGrupo = curItem['values'][1]
+
+        #LLAMADO A LA FUNCIÓN DE BORRADO EN LA BASE DE DATOS
         eraseSubject(self.clave,IDGrupo,subjectClave)
-        self.showAvailableSubjects()                            #LLAMADO A LA FUNCIÓN DE BORRADO EN LA BASE DE DATOS
+
+        #DESPUÉS DE EJECUTAR EL BORRADO, SE VUELVE A DESPLEGAR LA VISTA ACTUALIZADA
+        self.showAvailableSubjects()
         EraseSubject(self.new_root, self.clave)
 
 
