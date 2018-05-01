@@ -1,5 +1,5 @@
 import sys
-from Acceso import *
+from Inscription import *
 from tkinter import *
 from tkinter import ttk
 
@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     #LLamado a la aplicación mediante la ventana de acceso al sistema
 
-    Access(Tk())# prueba de nueva ventana
+    Inscription(Tk(),2)# prueba de nueva ventana
 
     #Bucle de la aplicación
 #root.mainloop()

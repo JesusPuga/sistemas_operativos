@@ -1,6 +1,7 @@
 import sys
 from Inscription import *
 from Validaciones import *
+from addSubjectToSchedule import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -29,7 +30,6 @@ class GroupsInscription:
         self.tableTreeView = ttk.Treeview(topFrame)
         self.tableTreeView.grid(row=0, column=0)
 
-        ##se hará dinámicamente
         self.tableTreeView["columns"]=("Grupo","Aula","Docente","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado")
         self.tableTreeView.column("#0",width=10)
         self.tableTreeView.column("Aula",width=50)
@@ -52,15 +52,9 @@ class GroupsInscription:
         self.tableTreeView.heading('Viernes', text='Viernes')
         self.tableTreeView.heading('Sábado', text='Sábado')
 
-        #selección
-        subjectCveLB = Label(bottomFrame, text="Grupo:")
-        subjectCveLB.grid(row=0, column=0)
-        subjectCveENY = Entry(bottomFrame)
-        subjectCveENY.grid(row=0, column=1)
+        # Función para el double clic
+        self.tableTreeView.bind("<Double-1>", self.onDoubleClick)
 
-        #Botones
-        selectButton = Button(bottomFrame, text="Inscribir", command = self.addToSchedule)
-        selectButton.grid(row = 0, column = 2)
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnInscription)
         returnButton.grid(row = 1, column = 3)
 
@@ -68,8 +62,27 @@ class GroupsInscription:
         self.showAvailableTeachers()
         self.new_root.mainloop()
 
-    def addToSchedule(self):
-        return False
+    def onDoubleClick(self, event):
+        groupClave = self.tableTreeView.item(self.tableTreeView.focus())["values"][0]
+        message = addSubjectToSchedule(self.clave, groupClave, self.subject)
+        messagebox.showinfo("Aviso",message)
+        self.returnInscription()
+
+    def orderSchedule(self,dia,horario,horaInicio,horaFin):
+        if dia == 'LUNES':
+            horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'MARTES':
+            horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'MIÉRCOLES':
+            horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'JUEVES':
+            horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'VIERNES':
+            horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'SÁBADO':
+            horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+
+        return horario
 
     def showAvailableTeachers(self):
         groupsID = []
@@ -96,40 +109,15 @@ class GroupsInscription:
                 index +=1
                 horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
                 horario['GRUPO']= grupoClave
-                if dia == 'LUNES':
-                    horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'MARTES':
-                    horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'MIÉRCOLES':
-                    horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'JUEVES':
-                    horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'VIERNES':
-                    horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'SÁBADO':
-                    horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+                horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
             else:
                 if IDGrupo == groupsID[contador]:
                     horario['GRUPO']= grupoClave
                     horario['AULA']=aula
                     horario['DOCENTE']=docente
-                    if dia == 'LUNES':
-                        horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'MARTES':
-                        horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'MIÉRCOLES':
-                        horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'JUEVES':
-                        horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'VIERNES':
-                        horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'SÁBADO':
-                        horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
-        self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
+                    horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
 
-    def selectItem(self):
-        curItem = self.tableTreeView.focus()
-        print(self.tableTreeView.item(curItem))
+        self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
