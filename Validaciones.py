@@ -168,7 +168,6 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
 
     return "Lo sentimos, grupo lleno, elige otra opción"
 
-
 def simpleShowRegisteredSubject(studentClave):
     """Función que busca las metrias inscritas de un alumno"""
 

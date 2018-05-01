@@ -28,12 +28,7 @@ class StudentAccess:
         rightFrame = Frame(self.new_root, bg='lavender', width=400, height=300)
         rightFrame.grid(row=0,column=1)
 
-        #REVISAR ESTATUS DE ALUMNO
-        query= """SELECT Alumno.estatus FROM Alumno WHERE Alumno.carnetAlumno = %s"""
-        result = con.execute_query(query,(clave,),True)
-
-        #CAPTURA DEL CONTENIDO DE LA CONSULTA. SE GUARDA EL ESTATUS DEL ALUMNO ("PRIMER INGRESO", "REINGRESO", "NO INSCRITO")"
-        for x in result: estatus=x[0]
+        estatus =  loadStudentStatus(clave)
 
         #Botones
         if estatus == 'PRIMER INGRESO':

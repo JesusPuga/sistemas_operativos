@@ -40,3 +40,13 @@ def loadStudentsForGroup(group,subject):
     result = con.execute_query(query,(subject,group), True)
 
     return result
+
+def loadStudentStatus(clave):
+        #REVISAR ESTATUS DE ALUMNO
+        query= """SELECT Alumno.estatus FROM Alumno WHERE Alumno.carnetAlumno = %s"""
+        result = con.execute_query(query,(clave,),True)
+
+        #CAPTURA DEL CONTENIDO DE LA CONSULTA. SE GUARDA EL ESTATUS DEL ALUMNO ("PRIMER INGRESO", "REINGRESO", "NO INSCRITO")"
+        for x in result: estatus=x[0]
+
+        return estatus

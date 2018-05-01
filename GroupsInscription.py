@@ -64,9 +64,9 @@ class GroupsInscription:
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnInscription)
         returnButton.grid(row = 1, column = 3)
 
-        self.new_root.mainloop()
         ##carga información
         self.showAvailableTeachers()
+        self.new_root.mainloop()
 
     def addToSchedule(self):
         return False
