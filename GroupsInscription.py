@@ -29,7 +29,6 @@ class GroupsInscription:
         self.tableTreeView = ttk.Treeview(topFrame)
         self.tableTreeView.grid(row=0, column=0)
 
-        ##se hará dinámicamente
         self.tableTreeView["columns"]=("Grupo","Aula","Docente","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado")
         self.tableTreeView.column("#0",width=10)
         self.tableTreeView.column("Aula",width=50)
@@ -69,7 +68,24 @@ class GroupsInscription:
         self.new_root.mainloop()
 
     def addToSchedule(self):
+        #message = addSubjectToSchedule(studentClave, groupClave, subjectClave)
         return False
+
+    def orderSchedule(self,dia,horario,horaInicio,horaFin):
+        if dia == 'LUNES':
+            horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'MARTES':
+            horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'MIÉRCOLES':
+            horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'JUEVES':
+            horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'VIERNES':
+            horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
+        if dia == 'SÁBADO':
+            horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+
+        return horario
 
     def showAvailableTeachers(self):
         groupsID = []
@@ -96,35 +112,14 @@ class GroupsInscription:
                 index +=1
                 horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
                 horario['GRUPO']= grupoClave
-                if dia == 'LUNES':
-                    horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'MARTES':
-                    horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'MIÉRCOLES':
-                    horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'JUEVES':
-                    horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'VIERNES':
-                    horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                if dia == 'SÁBADO':
-                    horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+                horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
             else:
                 if IDGrupo == groupsID[contador]:
                     horario['GRUPO']= grupoClave
                     horario['AULA']=aula
                     horario['DOCENTE']=docente
-                    if dia == 'LUNES':
-                        horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'MARTES':
-                        horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'MIÉRCOLES':
-                        horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'JUEVES':
-                        horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'VIERNES':
-                        horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
-                    if dia == 'SÁBADO':
-                        horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
+                    horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
+
         self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
     def selectItem(self):
