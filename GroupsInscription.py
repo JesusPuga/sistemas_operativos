@@ -1,6 +1,7 @@
 import sys
 from Inscription import *
 from Validaciones import *
+from addSubjectToSchedule import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -68,8 +69,9 @@ class GroupsInscription:
         self.new_root.mainloop()
 
     def addToSchedule(self):
-        #message = addSubjectToSchedule(studentClave, groupClave, subjectClave)
-        return False
+        groupClave = self.tableTreeView.item(self.tableTreeView.focus())["values"][0]
+        message = addSubjectToSchedule(self.clave, groupClave, self.subject)
+        messagebox.showinfo("Aviso",message)
 
     def orderSchedule(self,dia,horario,horaInicio,horaFin):
         if dia == 'LUNES':
@@ -121,10 +123,6 @@ class GroupsInscription:
                     horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
 
         self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
-
-    def selectItem(self):
-        curItem = self.tableTreeView.focus()
-        print(self.tableTreeView.item(curItem))
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
