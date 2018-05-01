@@ -66,6 +66,7 @@ class GroupsInscription:
         groupClave = self.tableTreeView.item(self.tableTreeView.focus())["values"][0]
         message = addSubjectToSchedule(self.clave, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
+        self.returnInscription()
 
     def orderSchedule(self,dia,horario,horaInicio,horaFin):
         if dia == 'LUNES':
