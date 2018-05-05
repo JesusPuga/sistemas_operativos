@@ -50,3 +50,17 @@ def loadStudentStatus(clave):
         for x in result: estatus=x[0]
 
         return estatus
+
+def loadStudentCredits(studentClave, period = "2018-01-16"):
+    query = """
+                SELECT COUNT(*)
+                FROM Alumno_Grupo
+                INNER JOIN Grupo
+                ON Grupo.IDGrupo  = Alumno_Grupo.claveGrupo AND
+                   periodo = %s AND
+                   Alumno_Grupo.carnetAlumno = %s;
+            """
+
+    result = con.execute_query(query,(period,studentClave), True)
+
+    return result.fetchone()[0]

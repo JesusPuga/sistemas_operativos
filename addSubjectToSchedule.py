@@ -160,7 +160,7 @@ def findSubjectOportunity(studentClave,subjectClave):
 """
     Agrega materia a alumno solo si pasa por algunas validacioens
 """
-def addSubjectToSchedule(studentClave, groupClave, subjectClave):
+def addSubjectToSchedule(studentClave, groupId, groupClave, subjectClave):
     estatus = loadStudentStatus(studentClave)
 
     #if not validateInscriptionHour(studentClave):
@@ -194,10 +194,13 @@ def addSubjectToSchedule(studentClave, groupClave, subjectClave):
                 INSERT INTO Alumno_Grupo (claveGrupo, carnetAlumno)
                 VALUES (%s, %s)
                 """
-        con.execute_query(query, (groupClave, studentClave),False,True)
+        con.execute_query(query, (groupId, studentClave),False,True)
 
         updateGroupCounter(counter, groupClave, subjectClave)
 
         return "Materia inscrita"
 
     return "Lo sentimos, grupo lleno, elige otra opción"
+
+
+updateGroupCounter(-1,1,5)

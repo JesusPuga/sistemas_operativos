@@ -60,13 +60,17 @@ def findAvailableSubjects(clave):
 
     #CASO ALUMNO INSCRITO Y DE REINGRESO
     if  estatus == 'REINGRESO':
-        query="""SELECT Materia.claveMateria, Materia.nombre,
+        query="""
+                 SELECT Materia.claveMateria, Materia.nombre,
                         Materia.semestre, Materia.creditos
-                FROM Materia
-                INNER JOIN Oportunidad
-                ON Oportunidad.claveMateria != Materia.claveMateria AND Oportunidad.calificacion > 70 AND Oportunidad.carnetAlumno = %s
-                ORDER BY ClaveMateria DESC
-        """
+                 FROM Materia
+                 LEFT JOIN Oportunidad
+                 ON Oportunidad.claveMateria = Materia.claveMateria AND
+                    Oportunidad.carnetAlumno = %s
+                 WHERE Oportunidad.claveMateria IS NULL OR
+                       (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
+                 ORDER BY Materia.claveMateria DESC
+              """
         result = con.execute_query(query,(clave,),True)
 
     if result == 0:
