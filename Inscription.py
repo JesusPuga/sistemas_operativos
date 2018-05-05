@@ -76,7 +76,7 @@ class Inscription:
         self.subjectCveLB["text"] = self.subjectCveLB["text"] + str(self.credits)
         self.tableTreeView.delete(*self.tableTreeView.get_children())
         subjects = findAvailableSubjects(self.clave)
-        print(self.clave)
+
         for cvMateria, nom, sem, creditos in subjects:
             self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
 
