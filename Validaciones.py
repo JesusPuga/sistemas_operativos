@@ -2,11 +2,8 @@ import BDConexion
 from BDConexion import *
 import os
 
-con = Conexion(os.environ['USER_SISTEMAS'],
-               os.environ['PASSWORD_SISTEMAS'],
-               "FacultadBD")
-
 def validateUser(type, user, password):
+    con = createConection()
     typeUser = {"Alumno":"1","Docente":"2","Administrativo":"3"}
 
     if type != "Alumno" and type != "Docente" and type != "Administrativo":
@@ -28,6 +25,7 @@ def validateUser(type, user, password):
     if result == 0:
         return "CONTRASEÑA INCORRECTA"
 
+    del con
     return "ok"
 
 def findAvailableSubjects(clave):
@@ -51,6 +49,7 @@ def findAvailableSubjects(clave):
     de inscripción.
     """
 
+    con = createConection()
     #REVISAR ESTATUS DE ALUMNO
     query= """SELECT Alumno.estatus FROM Alumno WHERE Alumno.carnetAlumno = %s"""
     result = con.execute_query(query,(clave,),True)
@@ -60,21 +59,28 @@ def findAvailableSubjects(clave):
 
     #CASO ALUMNO INSCRITO Y DE REINGRESO
     if  estatus == 'REINGRESO':
-        query="""SELECT Materia.claveMateria, Materia.nombre,
+        query="""
+                 SELECT Materia.claveMateria, Materia.nombre,
                         Materia.semestre, Materia.creditos
-                FROM Materia
-                INNER JOIN Oportunidad
-                ON Oportunidad.claveMateria != Materia.claveMateria AND Oportunidad.calificacion > 70 AND Oportunidad.carnetAlumno = %s
-                ORDER BY ClaveMateria DESC
-        """
-        result = con.execute_query(query,(clave,),True)
+                 FROM Materia
+                 LEFT JOIN Oportunidad
+                 ON Oportunidad.claveMateria = Materia.claveMateria AND
+                    Oportunidad.carnetAlumno = %s
+                 WHERE Oportunidad.claveMateria IS NULL OR
+                       (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
+                 ORDER BY Materia.claveMateria DESC
+              """
+        result = con.execute_query(query,(clave,),True,True)
 
     if result == 0:
         print("HUBO UN ERROR")
 
+    del con
     return result
 
 def findAvailableGroups(subject):
+    con = createConection()
+
     query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
             Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
             FROM Grupo
@@ -93,6 +99,7 @@ def findAvailableGroups(subject):
     if result == 0:
         print("HUBO UN ERROR")
 
+    del con
     return result
 
 def findStudentSchedule(studentClave):
@@ -113,6 +120,7 @@ def findStudentSchedule(studentClave):
 
 
 def findSubjectOportunity(studentClave, subjectClave):
+    con = createConection()
     #Número de veces que se ha registrado la materia
     query = """SELECT COUNT(*) FROM Usuario_Horario
                JOIN Horario ON Usuario_Horario.claveHorario = Horario.claveHorario
@@ -122,9 +130,11 @@ def findSubjectOportunity(studentClave, subjectClave):
 
     result = con.execute_query(query, (studentClave,subjectClave), True)
 
+    del con
     return result.fetchone()[0] + 1
 
 def isScheduleUsed(startHour,finishHour,studentClave, period):
+    con = createConection()
     #se toman solo los horarios del periodo actual tomando en cuenta el periodo
     query = """SELECT COUNT(*)
                FROM Usuario_Horario
@@ -144,25 +154,34 @@ def isScheduleUsed(startHour,finishHour,studentClave, period):
                                (studentClave,period,startHour,finishHour,startHour,finishHour),
                                True)
 
+    del con
     return True if result.fetchone()[0] > 0 else False
 
 def checkCounterInGroup(groupClave, classroomClave, teacherClave):
+    con = createConection()
+
     query = """SELECT contador
                FROM Grupo
                WHERE claveGrupo = %s and aula = %s and claveEmpleado = %s;
             """
     result = con.execute_query(query, (groupClave, classroomClave,teacherClave), True)
 
+    del con
     return result.fetchone()[0]
 
 def updateGroupCounter(counter,groupClave, classroomClave, teacherClave):
+    con = createConection()
+
     query = """UPDATE Grupo SET contador = %s
                WHERE claveGrupo = %s and aula = %s and claveEmpleado = %s;
             """
 
+    del con
     con.execute_query(query, (counter + 1,groupClave,classroomClave,teacherClave), False, True)
 
 def addSubjectToSchedule(studentClave, subjectClave, groupClave):
+    con = createConection()
+
     subjectOportunity = findSubjectOportunity(studentClave, subjectClave)
     startHour = "15:30:00"
     finishHour = "16:00:00"
@@ -184,9 +203,11 @@ def addSubjectToSchedule(studentClave, subjectClave, groupClave):
         updateGroupCounter(counter,subjectClave,subjectOportunity,groupClave)
         return "Materia inscrita"
 
+    del con
     return "Lo sentimos, grupo lleno, elige otra opción"
 
 def simpleShowRegisteredSubject(studentClave):
+    con = createConection()
     """Función que busca las metrias inscritas de un alumno"""
 
     query="""SELECT Materia.claveMateria, Materia.nombre, Grupo.IDGrupo
@@ -202,8 +223,11 @@ def simpleShowRegisteredSubject(studentClave):
     if result == 0:
         print("HUBO UN ERROR")
 
+    del con
     return result
 
 def eraseSubject(studentClave, groupClave, subjectClave):
+    con = createConection()
     args = (studentClave, groupClave, subjectClave)
     con.call_procedures('borradoGrupo', args)
+    del con

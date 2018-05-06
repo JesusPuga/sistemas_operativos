@@ -1,4 +1,5 @@
 import MySQLdb as MariaDB
+import os
 
 class Conexion:
     def __init__(self, user_p, password, bd_p):
@@ -38,3 +39,9 @@ class Conexion:
         self.conn.commit()
 
         return result_args
+
+def createConection():
+    con = Conexion(os.environ['USER_SISTEMAS'],
+                   os.environ['PASSWORD_SISTEMAS'],
+                   "FacultadBD")
+    return con

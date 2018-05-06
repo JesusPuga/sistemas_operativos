@@ -1,5 +1,6 @@
 import sys
 from Validaciones import *
+from loadStudents import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -9,6 +10,7 @@ class Inscription:
         old_root.destroy()
         self.new_root = Tk()
         self.clave = clave
+        self.credits = loadStudentCredits(self.clave)
         self.subject = None
         #Se define el nombre de la ventana y se restringe el tamaño de la misma
         self.new_root.title("Sistema de Inscripción | Inscripción")
@@ -71,7 +73,10 @@ class Inscription:
         self.new_root.mainloop()
 
     def showAvailableSubjects(self):
+        self.subjectCveLB["text"] = self.subjectCveLB["text"] + str(self.credits)
+        self.tableTreeView.delete(*self.tableTreeView.get_children())
         subjects = findAvailableSubjects(self.clave)
+
         for cvMateria, nom, sem, creditos in subjects:
             self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
 
@@ -86,6 +91,8 @@ class Inscription:
 
         if self.subject == None:
             messagebox.showinfo("Aviso","Selecciona una materia")
+        elif (self.credits == 5):
+            messagebox.showinfo("Aviso","Créditos agotados")
         else:
             window = __import__('GroupsInscription')
             self.app = window.GroupsInscription(self.new_root, self.clave, self.subject)

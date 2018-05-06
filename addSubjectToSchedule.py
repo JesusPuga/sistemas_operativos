@@ -4,14 +4,11 @@ import os
 from loadStudents import *
 from datetime import *
 
-con = Conexion(os.environ['USER_SISTEMAS'],
-               os.environ['PASSWORD_SISTEMAS'],
-               "FacultadBD")
-
 """Retorna True si es posible continuar inscribiendo
        False en caso contrario
 """
 def validateInscriptionHour(carnetAlumno):
+    con = createConection()
     query = """SELECT Inscripcion.fechaInscripcion
                FROM Inscripcion
                INNER JOIN Alumno
@@ -24,6 +21,7 @@ def validateInscriptionHour(carnetAlumno):
             print(inscriptionDate[0])
             return False
 
+    del con
     return True
 
 """
@@ -33,6 +31,7 @@ def validateInscriptionHour(carnetAlumno):
             +String se toma como True en una validación
 """
 def isRequiredSubject(subjectClave, studentClave):
+    con = createConection()
     findSubject = """SELECT Materia.claveMateria
                      FROM Materia
                      INNER JOIN Oportunidad
@@ -58,8 +57,10 @@ def isRequiredSubject(subjectClave, studentClave):
                                      """
             subjectInf = con.execute_query(findPreviousSubjectInf,(previousSubject[0],),True).fetchone()
 
+            del con
             return subjectInf[0] #python toma una String comoo True
 
+    del con
     return False
 
 """
@@ -67,30 +68,28 @@ def isRequiredSubject(subjectClave, studentClave):
         -Retorna Materia empalmada en caso de que se empalme
         -Retorna False en caso contrario
 """
-def isScheduleUsed(groupClave,studentClave, subjectClave,period= "2018-01-16"):
+def isScheduleUsed(groupId,studentClave, period= "2018-01-16"):
+    con = createConection()
     query = """
             SELECT Materia.nombre,Dia_Horario.IDDia,Horario.horaInicio, Horario.HoraFin
-            FROM Alumno_Grupo
-            INNER JOIN Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo = %s  AND
-                                Alumno_Grupo.carnetAlumno = %s AND
-                                Grupo.periodo = %s AND
-                                Grupo.claveMateria = %s
-            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
-            INNER JOIN Horario ON Horario.claveGrupo = Grupo.claveGrupo
+            FROM Grupo
+            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
+                                  Grupo.IDGrupo = %s
+            INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
             INNER JOIN Dia_Horario  ON Dia_Horario.IDHorario = Horario.IDHorario;
+
             """
-    result = con.execute_query(query, (groupClave,studentClave, period, subjectClave), True)
+    result = con.execute_query(query, (groupId,), True)
 
     for nombre, claveDia, startHour, finishHour in result:
-
         query = """
                     SELECT Dia_Horario.IDDia, Materia.nombre,Horario.horaInicio, Horario.HoraFin
                     FROM Alumno_Grupo
-                    INNER JOIN Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo  AND
+                    INNER JOIN Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo  AND
                                         Alumno_Grupo.carnetAlumno = %s AND
                                         Grupo.periodo = %s
                     INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
-                    INNER JOIN Horario ON Horario.claveGrupo = Grupo.claveGrupo AND
+                    INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo AND
                                             ((Horario.horaInicio >= %s AND
                                               Horario.horaInicio < %s) OR
                                              (Horario.horaFin > %s AND
@@ -102,25 +101,30 @@ def isScheduleUsed(groupClave,studentClave, subjectClave,period= "2018-01-16"):
         schedulesFound = result.fetchone()
 
         if schedulesFound != None:
+            del con
             return  schedulesFound
 
+    del con
     return False
 
 """
     Retorna cantidad de alumnos inscritos en una materia
 """
 def checkCounterInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
+    con = createConection()
     query = """SELECT contador
                FROM Grupo
                WHERE claveGrupo = %s AND claveMateria = %s AND periodo = %s
             """
     result = con.execute_query(query, (groupClave, subjectClave,periodo), True)
 
+    del con
     return result.fetchone()[0]
 """
     Retorna la capacidad del grupo dependiendo la materia y el periodo
 """
 def checkCapacityInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
+    con = createConection()
     query = """
                 SELECT capacidad
                 FROM Grupo
@@ -128,21 +132,25 @@ def checkCapacityInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
             """
     result = con.execute_query(query, (groupClave, subjectClave,periodo), True)
 
+    del con
     return result.fetchone()[0]
 """
     Actualiza contador en grupo
 """
 def updateGroupCounter(counter,groupClave, subjectClave, periodo = "2018-01-16"):
+    con = createConection()
     query = """UPDATE Grupo SET contador = %s
                WHERE claveGrupo = %s AND claveMateria = %s AND periodo = %s;
             """
 
     con.execute_query(query, (counter + 1,groupClave, subjectClave,periodo), False, True)
+    del con
 
 """
     Retorna la oportunidad actual de una materia dependiendo el alumno
 """
 def findSubjectOportunity(studentClave,subjectClave):
+    con = createConection()
     query = """SELECT numOportunidad
                FROM Oportunidad
                WHERE claveMateria = %s AND carnetAlumno = %s
@@ -153,14 +161,16 @@ def findSubjectOportunity(studentClave,subjectClave):
     result = con.execute_query(query, (studentClave,subjectClave), True).fetchone()
     #primera oportunidad de alumno de reingreso
     if result == None:
+        del con
         return 1
 
+    del con
     return result[0] + 1
 
 """
     Agrega materia a alumno solo si pasa por algunas validacioens
 """
-def addSubjectToSchedule(studentClave, groupClave, subjectClave):
+def addSubjectToSchedule(studentClave, groupId, groupClave, subjectClave):
     estatus = loadStudentStatus(studentClave)
 
     #if not validateInscriptionHour(studentClave):
@@ -170,20 +180,21 @@ def addSubjectToSchedule(studentClave, groupClave, subjectClave):
     if requiredSubject:
         return "Debes aprobar antes: {0}".format(requiredSubject)
 
-    scheduleUsed = isScheduleUsed(groupClave,studentClave, subjectClave)
-    #if scheduleUsed:
-    #    return "Horario empalmado con {0}, selecciona otra opción".format(scheduleUsed[1])
+    scheduleUsed = isScheduleUsed(groupId,studentClave)
+    if scheduleUsed:
+        return "Horario empalmado con {0}, selecciona otra opción".format(scheduleUsed[1])
 
     #Validar cantidad en grupo
     counter = checkCounterInGroup(groupClave,subjectClave)
     capacity = checkCapacityInGroup(groupClave,subjectClave)
-    ##checar capacidad
+
     if counter < capacity:
         subjectOportunity = 1  #si es primer ingreso
 
         if estatus == 'REINGRESO':
             subjectOportunity = findSubjectOportunity(studentClave,subjectClave)
 
+        con = createConection()
         query = """
                 INSERT INTO Oportunidad (calificacion, numOportunidad, carnetAlumno,claveMateria)
                 VALUES (%s, %s, %s, %s)
@@ -194,7 +205,9 @@ def addSubjectToSchedule(studentClave, groupClave, subjectClave):
                 INSERT INTO Alumno_Grupo (claveGrupo, carnetAlumno)
                 VALUES (%s, %s)
                 """
-        con.execute_query(query, (groupClave, studentClave),False,True)
+        con.execute_query(query, (groupId, studentClave),False,True)
+
+        del con
 
         updateGroupCounter(counter, groupClave, subjectClave)
 

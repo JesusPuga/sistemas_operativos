@@ -64,9 +64,12 @@ class GroupsInscription:
 
     def onDoubleClick(self, event):
         groupClave = self.tableTreeView.item(self.tableTreeView.focus())["values"][0]
-        message = addSubjectToSchedule(self.clave, groupClave, self.subject)
+        groupId = self.tableTreeView.item(self.tableTreeView.focus())["text"]
+        message = addSubjectToSchedule(self.clave, groupId, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
-        self.returnInscription()
+
+        if not ("Horario empalmado " in message or "grupo lleno" in message):
+            self.returnInscription()
 
     def orderSchedule(self,dia,horario,horaInicio,horaFin):
         if dia == 'LUNES':
@@ -101,23 +104,24 @@ class GroupsInscription:
                 groupsID.append(IDGrupo)
         """Con este segundo iterador guardaremos los datos de los n grupos"""
         contador=0
+        lastIDGroup = 0
         horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
         for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
             if IDGrupo != groupsID[contador]:
-                self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
+                self.tableTreeView.insert('','0',index,text=IDGrupo,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
                 contador +=1
                 index +=1
                 horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
                 horario['GRUPO']= grupoClave
                 horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
-            else:
-                if IDGrupo == groupsID[contador]:
-                    horario['GRUPO']= grupoClave
-                    horario['AULA']=aula
-                    horario['DOCENTE']=docente
-                    horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
+            elif IDGrupo == groupsID[contador]:
+                horario['GRUPO']= grupoClave
+                horario['AULA']=aula
+                horario['DOCENTE']=docente
+                horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
+                lastIDGroup  = IDGrupo
 
-        self.tableTreeView.insert('','0',index,text=index,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
+        self.tableTreeView.insert('','0',index,text=lastIDGroup,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
