@@ -187,29 +187,3 @@ CREATE TABLE Dia_Horario (
 	ON DELETE RESTRICT
 	ON UPDATE CASCADE
 );
-
-CREATE TABLE Periodo (
-	clavePeriodo TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	horaInicio TIME NOT NULL,
-	horaFin TIME NOT NULL,
-
-	CONSTRAINT clavePeriodo_PK PRIMARY KEY (clavePeriodo)
-);
-
-
-CREATE TABLE Grupo_Periodos (
-	claveGrupo  BIGINT UNSIGNED NOT NULL,
-	clavePeriodo INT UNSIGNED NOT NULL,
-
-	CONSTRAINT claveGrupoPeriodos_PK PRIMARY KEY (claveGrupo, clavePeriodo),
-
-	CONSTRAINT claveGrupoPRel_FK FOREIGN KEY (claveGrupo)
-	REFERENCES Grupo(IDGrupo)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE,
-
-	CONSTRAINT clavePeriodoRel_FK FOREIGN KEY (clavePeriodo)
-	REFERENCES Perido(clavePeriodo)
-	ON DELETE RESTRICT
-	ON UPDATE CASCADE
-);
