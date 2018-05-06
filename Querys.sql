@@ -27,7 +27,7 @@ INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
 INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
 WHERE Alumno.carnetAlumno = 2
 
-
+/* QUERY QUE HACE EL HORARIO*/
 SELECT  CONCAT(H.horaInicio,' - ',H.horaFin) Hora,
         MAX(CASE WHEN H.dia = 'Lunes' THEN H.nombre ELSE '' END) Lunes,
         MAX(CASE WHEN H.dia = 'Martes' THEN H.nombre ELSE '' END) Martes,
@@ -47,3 +47,17 @@ FROM (SELECT Materia.claveMateria, Grupo.claveGrupo, Materia.nombre,CONCAT(Usuar
         WHERE Alumno.carnetAlumno = 2) AS H
 GROUP BY CONCAT(Horario.horaInicio,' - ',Horario.horaFin)
 ORDER BY CONCAT(Horario.horaInicio,' - ',Horario.horaFin) ASC
+
+
+/* QUERY QUE AGREUPO LA HORA INICIO Y HORA FINAL*/
+SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
+        Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
+        FROM Grupo
+        INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+        INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
+        INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
+        INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
+        INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
+        INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
+        WHERE Materia.claveMateria = 1
+        ORDER BY Grupo.claveGrupo  DESC
