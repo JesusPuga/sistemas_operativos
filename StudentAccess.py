@@ -1,5 +1,6 @@
 import sys
 from Validaciones import *
+from loadStudents import *
 from Acceso import *
 from tkinter import *
 from tkinter import ttk

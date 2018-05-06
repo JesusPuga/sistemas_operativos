@@ -94,6 +94,23 @@ def findAvailableGroups(subject):
 
     return result
 
+def findStudentSchedule(studentClave):
+    query="""SELECT Materia.claveMateria, Grupo.claveGrupo, Materia.nombre,CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre, Dia.dia, Horario.horaInicio, Horario.horaFin
+    FROM Materia
+    INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND Grupo.periodo = "180116"
+    INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
+    INNER JOIN Alumno ON Alumno.carnetAlumno = Alumno_Grupo.carnetAlumno
+    INNER JOIN Usuario ON Usuario.carnetUsuario = Grupo.carnetEmpleado
+    INNER JOIN Horario ON Horario.claveGrupo = Alumno_Grupo.claveGrupo
+    INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
+    INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
+    WHERE Alumno.carnetAlumno = %s"""
+
+    result = con.execute_query(query,(studentClave,),True)
+
+    return result
+
+
 def findSubjectOportunity(studentClave, subjectClave):
     #Número de veces que se ha registrado la materia
     query = """SELECT COUNT(*) FROM Usuario_Horario
