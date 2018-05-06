@@ -76,16 +76,17 @@ def findAvailableSubjects(clave):
 
 def findAvailableGroups(subject):
     query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
-        Dia.dia, Horario.horaInicio, Horario.horaFin, Grupo.claveMateria, Grupo.IDGrupo
-        FROM Grupo
-        INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
-        INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
-        INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
-        INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
-        INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
-        INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
-        WHERE Materia.claveMateria = %s
-        ORDER BY Grupo.claveGrupo  DESC
+            Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
+            FROM Grupo
+            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+            INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
+            INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
+            INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
+            INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
+            INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
+            WHERE Materia.claveMateria = %s
+            GROUP BY Grupo.claveGrupo, Dia.dia
+            ORDER BY Grupo.claveGrupo  DESC
     """
     result = con.execute_query(query,(subject,),True)
 
