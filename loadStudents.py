@@ -43,7 +43,9 @@ def loadStudentStatus(clave):
     result = con.execute_query(query,(clave,),True)
 
     #CAPTURA DEL CONTENIDO DE LA CONSULTA. SE GUARDA EL ESTATUS DEL ALUMNO ("PRIMER INGRESO", "REINGRESO", "NO INSCRITO")"
-    for x in result: estatus=x[0]
+    for x in result:
+        estatus=x[0]
+        
     del con
     return estatus
 

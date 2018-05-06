@@ -67,7 +67,6 @@ class GroupsInscription:
         groupId = self.tableTreeView.item(self.tableTreeView.focus())["text"]
         message = addSubjectToSchedule(self.clave, groupId, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
-        print( self.tableTreeView.item(self.tableTreeView.focus()))
 
         if not ("Horario empalmado " in message or "grupo lleno" in message):
             self.returnInscription()
@@ -121,7 +120,6 @@ class GroupsInscription:
                 horario['DOCENTE']=docente
                 horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
                 lastIDGroup  = IDGrupo
-
 
         self.tableTreeView.insert('','0',index,text=lastIDGroup,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
