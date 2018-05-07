@@ -10,7 +10,7 @@ def loadSubjectsForStudent(carnetAlumno):
                FROM Materia
                INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
                INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
-               INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo AND
+               INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo AND
                                           Alumno_Grupo.carnetAlumno = %s
                INNER JOIN Usuario ON  Empleado.carnetEmpleado = Usuario.carnetUsuario
                ORDER BY Grupo.claveMateria DESC"""
