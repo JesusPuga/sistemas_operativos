@@ -1,7 +1,5 @@
 import sys
-from Validaciones import *
-from loadStudents import *
-from Acceso import *
+from Validations.loadStudents import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -46,13 +44,13 @@ class StudentAccess:
 
     def quit(self):
         ##Add validations to return or close and open the other window
-        window = __import__('Acceso')
+        window = __import__('Forms.Access',None,None,['Access'], 0)
         self.app = window.Access(self.new_root)
 
     def openInscription(self):
-        window = __import__('Inscription')
+        window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)
         self.app = window.Inscription(self.new_root,self.clave)
 
     def openSchedule(self):
-        window = __import__('StudentSchedule')
+        window = __import__('Forms.Student.StudentSchedule',None,None,['StudentSchedule'], 0)
         self.app = window.StudentSchedule(self.new_root,self.clave)

@@ -1,6 +1,6 @@
 import sys
-from Validaciones import *
-from loadStudents import *
+from Validations.loadSubjects import *
+from Validations.loadStudents import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -75,14 +75,14 @@ class Inscription:
     def showAvailableSubjects(self):
         self.subjectCveLB["text"] = self.subjectCveLB["text"] + str(self.credits)
         self.tableTreeView.delete(*self.tableTreeView.get_children())
-        subjects = findAvailableSubjects(self.clave)
+        subjects = loadAvailableSubjects(self.clave)
 
         for cvMateria, nom, sem, creditos in subjects:
             self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('StudentAccess')
+        window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
         self.app = window.StudentAccess(self.new_root, self.clave)
 
     def onDoubleClick(self, event):
@@ -94,5 +94,5 @@ class Inscription:
         elif (self.credits == 5):
             messagebox.showinfo("Aviso","Créditos agotados")
         else:
-            window = __import__('GroupsInscription')
+            window = __import__('Forms.Student.GroupsInscription',None,None,['GroupsInscription'], 0)
             self.app = window.GroupsInscription(self.new_root, self.clave, self.subject)

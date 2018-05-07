@@ -1,7 +1,6 @@
-import BDConexion
-from BDConexion import *
 import os
-from loadStudents import *
+from SQL.BDConexion import *
+from Validations.loadStudents import *
 from datetime import *
 
 """Retorna True si es posible continuar inscribiendo

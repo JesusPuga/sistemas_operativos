@@ -53,7 +53,7 @@ ORDER BY CONCAT(Horario.horaInicio,' - ',Horario.horaFin) ASC
 SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
         Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
         FROM Grupo
-        INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+        INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateriaHorario.horaInicio,' - ',Horario.horaFin)
         INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
         INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
         INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia

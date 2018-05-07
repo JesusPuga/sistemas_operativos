@@ -1,4 +1,4 @@
-from Validaciones import *
+from Validations.userValidations import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -38,13 +38,13 @@ class AdministrativeAccess:
 
     def closeSession(self):
         ##Add validations to return or close and open the other window
-        window = __import__('Acceso')
-        self.app = window.Access(Tk())
+        window = __import__('Forms.Access',None,None,['Access'], 0)
+        self.app = window.Access(self.new_root)
 
     def openSubjects(self):
-        window = __import__('AdministrativeSubject')
+        window = __import__('Forms.Administrative.AdministrativeSubject',None,None,['AdministrativeSubject'], 0)
         self.app = window.AdministrativeSubject(self.new_root,self.clave)
 
     def openSchedule(self):
-        window = __import__('AdministrativeSchedule')
+        window = __import__('Forms.Administrative.AdministrativeSchedule',None,None,['AdministrativeSchedule'], 0)
         self.app = window.AdministrativeSchedule(self.new_root,self.clave)

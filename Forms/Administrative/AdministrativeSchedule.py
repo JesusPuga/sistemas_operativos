@@ -1,5 +1,5 @@
-from Validaciones import *
-from loadStudents import *
+from Validations.loadSubjects import *
+from Validations.loadStudents import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -88,5 +88,5 @@ class AdministrativeSchedule:
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('AdministrativeAccess')
+        window = __import__('Forms.Administrative.AdministrativeAccess',None,None,['AdministrativeAccess'], 0)
         self.app = window.AdministrativeAccess(self.new_root,self.clave)

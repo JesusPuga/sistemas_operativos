@@ -1,7 +1,7 @@
 import sys
-from Inscription import *
-from Validaciones import *
-from addSubjectToSchedule import *
+from Forms.Student.Inscription import *
+from Validations.loadSubjects import *
+from Validations.addSubjectToSchedule import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -89,7 +89,7 @@ class GroupsInscription:
 
     def showAvailableTeachers(self):
         groupsID = []
-        groups = findAvailableGroups(self.subject)
+        groups = loadAvailableGroups(self.subject)
         index = 0
         contador = 0
         """Este primer iterador solo obtiene primeros valores para poder hacer comparaciones posteriores"""
@@ -125,5 +125,5 @@ class GroupsInscription:
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
-        window = __import__('Inscription')
+        window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)
         self.app = window.Inscription(self.new_root, self.clave)

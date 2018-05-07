@@ -1,6 +1,6 @@
 import sys
 from StudentAccess import *
-from Validaciones import *
+from Validations.loadSubjects import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -56,7 +56,7 @@ class EraseSubject:
         self.new_root.mainloop()
 
     def showAvailableSubjects(self):
-        subjects = simpleShowRegisteredSubject(self.clave)
+        subjects = loadRegisteredSubjects(self.clave)
 
         for cvMateria, nom, grupo in subjects:
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
@@ -92,5 +92,5 @@ class EraseSubject:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('StudentAccess')
+        window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
         self.app = window.StudentAccess(self.new_root, self.clave)

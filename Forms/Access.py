@@ -1,5 +1,5 @@
 import sys
-from Validaciones import *
+from Validations.userValidations import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -58,10 +58,10 @@ class Access:
         if result == "ok":
             window = None
             if self.tipoUsuarioCBX.get() == "Administrativo":
-                window = __import__('AdministrativeAccess')
+                window = __import__('Forms.Administrative.AdministrativeAccess',None,None,['AdministrativeAccess'], 0)
                 self.app = window.AdministrativeAccess(self.new_root,clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                window = __import__('StudentAccess')
+                window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
                 self.app = window.StudentAccess(self.new_root, clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
             else:
                 messagebox.showwarning("Aviso","Proceso no disponible shavo, pícale a otra opción")
