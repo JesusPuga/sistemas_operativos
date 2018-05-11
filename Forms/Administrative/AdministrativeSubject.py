@@ -95,9 +95,11 @@ class AdministrativeSubject:
     def showStudentsForSubject(self):
         self.tbTopTreeView.delete(*self.tbTopTreeView.get_children())
         students = loadStudentsForGroup(self.groupCBX.get(), self.subjectCBX.get())
-
-        for clave, nombre, appellidoPaterno, appelidoMaterno in students:
-            self.tbTopTreeView.insert('','0',clave,text=clave,values=(clave,nombre,appellidoPaterno, appellidoPaterno))
+        if students.fetchone() == None:
+            messagebox.showinfo("Aviso","No hay alumnos inscritos")
+        else:
+            for clave, nombre, appellidoPaterno, appelidoMaterno in students:
+                self.tbTopTreeView.insert('','0',clave,text=clave,values=(clave,nombre,appellidoPaterno, appellidoPaterno))
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window

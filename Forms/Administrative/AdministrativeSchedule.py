@@ -80,17 +80,20 @@ class AdministrativeSchedule:
         elif not subject.isdigit():
             messagebox.showinfo("Aviso","La matrícula debe ser un número")
         else:
+            self.tbTopTreeView.delete(*self.tbTopTreeView.get_children())
+            self.tbBottomTreeView.delete(*self.tbBottomTreeView.get_children())
             schedule = loadStudentSchedule(subject)
             cont = 0
+            if schedule.fetchone() == None:
+                messagebox.showinfo("Aviso","El alumno no ha inscrito materias")
+            else:
+                for hour, monday, tuesday, whednesnday, thursdar, firday, saturday in schedule:
+                    self.tbTopTreeView.insert('','0',cont,text=hour,values=(monday, tuesday, whednesnday, thursdar, firday, saturday))
+                    cont += 1
 
-            for hour, monday, tuesday, whednesnday, thursdar, firday, saturday in schedule:
-                self.tbTopTreeView.insert('','0',cont,text=hour,values=(monday, tuesday, whednesnday, thursdar, firday, saturday))
-                cont += 1
-
-            self.showSubjectsForStudent()
+                self.showSubjectsForStudent()
 
     def showSubjectsForStudent(self):
-        self.tbBottomTreeView.delete(*self.tbBottomTreeView.get_children())
         subjects = loadSubjectsForStudent(self.subjectCveENY.get())
         type = 0
 
