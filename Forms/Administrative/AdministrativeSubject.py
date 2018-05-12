@@ -1,22 +1,18 @@
 import sys
 from Validations.loadSubjects import *
 from Validations.loadStudents import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class AdministrativeSubject:
     def __init__(self, old_root,clave):
+        h = 600
+        w = 300
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(h,w,"Consulta | Alumnos por materia")
         self.clave = clave
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Consulta | Alumnos por materia")
-        self.new_root.geometry('{}x{}'.format(500, 320))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=200)

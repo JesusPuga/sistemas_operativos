@@ -1,41 +1,41 @@
 from Validations.loadSubjects import *
 from Validations.loadStudents import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class AdministrativeSchedule:
     def __init__(self, old_root,clave):
+        h = 1300
+        w = 600
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(h,w,"Consulta | Horario")
         self.clave = clave
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Consulta | Horario")
-        self.new_root.geometry('{}x{}'.format(1200, 600))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
-        topFrame = Frame(self.new_root, width=500, height=400)
+        topFrame = Frame(self.new_root, width=500, height=100)
         topFrame.grid(row=0,column=0)
+        leftTopFrame = Frame(topFrame, width=100, height=50)
+        leftTopFrame.grid(row=0,column=0)
+        rightTopFrame = Frame(topFrame, width=400, height=50)
+        rightTopFrame.grid(row=0,column=1)
 
-        bottomFrame = Frame(self.new_root, width=500, height=200)
+        bottomFrame = Frame(self.new_root, width=500, height=500)
         bottomFrame.grid(row=1,column=0)
 
         #selección
-        subjectCveLB = Label(topFrame, text="Matrícula:")
+        subjectCveLB = Label(leftTopFrame, text="Matrícula:")
         subjectCveLB.grid(row=0, column=0)
-        self.subjectCveENY = Entry(topFrame)
+        self.subjectCveENY = Entry(leftTopFrame)
         self.subjectCveENY.grid(row=0, column=1)
 
         #Top Button
-        selectButton = Button(topFrame, text="Consultar", command=self.showScheduleForStudent)
+        selectButton = Button(leftTopFrame, text="Consultar", command=self.showScheduleForStudent)
         selectButton.grid(row = 0, column = 2)
 
         #primer tabla
-        self.tbTopTreeView = ttk.Treeview(bottomFrame, height=5)
+        self.tbTopTreeView = ttk.Treeview(bottomFrame, height=14)
         self.tbTopTreeView.grid(row=1, column=0)
 
         self.tbTopTreeView["columns"]=("Lunes","Martes","Miércoles","Jueves","Viernes","Sabado")
@@ -54,22 +54,25 @@ class AdministrativeSchedule:
         self.tbTopTreeView.heading('Viernes', text='Viernes')
         self.tbTopTreeView.heading('Sabado', text='Sábado')
 
+        spaceCveLB = Label(bottomFrame, text=" ")
+        spaceCveLB.grid(row=2, column=0)
         #segunda tabla
-        self.tbBottomTreeView = ttk.Treeview(bottomFrame, height=5)
-        self.tbBottomTreeView.grid(row=2, column=0)
+        self.tbBottomTreeView = ttk.Treeview(bottomFrame, height=8)
+        self.tbBottomTreeView.grid(row=3, column=0)
 
         self.tbBottomTreeView["columns"]=("Materia","Docente")
         self.tbBottomTreeView.column("#0",width=90)
-        self.tbBottomTreeView.column("Materia",width=210)
-        self.tbBottomTreeView.column("Docente",width=200)
+        self.tbBottomTreeView.column("Materia",width=400)
+        self.tbBottomTreeView.column("Docente",width=400)
 
         self.tbBottomTreeView.heading('#0',text='Clave')
         self.tbBottomTreeView.heading('Materia', text='Materia')
         self.tbBottomTreeView.heading('Docente', text='Docente')
-
+        space2CveLB = Label(bottomFrame, text=" ")
+        space2CveLB.grid(row=4, column=0)
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 3, column = 0)
+        returnButton.grid(row = 5, column = 0)
 
         self.new_root.mainloop()
 
