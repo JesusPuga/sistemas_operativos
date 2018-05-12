@@ -1,22 +1,21 @@
 import sys
-from Validaciones import *
+from Validations.userValidations import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class Access:
     def __init__(self, old_root):
+        w = 500
+        h = 300
         old_root.destroy()
-        self.new_root = Tk()
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Sistema de Inscripción | Acceso")
-        self.new_root.resizable(0,0)
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Acceso")
 
-        frame = Frame(self.new_root, width=500, heigh=300)
-        frame.grid(row=0,column=0, padx=(150,150), pady=(150,100))
+        frame = Frame(self.new_root, width=w, heigh=h)
+        frame.grid(row=0,column=0, padx=(70,70), pady=(90,90))
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0,weight=1)
-
 
         """ CREACIÓN DEL FORMULARIO DE ACCESO"""
 
@@ -46,7 +45,7 @@ class Access:
 
         #Botón Ingresar
         userButton = Button(frame, text="Ingresar", command= self.validateInput)
-        userButton.grid(row = 3, column = 2)
+        userButton.grid(row = 3, column = 2, padx=5, pady=5)
 
         self.new_root.mainloop()
 
@@ -58,10 +57,10 @@ class Access:
         if result == "ok":
             window = None
             if self.tipoUsuarioCBX.get() == "Administrativo":
-                window = __import__('AdministrativeAccess')
+                window = __import__('Forms.Administrative.AdministrativeAccess',None,None,['AdministrativeAccess'], 0)
                 self.app = window.AdministrativeAccess(self.new_root,clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                window = __import__('StudentAccess')
+                window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
                 self.app = window.StudentAccess(self.new_root, clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
             else:
                 messagebox.showwarning("Aviso","Proceso no disponible shavo, pícale a otra opción")

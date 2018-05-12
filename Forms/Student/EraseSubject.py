@@ -1,35 +1,27 @@
 import sys
-from StudentAccess import *
-from Validaciones import *
+from Validations.loadSubjects import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class EraseSubject:
     def __init__(self, old_root, clave):
+        h = 300
+        w = 600
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Dar de baja")
         self.clave = clave
         self.subject = None
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Sistema de Inscripción | Dar de baja")
-        self.new_root.geometry('{}x{}'.format(600, 300))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
-        #Frames a usar, algo así como div b:
-        counterFrame = Frame(self.new_root, width=500, height=50)
-        counterFrame.grid(row=0,column=0)
         topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=1,column=0)
         bottomFrame = Frame(self.new_root, width=500, height=100)
-        bottomFrame.grid(row=2,column=0)
+        bottomFrame.grid(row=2,column=0,sticky=E,padx=(0,30))
 
         #configuración de tabla
         self.tableTreeView = ttk.Treeview(topFrame)
-        self.tableTreeView.grid(row=0, column=0)
+        self.tableTreeView.grid(row=0, column=0,padx=(25,25),pady=(15,15))
         self.tableTreeView["columns"]=("Materia")
         self.tableTreeView.column("#0",width=50)
         self.tableTreeView.column("Materia",width=500)
@@ -56,7 +48,7 @@ class EraseSubject:
         self.new_root.mainloop()
 
     def showAvailableSubjects(self):
-        subjects = simpleShowRegisteredSubject(self.clave)
+        subjects = loadRegisteredSubjects(self.clave)
 
         for cvMateria, nom, grupo in subjects:
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
@@ -92,5 +84,5 @@ class EraseSubject:
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('StudentAccess')
+        window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
         self.app = window.StudentAccess(self.new_root, self.clave)

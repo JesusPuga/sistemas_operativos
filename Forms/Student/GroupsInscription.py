@@ -1,37 +1,34 @@
 import sys
-from Inscription import *
-from Validaciones import *
-from addSubjectToSchedule import *
+from Forms.Student.Inscription import *
+from Validations.loadSubjects import *
+from Validations.addSubjectToSchedule import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class GroupsInscription:
     def __init__(self, old_root,clave, subject):
+        h = 300
+        w = 1300
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Inscripción de grupos")
         self.clave = clave
         self.subject = subject
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Sistema de Inscripción | Inscripción de grupos")
-        self.new_root.geometry('{}x{}'.format(1500, 300))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
         bottomFrame = Frame(self.new_root, width=500, height=100)
-        bottomFrame.grid(row=1,column=0)
+        bottomFrame.grid(row=1,column=0,sticky=E,padx=(0,40))
 
         self.tableTreeView = ttk.Treeview(topFrame)
-        self.tableTreeView.grid(row=0, column=0)
+        self.tableTreeView.grid(row=0, column=0,padx=(40,40),pady=(30,15))
 
         self.tableTreeView["columns"]=("Grupo","Aula","Docente","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado")
         self.tableTreeView.column("#0",width=10)
+        self.tableTreeView.column("Grupo",width=50)
         self.tableTreeView.column("Aula",width=50)
         self.tableTreeView.column("Docente",width=200)
         self.tableTreeView.column("Lunes",width=150)
@@ -89,7 +86,7 @@ class GroupsInscription:
 
     def showAvailableTeachers(self):
         groupsID = []
-        groups = findAvailableGroups(self.subject)
+        groups = loadAvailableGroups(self.subject)
         index = 0
         contador = 0
         """Este primer iterador solo obtiene primeros valores para poder hacer comparaciones posteriores"""
@@ -125,5 +122,5 @@ class GroupsInscription:
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
-        window = __import__('Inscription')
+        window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)
         self.app = window.Inscription(self.new_root, self.clave)

@@ -1,49 +1,36 @@
 import sys
-from Validaciones import *
-from loadStudents import *
+from Validations.loadSubjects import *
+from Validations.loadStudents import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class Inscription:
     def __init__(self, old_root, clave):
+        h = 300
+        w = 600
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Inscripción")
         self.clave = clave
         self.credits = loadStudentCredits(self.clave)
         self.subject = None
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Sistema de Inscripción | Inscripción")
-        self.new_root.geometry('{}x{}'.format(600, 300))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
         counterFrame = Frame(self.new_root, width=500, height=50)
-        counterFrame.grid(row=0,column=0)
+        counterFrame.grid(row=0,column=0,sticky= W, padx=(60,0))
         topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=1,column=0)
         bottomFrame = Frame(self.new_root, width=500, height=100)
-        bottomFrame.grid(row=2,column=0)
+        bottomFrame.grid(row=2,column=0,sticky= E, padx=(0,60))
 
         #créditos utilizados
         self.subjectCveLB = Label(counterFrame, text="Créditos utilizados: ")
         self.subjectCveLB.grid(row=0, column=0)
-        ##espacio a la izquierda xD
-        subject1CveLB = Label(counterFrame,
-                                  text="""
-                                  """)
-        subject2CveLB = Label(counterFrame,
-                                  text="""
-                                  """)
-        subject1CveLB.grid(row=0, column=1)
-        subject2CveLB.grid(row=0, column=2)
 
         #configuración de tabla
         self.tableTreeView = ttk.Treeview(topFrame)
-        self.tableTreeView.grid(row=0, column=0)
+        self.tableTreeView.grid(row=0, column=0,padx=(60,60),pady=(15,15))
 
         self.tableTreeView["columns"]=("Materia","Semestre","Créditos")
         self.tableTreeView.column("#0",width=50)
@@ -75,14 +62,14 @@ class Inscription:
     def showAvailableSubjects(self):
         self.subjectCveLB["text"] = self.subjectCveLB["text"] + str(self.credits)
         self.tableTreeView.delete(*self.tableTreeView.get_children())
-        subjects = findAvailableSubjects(self.clave)
+        subjects = loadAvailableSubjects(self.clave)
 
         for cvMateria, nom, sem, creditos in subjects:
             self.tableTreeView.insert('','0',cvMateria,text=cvMateria,values=(nom,sem,creditos))
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('StudentAccess')
+        window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
         self.app = window.StudentAccess(self.new_root, self.clave)
 
     def onDoubleClick(self, event):
@@ -94,5 +81,5 @@ class Inscription:
         elif (self.credits == 5):
             messagebox.showinfo("Aviso","Créditos agotados")
         else:
-            window = __import__('GroupsInscription')
+            window = __import__('Forms.Student.GroupsInscription',None,None,['GroupsInscription'], 0)
             self.app = window.GroupsInscription(self.new_root, self.clave, self.subject)

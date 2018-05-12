@@ -1,28 +1,22 @@
 import sys
-from AdministrativeAccess import *
-from Validaciones import *
-from loadSubjects import *
-from loadStudents import *
+from Validations.loadSubjects import *
+from Validations.loadStudents import *
+from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
 class AdministrativeSubject:
     def __init__(self, old_root,clave):
+        h = 350
+        w = 600
         old_root.destroy()
-        self.new_root = Tk()
+        self.new_root = centerForm(w,h,"Consulta | Alumnos por materia")
         self.clave = clave
-        #Se define el nombre de la ventana y se restringe el tamaño de la misma
-        self.new_root.title("Consulta | Alumnos por materia")
-        self.new_root.geometry('{}x{}'.format(500, 320))
-        self.new_root.resizable(0,0)
-        # layout all of the main containers
-        self.new_root.grid_rowconfigure(1, weight=1)
-        self.new_root.grid_columnconfigure(0, weight=1)
 
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=200)
-        topFrame.grid(row=0,column=0)
+        topFrame.grid(row=0,column=0, sticky=W, padx=(55,0))
 
         bottomFrame = Frame(self.new_root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
@@ -50,7 +44,7 @@ class AdministrativeSubject:
 
         #primer tabla
         self.tbTopTreeView = ttk.Treeview(bottomFrame)
-        self.tbTopTreeView.grid(row=0, column=0)
+        self.tbTopTreeView.grid(row=0, column=0,padx=(55,55),pady=(15,15))
 
         self.tbTopTreeView["columns"]=("Nombre","Apellido Paterno","Apellido Materno")
         self.tbTopTreeView.column("#0",width=120)
@@ -66,7 +60,7 @@ class AdministrativeSubject:
 
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 1, column = 0)
+        returnButton.grid(row = 1, column = 0,sticky=E, padx=(0,15))
 
         self.new_root.mainloop()
 
@@ -97,11 +91,13 @@ class AdministrativeSubject:
     def showStudentsForSubject(self):
         self.tbTopTreeView.delete(*self.tbTopTreeView.get_children())
         students = loadStudentsForGroup(self.groupCBX.get(), self.subjectCBX.get())
-
-        for clave, nombre, appellidoPaterno, appelidoMaterno in students:
-            self.tbTopTreeView.insert('','0',clave,text=clave,values=(clave,nombre,appellidoPaterno, appellidoPaterno))
+        if students.fetchone() == None:
+            messagebox.showinfo("Aviso","No hay alumnos inscritos")
+        else:
+            for clave, nombre, appellidoPaterno, appelidoMaterno in students:
+                self.tbTopTreeView.insert('','0',clave,text=clave,values=(clave,nombre,appellidoPaterno, appellidoPaterno))
 
     def returnAdministrativeHome(self):
         ##Add validations to return or close and open the other window
-        window = __import__('AdministrativeAccess')
+        window = __import__('Forms.Administrative.AdministrativeAccess',None,None,['AdministrativeAccess'], 0)
         self.app = window.AdministrativeAccess(self.new_root,self.clave)
