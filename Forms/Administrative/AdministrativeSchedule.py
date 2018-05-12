@@ -7,15 +7,16 @@ from tkinter import messagebox
 
 class AdministrativeSchedule:
     def __init__(self, old_root,clave):
-        h = 1300
-        w = 600
+        h = 600
+        w = 1300
+
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Consulta | Horario")
+        self.new_root = centerForm(w,h,"Consulta | Horario")
         self.clave = clave
 
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=100)
-        topFrame.grid(row=0,column=0)
+        topFrame.grid(row=0,column=0,sticky=W,padx =20)
         leftTopFrame = Frame(topFrame, width=100, height=50)
         leftTopFrame.grid(row=0,column=0)
         rightTopFrame = Frame(topFrame, width=400, height=50)
@@ -26,7 +27,7 @@ class AdministrativeSchedule:
 
         #selección
         subjectCveLB = Label(leftTopFrame, text="Matrícula:")
-        subjectCveLB.grid(row=0, column=0)
+        subjectCveLB.grid(row=0, column=0,padx=20)
         self.subjectCveENY = Entry(leftTopFrame)
         self.subjectCveENY.grid(row=0, column=1)
 
@@ -36,7 +37,7 @@ class AdministrativeSchedule:
 
         #primer tabla
         self.tbTopTreeView = ttk.Treeview(bottomFrame, height=14)
-        self.tbTopTreeView.grid(row=1, column=0)
+        self.tbTopTreeView.grid(row=1, column=0,padx = (40,40))
 
         self.tbTopTreeView["columns"]=("Lunes","Martes","Miércoles","Jueves","Viernes","Sabado")
         self.tbTopTreeView.column("#0",width=170)
@@ -72,7 +73,7 @@ class AdministrativeSchedule:
         space2CveLB.grid(row=4, column=0)
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 5, column = 0)
+        returnButton.grid(row = 5, column = 0, sticky=E, padx=(0,20))
 
         self.new_root.mainloop()
 

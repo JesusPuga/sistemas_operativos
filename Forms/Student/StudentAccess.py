@@ -7,12 +7,12 @@ from tkinter import messagebox
 
 class StudentAccess:
     def __init__(self, old_root, clave):
-        h = 500
-        w = 300
+        h = 300
+        w = 500
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Sistema de Inscripción | Alumno")
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Alumno")
         self.clave = clave
-        
+
         #Frames a usar, algo así como div b:
         leftFrame = Frame(self.new_root, width=100, height=100)
         leftFrame.grid(row=0,column=0)
@@ -28,20 +28,29 @@ class StudentAccess:
         #Botones
         if estatus == 'PRIMER INGRESO':
             inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription)
+            deleteButton = Button(leftFrame, text="Eliminar", state=DISABLED, command= self.openDeleteSubject)
+
         elif estatus == 'REINGRESO':
             inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
+            deleteButton = Button(leftFrame, text="Eliminar", command= self.openDeleteSubject)
 
-        inscriptionButton.grid(row = 1, column = 0)
+
+        inscriptionButton.grid(row = 1, column = 0,pady=(10,0))
+        deleteButton.grid(row = 2, column = 0,pady=(10,0))
         scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
-        scheduleButton.grid(row = 2, column = 0)
+        scheduleButton.grid(row = 3, column = 0,pady=(10,100))
         sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
-        sessionButton.grid(row = 3, column = 0)
+        sessionButton.grid(row = 4, column = 0,pady=(10,10))
 
 
     def quit(self):
         ##Add validations to return or close and open the other window
         window = __import__('Forms.Access',None,None,['Access'], 0)
         self.app = window.Access(self.new_root)
+
+    def openDeleteSubject(self):
+        window = __import__('Forms.Student.EraseSubject',None,None,['EraseSubject'], 0)
+        self.app = window.EraseSubject(self.new_root,self.clave)
 
     def openInscription(self):
         window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)

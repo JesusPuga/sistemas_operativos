@@ -8,15 +8,15 @@ from tkinter import messagebox
 
 class AdministrativeSubject:
     def __init__(self, old_root,clave):
-        h = 600
-        w = 300
+        h = 350
+        w = 600
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Consulta | Alumnos por materia")
+        self.new_root = centerForm(w,h,"Consulta | Alumnos por materia")
         self.clave = clave
 
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=200)
-        topFrame.grid(row=0,column=0)
+        topFrame.grid(row=0,column=0, sticky=W, padx=(55,0))
 
         bottomFrame = Frame(self.new_root, width=500, height=100)
         bottomFrame.grid(row=1,column=0)
@@ -44,7 +44,7 @@ class AdministrativeSubject:
 
         #primer tabla
         self.tbTopTreeView = ttk.Treeview(bottomFrame)
-        self.tbTopTreeView.grid(row=0, column=0)
+        self.tbTopTreeView.grid(row=0, column=0,padx=(55,55),pady=(15,15))
 
         self.tbTopTreeView["columns"]=("Nombre","Apellido Paterno","Apellido Materno")
         self.tbTopTreeView.column("#0",width=120)
@@ -60,7 +60,7 @@ class AdministrativeSubject:
 
         #Bottom buttons
         returnButton = Button(bottomFrame, text="Regresar", command=self.returnAdministrativeHome)
-        returnButton.grid(row = 1, column = 0)
+        returnButton.grid(row = 1, column = 0,sticky=E, padx=(0,15))
 
         self.new_root.mainloop()
 

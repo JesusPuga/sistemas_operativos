@@ -9,10 +9,10 @@ from tkinter import messagebox
 
 class GroupsInscription:
     def __init__(self, old_root,clave, subject):
-        h = 1500
-        w = 300
+        h = 300
+        w = 1300
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Sistema de Inscripción | Inscripción de grupos")
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Inscripción de grupos")
         self.clave = clave
         self.subject = subject
 
@@ -21,13 +21,14 @@ class GroupsInscription:
         topFrame.grid(row=0,column=0)
 
         bottomFrame = Frame(self.new_root, width=500, height=100)
-        bottomFrame.grid(row=1,column=0)
+        bottomFrame.grid(row=1,column=0,sticky=E,padx=(0,40))
 
         self.tableTreeView = ttk.Treeview(topFrame)
-        self.tableTreeView.grid(row=0, column=0)
+        self.tableTreeView.grid(row=0, column=0,padx=(40,40),pady=(30,15))
 
         self.tableTreeView["columns"]=("Grupo","Aula","Docente","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado")
         self.tableTreeView.column("#0",width=10)
+        self.tableTreeView.column("Grupo",width=50)
         self.tableTreeView.column("Aula",width=50)
         self.tableTreeView.column("Docente",width=200)
         self.tableTreeView.column("Lunes",width=150)

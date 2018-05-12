@@ -7,23 +7,23 @@ from tkinter import messagebox
 
 class StudentSchedule:
     def __init__(self, old_root,clave):
-        h = 1300
-        w = 600
+        h = 600
+        w = 1300
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Horario")
+        self.new_root = centerForm(w,h,"Horario")
         self.clave = clave
-        
+
         #Frames a usar, algo así como div b:
         topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=0,column=0)
 
         bottomFrame = Frame(self.new_root,width=500, height=100)
-        bottomFrame.grid(row=1,column=0)
+        bottomFrame.grid(row=1,column=0,sticky=E,padx=(0,50))
         #primer tabla
         style = ttk.Style(self.new_root)
         style.configure('Treeview', rowheight=50)
         self.tbTopTreeView = ttk.Treeview(topFrame, height=5)
-        self.tbTopTreeView.grid(row=0, column=0)
+        self.tbTopTreeView.grid(row=0, column=0,padx=(50,50),pady=(10,10))
 
         self.tbTopTreeView["columns"]=("Lunes","Martes","Miércoles","Jueves","Viernes","Sabado")
         self.tbTopTreeView.column("#0",width=170)
@@ -43,7 +43,7 @@ class StudentSchedule:
 
         #segunda tabla
         self.tbBottomTreeView = ttk.Treeview(topFrame,height=5)
-        self.tbBottomTreeView.grid(row=1, column=0)
+        self.tbBottomTreeView.grid(row=1, column=0,padx=(318,318),pady=(0,10))
 
         self.tbBottomTreeView["columns"]=("Grupo","Materia","Docente")
         self.tbBottomTreeView.column("#0",width=166)

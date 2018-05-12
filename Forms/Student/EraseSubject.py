@@ -1,6 +1,5 @@
 import sys
-from StudentAccess import *
-from Validations.loadSubjects import
+from Validations.loadSubjects import *
 from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
@@ -8,24 +7,21 @@ from tkinter import messagebox
 
 class EraseSubject:
     def __init__(self, old_root, clave):
-        h = 600
-        w = 300
+        h = 300
+        w = 600
         old_root.destroy()
-        self.new_root = centerForm(h,w,"Sistema de Inscripción | Dar de baja")
+        self.new_root = centerForm(w,h,"Sistema de Inscripción | Dar de baja")
         self.clave = clave
         self.subject = None
 
-        #Frames a usar, algo así como div b:
-        counterFrame = Frame(self.new_root, width=500, height=50)
-        counterFrame.grid(row=0,column=0)
         topFrame = Frame(self.new_root, width=500, height=200)
         topFrame.grid(row=1,column=0)
         bottomFrame = Frame(self.new_root, width=500, height=100)
-        bottomFrame.grid(row=2,column=0)
+        bottomFrame.grid(row=2,column=0,sticky=E,padx=(0,30))
 
         #configuración de tabla
         self.tableTreeView = ttk.Treeview(topFrame)
-        self.tableTreeView.grid(row=0, column=0)
+        self.tableTreeView.grid(row=0, column=0,padx=(25,25),pady=(15,15))
         self.tableTreeView["columns"]=("Materia")
         self.tableTreeView.column("#0",width=50)
         self.tableTreeView.column("Materia",width=500)
