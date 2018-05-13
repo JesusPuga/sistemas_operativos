@@ -51,6 +51,7 @@ class EraseSubject:
         subjects = loadRegisteredSubjects(self.clave)
 
         for cvMateria, nom, grupo in subjects:
+            print(grupo)
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
 
     def deleteSubject(self, event):

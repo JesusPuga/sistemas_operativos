@@ -87,8 +87,8 @@ INSERT INTO Alumno (carnetAlumno, estatus, claveCarrera, claveInscripcion) VALUE
 /*CREACIÓN DE EMPLEADOS (EJEMPLO)*/
 
 INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
-(004, 'H', 7752345678, 'a', 'NOE', 'ESPINOZA', 'PÉREZ', 2),
-(005, 'M', 7372345678, 'a', 'ARACELY', 'GÓMEZ', 'TRUJILLO', 2);
+(004, 'H', 7752345678, 'a', 'NOE', 'ESPINOZA', 'PÉREZ', 3),
+(005, 'M', 7372345678, 'a', 'ARACELY', 'GÓMEZ', 'TRUJILLO', 3);
 
 
 INSERT INTO Empleado (carnetEmpleado, tipoEmpleado) VALUES

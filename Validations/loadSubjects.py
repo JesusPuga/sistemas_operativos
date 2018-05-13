@@ -73,8 +73,15 @@ def loadAvailableSubjects(clave):
 def loadAvailableGroups(subject, period= "180116"):
     con = createConection()
 
-    query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
-            Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
+    query="""SELECT  H.IDGrupo ID, H.claveGrupo, H.aula, H.nombre,
+					MAX(CASE WHEN H.dia = 'Lunes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Lunes,
+                    MAX(CASE WHEN H.dia = 'Martes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Martes,
+                    MAX(CASE WHEN H.dia = 'Miercoles' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Miercoles,
+                    MAX(CASE WHEN H.dia = 'Jueves' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Jueves,
+                    MAX(CASE WHEN H.dia = 'Viernes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Viernes,
+                    MAX(CASE WHEN H.dia = 'Sabado' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Sabado
+            FROM (SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
+            Dia.dia, MIN(Horario.horaInicio) AS horaInicio, MAX(Horario.horaFin) AS horaFin, Grupo.claveMateria, Grupo.IDGrupo
             FROM Grupo
             INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
                                   Grupo.periodo = %s
@@ -85,7 +92,9 @@ def loadAvailableGroups(subject, period= "180116"):
             INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
             WHERE Materia.claveMateria = %s
             GROUP BY Grupo.claveGrupo, Dia.dia
-            ORDER BY Grupo.claveGrupo  DESC
+            ORDER BY Grupo.claveGrupo) AS H
+            GROUP BY CONCAT(H.horaInicio,' - ',H.horaFin)
+            ORDER BY CONCAT(H.horaInicio,' - ',H.horaFin) DESC
     """
     result = con.execute_query(query,(period, subject),True)
 
@@ -118,7 +127,6 @@ def loadRegisteredSubjects(studentClave, period = "180116"):
 
 def eraseSubject(studentClave, groupClave, subjectClave):
     con = createConection()
-    print(groupClave)
     args = (studentClave, groupClave, subjectClave)
     con.call_procedures('borradoGrupo', args)
     del con
