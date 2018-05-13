@@ -48,7 +48,7 @@ def loadStudentStatus(clave):
     del con
     return estatus
 
-def loadStudentCredits(studentClave, period = "2018-01-16"):
+def loadStudentCredits(studentClave, period = "180116"):
     con = createConection()
     query = """
                 SELECT COUNT(*)

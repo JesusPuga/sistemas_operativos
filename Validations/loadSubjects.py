@@ -19,7 +19,7 @@ def loadSubjectGroups(subject):
     del con
     return result
 
-def loadAvailableSubjects(clave):
+def loadAvailableSubjects(clave, period = "180116"):
     """ Función que busca las materias disponibles a cursar del alumno
 
     El primer paso es verificar el ESTATUS del alumno. Esto ayudará a determinar si el
@@ -56,12 +56,13 @@ def loadAvailableSubjects(clave):
                  FROM Materia
                  LEFT JOIN Oportunidad
                  ON Oportunidad.claveMateria = Materia.claveMateria AND
-                    Oportunidad.carnetAlumno = %s
+                    Oportunidad.carnetAlumno = %s AND
+                    Materia.periodo = %s
                  WHERE Oportunidad.claveMateria IS NULL OR
                        (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
                  ORDER BY Materia.claveMateria DESC
               """
-        result = con.execute_query(query,(clave,),True,True)
+        result = con.execute_query(query,(clave,period),True,True)
 
     if result == 0:
         print("HUBO UN ERROR")
@@ -93,19 +94,20 @@ def loadAvailableGroups(subject):
     del con
     return result
 
-def loadRegisteredSubjects(studentClave):
+def loadRegisteredSubjects(studentClave, period = "180116"):
     con = createConection()
     """Función que busca las metrias inscritas de un alumno"""
 
     query="""SELECT Materia.claveMateria, Materia.nombre, Grupo.IDGrupo
         FROM Materia
-        INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
+        INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
+                            Grupo.periodo = %s
         INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
         INNER JOIN Alumno ON Alumno_Grupo.carnetAlumno = Alumno.carnetAlumno
         WHERE Alumno.carnetAlumno = %s
         ORDER BY  claveMateria DESC
     """
-    result = con.execute_query(query,(studentClave,),True)
+    result = con.execute_query(query,(period,studentClave),True)
 
     if result == 0:
         print("HUBO UN ERROR")
