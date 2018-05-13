@@ -16,7 +16,7 @@ def loadSubjectsForStudent(carnetAlumno, period = "180116"):
                INNER JOIN Usuario ON  Empleado.carnetEmpleado = Usuario.carnetUsuario
                ORDER BY Grupo.claveMateria DESC"""
 
-    result = con.execute_query(query,(carnetAlumno,period), True)
+    result = con.execute_query(query,(period,carnetAlumno), True)
     del con
     return result
 

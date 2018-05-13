@@ -26,7 +26,7 @@ class AdministrativeSubject:
         subjectCveLB.grid(row=0, column=0)
         #subjectCveENY = Entry(topFrame)
         #subjectCveENY.grid(row=0, column=1)
-        self.subjectCBX = ttk.Combobox(topFrame)
+        self.subjectCBX = ttk.Combobox(topFrame, state="readonly")
         self.subjectCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
         self.subjectCBX.bind("<<ComboboxSelected>>", self.showSubjectGroups)
 
