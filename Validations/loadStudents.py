@@ -3,35 +3,37 @@ import os
 from tkinter import messagebox
 
 # Retorna maestro y alumno desde Usuario, por lo tanto se repiten el resto de los datos
-def loadSubjectsForStudent(carnetAlumno):
+def loadSubjectsForStudent(carnetAlumno, period = "180116"):
     con = createConection()
     query = """SELECT DISTINCT Materia.claveMateria, Materia.nombre, Usuario.nombre,
                                Usuario.apellidoPaterno, Usuario.apellidoMaterno
                FROM Materia
-               INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
+               INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
+                                   Grupo.periodo = %s
                INNER JOIN Empleado ON Empleado.carnetEmpleado = Grupo.carnetEmpleado
                INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo AND
                                           Alumno_Grupo.carnetAlumno = %s
                INNER JOIN Usuario ON  Empleado.carnetEmpleado = Usuario.carnetUsuario
                ORDER BY Grupo.claveMateria DESC"""
 
-    result = con.execute_query(query,(carnetAlumno,), True)
+    result = con.execute_query(query,(carnetAlumno,period), True)
     del con
     return result
 
-def loadStudentsForGroup(group,subject):
+def loadStudentsForGroup(group,subject, period = "180116"):
     con = createConection()
     query = """SELECT DISTINCT Alumno_Grupo.carnetAlumno,Usuario.nombre, Usuario.apellidoPaterno,Usuario.apellidoMaterno
                FROM Materia_Seriada
                INNER JOIN Materia ON Materia.ClaveMateria = Materia_Seriada.ClaveMateria AND
                                      Materia.nombre = %s
                INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
-                                   Grupo.claveGrupo = %s
+                                   Grupo.claveGrupo = %s AND
+                                   Grupo.periodo = %s
                INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo
                INNER JOIN Usuario ON Alumno_Grupo.carnetAlumno = Usuario.carnetUsuario
                ORDER BY Alumno_Grupo.carnetAlumno DESC"""
 
-    result = con.execute_query(query,(subject,group), True)
+    result = con.execute_query(query,(subject,group, period), True)
     del con
     return result
 

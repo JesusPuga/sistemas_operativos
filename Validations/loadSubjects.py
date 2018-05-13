@@ -8,18 +8,19 @@ def loadAllSubjects():
     del con
     return result
 
-def loadSubjectGroups(subject):
+def loadSubjectGroups(subject,period = "180116"):
     con = createConection()
     query = """SELECT Grupo.claveGrupo
                FROM  Grupo
                INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
-                                     Materia.nombre = %s"""
+                                     Materia.nombre = %s AND
+                                     Grupo.periodo = %s """
 
-    result = con.execute_query(query,(subject,), True)
+    result = con.execute_query(query,(subject,period), True)
     del con
     return result
 
-def loadAvailableSubjects(clave, period = "180116"):
+def loadAvailableSubjects(clave):
     """ Función que busca las materias disponibles a cursar del alumno
 
     El primer paso es verificar el ESTATUS del alumno. Esto ayudará a determinar si el
@@ -56,8 +57,7 @@ def loadAvailableSubjects(clave, period = "180116"):
                  FROM Materia
                  LEFT JOIN Oportunidad
                  ON Oportunidad.claveMateria = Materia.claveMateria AND
-                    Oportunidad.carnetAlumno = %s AND
-                    Materia.periodo = %s
+                    Oportunidad.carnetAlumno = %s
                  WHERE Oportunidad.claveMateria IS NULL OR
                        (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
                  ORDER BY Materia.claveMateria DESC
@@ -70,13 +70,14 @@ def loadAvailableSubjects(clave, period = "180116"):
     del con
     return result
 
-def loadAvailableGroups(subject):
+def loadAvailableGroups(subject, period= "180116"):
     con = createConection()
 
     query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
             Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
             FROM Grupo
-            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
+                                  Grupo.periodo = %s
             INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
             INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
             INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
@@ -86,7 +87,7 @@ def loadAvailableGroups(subject):
             GROUP BY Grupo.claveGrupo, Dia.dia
             ORDER BY Grupo.claveGrupo  DESC
     """
-    result = con.execute_query(query,(subject,),True)
+    result = con.execute_query(query,(period, subject),True)
 
     if result == 0:
         print("HUBO UN ERROR")
