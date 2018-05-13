@@ -27,20 +27,20 @@ class StudentAccess:
 
         #Botones
         if estatus == 'PRIMER INGRESO':
-            inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription)
-            deleteButton = Button(leftFrame, text="Eliminar", state=DISABLED, command= self.openDeleteSubject)
+            inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription,height=1,width=4)
+            deleteButton = Button(leftFrame, text="Eliminar", state=DISABLED, command= self.openDeleteSubject,height=1,width=4)
 
         elif estatus == 'REINGRESO':
-            inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription)
-            deleteButton = Button(leftFrame, text="Eliminar", command= self.openDeleteSubject)
+            inscriptionButton = Button(leftFrame, text="Inscribir", command= self.openInscription,height=1,width=4)
+            deleteButton = Button(leftFrame, text="Eliminar", command= self.openDeleteSubject,height=1,width=4)
 
 
         inscriptionButton.grid(row = 1, column = 0,pady=(10,0))
         deleteButton.grid(row = 2, column = 0,pady=(10,0))
-        scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule)
+        scheduleButton = Button(leftFrame, text="Horario", command= self.openSchedule,height=1,width=4)
         scheduleButton.grid(row = 3, column = 0,pady=(10,100))
-        sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit)
-        sessionButton.grid(row = 4, column = 0,pady=(10,10))
+        sessionButton = Button(leftFrame, text="Cerrar Sesión", command= self.quit,height=1,width=8)
+        sessionButton.grid(row = 4, column = 0,pady=(10,10), padx=(10,10))
 
 
     def quit(self):

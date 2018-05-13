@@ -23,12 +23,12 @@ class AdministrativeAccess:
         rightFrame.grid(row=0,column=1)
 
         #Botones
-        scheduleButton = Button(leftFrame, text="Horario", command=self.openSchedule)
+        scheduleButton = Button(leftFrame, text="Horario", command=self.openSchedule,height=1,width=4)
         scheduleButton.grid(row = 2, column = 0,pady=(10,100))
-        subjectButton = Button(leftFrame, text="Materias", command=self.openSubjects)
+        subjectButton = Button(leftFrame, text="Materias", command=self.openSubjects,height=1,width=4)
         subjectButton.grid(row = 1, column = 0,pady=(10,0))
-        sessionButton = Button(leftFrame, text="Cerrar Sesión", command=self.closeSession)
-        sessionButton.grid(row = 3, column = 0,pady=(10,10))
+        sessionButton = Button(leftFrame, text="Cerrar Sesión", command=self.closeSession,height=1,width=8)
+        sessionButton.grid(row = 3, column = 0,pady=(10,10), padx=(10,10))
 
         self.new_root.mainloop()
 
