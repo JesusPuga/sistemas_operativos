@@ -6,7 +6,7 @@ BEGIN
         DECLARE numeroOportunidad INT;
         SET numeroOportunidad = (SELECT Oportunidad.IDOportunidad FROM Oportunidad WHERE Oportunidad.claveMateria = claveMateria AND Oportunidad.carnetAlumno = carnetAlumno ORDER BY Oportunidad.numOportunidad DESC LIMIT 1);
 
-        DELETE FROM Oportunidad WHERE Oportunidad.claveMateria = claveMateria AND Oportunidad.numOportunidad = numeroOportunidad AND Oportunidad.carnetAlumno = carnetAlumno;
+        DELETE FROM Oportunidad WHERE Oportunidad.IDOportunidad = numeroOportunidad;
       END;
       BEGIN
         UPDATE Grupo SET contador = contador - 1 WHERE Grupo.IDGrupo = claveGrupo;

@@ -67,18 +67,19 @@ def isRequiredSubject(subjectClave, studentClave):
         -Retorna Materia empalmada en caso de que se empalme
         -Retorna False en caso contrario
 """
-def isScheduleUsed(groupId,studentClave, period= "2018-01-16"):
+def isScheduleUsed(groupId,studentClave, period= "180116"):
     con = createConection()
     query = """
             SELECT Materia.nombre,Dia_Horario.IDDia,Horario.horaInicio, Horario.HoraFin
             FROM Grupo
             INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
-                                  Grupo.IDGrupo = %s
+                                  Grupo.IDGrupo = %s AND
+                                  Grupo.periodo = %s
             INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
             INNER JOIN Dia_Horario  ON Dia_Horario.IDHorario = Horario.IDHorario;
 
             """
-    result = con.execute_query(query, (groupId,), True)
+    result = con.execute_query(query, (groupId,period), True)
 
     for nombre, claveDia, startHour, finishHour in result:
         query = """
@@ -109,7 +110,7 @@ def isScheduleUsed(groupId,studentClave, period= "2018-01-16"):
 """
     Retorna cantidad de alumnos inscritos en una materia
 """
-def checkCounterInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
+def checkCounterInGroup(groupClave, subjectClave, periodo = "180116"):
     con = createConection()
     query = """SELECT contador
                FROM Grupo
@@ -122,7 +123,7 @@ def checkCounterInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
 """
     Retorna la capacidad del grupo dependiendo la materia y el periodo
 """
-def checkCapacityInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
+def checkCapacityInGroup(groupClave, subjectClave, periodo = "180116"):
     con = createConection()
     query = """
                 SELECT capacidad
@@ -136,7 +137,7 @@ def checkCapacityInGroup(groupClave, subjectClave, periodo = "2018-01-16"):
 """
     Actualiza contador en grupo
 """
-def updateGroupCounter(counter,groupClave, subjectClave, periodo = "2018-01-16"):
+def updateGroupCounter(counter,groupClave, subjectClave, periodo = "180116"):
     con = createConection()
     query = """UPDATE Grupo SET contador = %s
                WHERE claveGrupo = %s AND claveMateria = %s AND periodo = %s;
