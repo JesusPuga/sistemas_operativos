@@ -48,10 +48,10 @@ class EraseSubject:
         self.new_root.mainloop()
 
     def showAvailableSubjects(self):
+        self.tableTreeView.delete(*self.tableTreeView.get_children())
         subjects = loadRegisteredSubjects(self.clave)
 
         for cvMateria, nom, grupo in subjects:
-            print(grupo)
             self.tableTreeView.insert('','0',text=cvMateria, value=(nom,grupo))
 
     def deleteSubject(self, event):
@@ -80,8 +80,6 @@ class EraseSubject:
 
         #DESPUÉS DE EJECUTAR EL BORRADO, SE VUELVE A DESPLEGAR LA VISTA ACTUALIZADA
         self.showAvailableSubjects()
-        EraseSubject(self.new_root, self.clave)
-
 
     def returnStudentHome(self):
         ##Add validations to return or close and open the other window
