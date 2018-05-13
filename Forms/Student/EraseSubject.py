@@ -77,6 +77,7 @@ class EraseSubject:
 
         #LLAMADO A LA FUNCIÓN DE BORRADO EN LA BASE DE DATOS
         eraseSubject(self.clave,IDGrupo,subjectClave)
+        messagebox.showinfo("Aviso","Materia Eliminada")
 
         #DESPUÉS DE EJECUTAR EL BORRADO, SE VUELVE A DESPLEGAR LA VISTA ACTUALIZADA
         self.showAvailableSubjects()
