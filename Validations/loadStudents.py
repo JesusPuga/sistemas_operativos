@@ -112,3 +112,17 @@ def loadAllStudentSubjects(studentClave):
     result = con.execute_query(query,(studentClave,),True)
     del con
     return result
+
+def loadSutdentInf(studentClave):
+    con = createConection()
+    query="""
+            SELECT Alumno.carnetAlumno, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre, Carrera.nombre
+            FROM Alumno
+            INNER JOIN Usuario ON Usuario.carnetUsuario = Alumno.carnetAlumno
+            INNER JOIN Carrera ON Carrera.claveCarrera = Alumno.claveCarrera
+            WHERE Alumno.carnetAlumno = %s
+          """
+
+    result = con.execute_query(query,(studentClave,),True)
+    del con
+    return result

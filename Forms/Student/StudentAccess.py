@@ -17,14 +17,17 @@ class StudentAccess:
         leftFrame = Frame(self.new_root, width=100, height=100)
         leftFrame.grid(row=0,column=0)
 
-        closeSessionFrame = Frame(self.new_root,  bg='gray2',)
-        closeSessionFrame.grid(row=1,column=0)
-
-        rightFrame = Frame(self.new_root, bg='lavender', width=400, height=300)
-        rightFrame.grid(row=0,column=1)
+        rightFrame = Frame(self.new_root, width=400, height=300)
+        rightFrame.grid(row=0,column=1,sticky=N,padx=(20,0))
 
         estatus =  loadStudentStatus(clave)
-
+        self.claveCveLB = Label(rightFrame, text="Matrícula: ")
+        self.claveCveLB.grid(row=1, column=0,padx=(0,10),sticky=W,pady= (10,5))
+        self.nameCveLB = Label(rightFrame, text="Nombre: ")
+        self.nameCveLB.grid(row=2, column=0,padx=(0,10),sticky=W,pady=(0,5))
+        self.careerCveLB = Label(rightFrame, text="Carrera: ")
+        self.careerCveLB.grid(row=3, column=0,padx=(0,10),sticky=W,pady=(0,5))
+        self.showStudentInf()
         #Botones
         if estatus == 'PRIMER INGRESO':
             inscriptionButton = Button(leftFrame, text="Inscribir", state=DISABLED, command= self.openInscription,height=1,width=4)
@@ -47,6 +50,13 @@ class StudentAccess:
         ##Add validations to return or close and open the other window
         window = __import__('Forms.Access',None,None,['Access'], 0)
         self.app = window.Access(self.new_root)
+
+    def showStudentInf(self):
+        student = loadSutdentInf(self.clave)
+        for clave, name, nameCareer in student:
+            self.claveCveLB["text"] = self.claveCveLB["text"] + str(clave)
+            self.nameCveLB["text"] = self.nameCveLB["text"] + str(name)
+            self.careerCveLB["text"] = self.careerCveLB["text"] + str(nameCareer)
 
     def openDeleteSubject(self):
         window = __import__('Forms.Student.EraseSubject',None,None,['EraseSubject'], 0)
