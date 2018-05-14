@@ -24,11 +24,13 @@ class AdministrativeAccess:
 
         #Botones
         scheduleButton = Button(leftFrame, text="Horario", command=self.openSchedule,height=1,width=4)
-        scheduleButton.grid(row = 2, column = 0,pady=(10,100))
+        scheduleButton.grid(row = 2, column = 0,pady=(10,10))
         subjectButton = Button(leftFrame, text="Materias", command=self.openSubjects,height=1,width=4)
         subjectButton.grid(row = 1, column = 0,pady=(10,0))
+        insertButton = Button(leftFrame, text="Insertar\nAlumno", command=self.openAddStudent,height=2,width=4)
+        insertButton.grid(row = 3, column = 0,pady=(10,100))
         sessionButton = Button(leftFrame, text="Cerrar Sesión", command=self.closeSession,height=1,width=8)
-        sessionButton.grid(row = 3, column = 0,pady=(10,10), padx=(10,10))
+        sessionButton.grid(row = 4, column = 0,pady=(10,10), padx=(10,10))
 
         self.new_root.mainloop()
 
@@ -44,3 +46,7 @@ class AdministrativeAccess:
     def openSchedule(self):
         window = __import__('Forms.Administrative.AdministrativeSchedule',None,None,['AdministrativeSchedule'], 0)
         self.app = window.AdministrativeSchedule(self.new_root,self.clave)
+
+    def openAddStudent(self):
+        window = __import__('Forms.Administrative.AdministrativeAddStudent',None,None,['AdministrativeAddStudent'], 0)
+        self.app = window.AdministrativeAddStudent(self.new_root,self.clave)
