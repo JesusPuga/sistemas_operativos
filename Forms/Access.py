@@ -1,5 +1,6 @@
 import sys
 from Validations.userValidations import *
+from Validations.addSubjectToSchedule import *
 from Forms.centerForm import *
 from tkinter import *
 from tkinter import ttk
@@ -23,7 +24,7 @@ class Access:
         tipoUsuarioLBL = Label(frame, text="Tipo de Usuario:")
         tipoUsuarioLBL.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 
-        self.tipoUsuarioCBX = ttk.Combobox(frame)
+        self.tipoUsuarioCBX = ttk.Combobox(frame, state="readonly")
         self.tipoUsuarioCBX.grid(row=0, column=1, sticky="e", padx=5, pady=5)
         self.tipoUsuarioCBX["values"] = ["Alumno","Docente", "Administrativo"]
         self.tipoUsuarioCBX.current(0)
@@ -60,8 +61,12 @@ class Access:
                 window = __import__('Forms.Administrative.AdministrativeAccess',None,None,['AdministrativeAccess'], 0)
                 self.app = window.AdministrativeAccess(self.new_root,clave)                 #CLASE QUE MANDA A LLAMAR LA VENTANA DE ADMINISTRATIVO
             elif self.tipoUsuarioCBX.get() == "Alumno":
-                window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
-                self.app = window.StudentAccess(self.new_root, clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
+                inscriptionHour = validateInscriptionHour(clave)
+                if inscriptionHour[0]:
+                    window = __import__('Forms.Student.StudentAccess',None,None,['StudentAccess'], 0)
+                    self.app = window.StudentAccess(self.new_root, clave)  #CLASE QUE CONTIENE LA FUNCIOANLIDAD DE ALUMNO
+                else:
+                    messagebox.showinfo("Aviso","No es tu fecha de inscripción. Fecha: {0}".format(inscriptionHour[1]))
             else:
                 messagebox.showwarning("Aviso","Proceso no disponible shavo, pícale a otra opción")
                 return 0

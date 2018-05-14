@@ -8,14 +8,15 @@ def loadAllSubjects():
     del con
     return result
 
-def loadSubjectGroups(subject):
+def loadSubjectGroups(subject,period = "180116"):
     con = createConection()
     query = """SELECT Grupo.claveGrupo
                FROM  Grupo
                INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
-                                     Materia.nombre = %s"""
+                                     Materia.nombre = %s AND
+                                     Grupo.periodo = %s """
 
-    result = con.execute_query(query,(subject,), True)
+    result = con.execute_query(query,(subject,period), True)
     del con
     return result
 
@@ -61,7 +62,7 @@ def loadAvailableSubjects(clave):
                        (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
                  ORDER BY Materia.claveMateria DESC
               """
-        result = con.execute_query(query,(clave,),True,True)
+        result = con.execute_query(query,(clave),True,True)
 
     if result == 0:
         print("HUBO UN ERROR")
@@ -69,13 +70,21 @@ def loadAvailableSubjects(clave):
     del con
     return result
 
-def loadAvailableGroups(subject):
+def loadAvailableGroups(subject, period= "180116"):
     con = createConection()
 
-    query="""SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
-            Dia.dia, MIN(Horario.horaInicio), MAX(Horario.horaFin), Grupo.claveMateria, Grupo.IDGrupo
+    query="""SELECT  H.IDGrupo ID, H.claveGrupo, H.aula, H.nombre,
+					MAX(CASE WHEN H.dia = 'Lunes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Lunes,
+                    MAX(CASE WHEN H.dia = 'Martes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Martes,
+                    MAX(CASE WHEN H.dia = 'Miercoles' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Miercoles,
+                    MAX(CASE WHEN H.dia = 'Jueves' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Jueves,
+                    MAX(CASE WHEN H.dia = 'Viernes' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Viernes,
+                    MAX(CASE WHEN H.dia = 'Sabado' THEN CONCAT (H.horaInicio,' - ',H.horaFin) ELSE '' END) Sabado
+            FROM (SELECT Grupo.claveGrupo, Grupo.aula, CONCAT(Usuario.nombre,' ',Usuario.apellidoPaterno) AS Nombre,
+            Dia.dia, MIN(Horario.horaInicio) AS horaInicio, MAX(Horario.horaFin) AS horaFin, Grupo.claveMateria, Grupo.IDGrupo
             FROM Grupo
-            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+            INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria AND
+                                  Grupo.periodo = %s
             INNER JOIN Horario ON Horario.claveGrupo = Grupo.IDGrupo
             INNER JOIN Dia_Horario ON Dia_Horario.IDHorario = Horario.IDHorario
             INNER JOIN Dia ON Dia.IDDia = Dia_Horario.IDDia
@@ -83,9 +92,11 @@ def loadAvailableGroups(subject):
             INNER JOIN Usuario ON Usuario.carnetUsuario = Empleado.carnetEmpleado
             WHERE Materia.claveMateria = %s
             GROUP BY Grupo.claveGrupo, Dia.dia
-            ORDER BY Grupo.claveGrupo  DESC
+            ORDER BY Grupo.claveGrupo) AS H
+            GROUP BY CONCAT(H.horaInicio,' - ',H.horaFin)
+            ORDER BY CONCAT(H.horaInicio,' - ',H.horaFin) DESC
     """
-    result = con.execute_query(query,(subject,),True)
+    result = con.execute_query(query,(period, subject),True)
 
     if result == 0:
         print("HUBO UN ERROR")
@@ -93,19 +104,20 @@ def loadAvailableGroups(subject):
     del con
     return result
 
-def loadRegisteredSubjects(studentClave):
+def loadRegisteredSubjects(studentClave, period = "180116"):
     con = createConection()
     """Función que busca las metrias inscritas de un alumno"""
 
     query="""SELECT Materia.claveMateria, Materia.nombre, Grupo.IDGrupo
         FROM Materia
-        INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria
+        INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
+                            Grupo.periodo = %s
         INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
         INNER JOIN Alumno ON Alumno_Grupo.carnetAlumno = Alumno.carnetAlumno
         WHERE Alumno.carnetAlumno = %s
         ORDER BY  claveMateria DESC
     """
-    result = con.execute_query(query,(studentClave,),True)
+    result = con.execute_query(query,(period,studentClave),True)
 
     if result == 0:
         print("HUBO UN ERROR")

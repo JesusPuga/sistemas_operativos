@@ -65,62 +65,25 @@ class GroupsInscription:
         message = addSubjectToSchedule(self.clave, groupId, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
 
+        if "Tiempo terminado" in message:
+            self.returnAccess()
+
         if not ("Horario empalmado " in message or "grupo lleno" in message):
             self.returnInscription()
 
-    def orderSchedule(self,dia,horario,horaInicio,horaFin):
-        if dia == 'LUNES':
-            horario['LUNES']= str(horaInicio)  + ' - ' +str(horaFin)
-        if dia == 'MARTES':
-            horario['MARTES'] = str(horaInicio)  + ' - ' +str(horaFin)
-        if dia == 'MIÉRCOLES':
-            horario['MIERCOLES'] = str(horaInicio)  + ' - ' +str(horaFin)
-        if dia == 'JUEVES':
-            horario['JUEVES'] = str(horaInicio)  + ' - ' +str(horaFin)
-        if dia == 'VIERNES':
-            horario['VIERNES'] = str(horaInicio)  + ' - ' +str(horaFin)
-        if dia == 'SÁBADO':
-            horario['SABADO'] = str(horaInicio)  + ' - ' +str(horaFin)
-
-        return horario
-
     def showAvailableTeachers(self):
-        groupsID = []
-        groups = loadAvailableGroups(self.subject)
-        index = 0
-        contador = 0
-        """Este primer iterador solo obtiene primeros valores para poder hacer comparaciones posteriores"""
-        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
-            groupsID.append(IDGrupo)
-            break
+        subjects = loadAvailableGroups(self.subject)
 
-        """Con este segundo iterador sabremos cuantos grupos existen y su ID"""
-        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
-            if IDGrupo != groupsID[contador]:
-                contador +=1
-                groupsID.append(IDGrupo)
-        """Con este segundo iterador guardaremos los datos de los n grupos"""
-        contador=0
-        lastIDGroup = 0
-        horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
-        for grupoClave, aula, docente, dia, horaInicio, horaFin, claveMateria, IDGrupo in groups:
-            if IDGrupo != groupsID[contador]:
-                self.tableTreeView.insert('','0',index,text=IDGrupo,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
-                contador +=1
-                index +=1
-                horario = {'GRUPO':'','AULA':'','DOCENTE':'','LUNES':'', 'MARTES':'','MIERCOLES':'', 'JUEVES':'', 'VIERNES':'', 'SABADO':''}
-                horario['GRUPO']= grupoClave
-                horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
-            elif IDGrupo == groupsID[contador]:
-                horario['GRUPO']= grupoClave
-                horario['AULA']=aula
-                horario['DOCENTE']=docente
-                horario = self.orderSchedule(dia,horario,horaInicio,horaFin)
-                lastIDGroup  = IDGrupo
+        for idGrupo, claveGrupo, aula, docente, lunes, martes, miercoles, jueves, viernes, sabado in subjects:
+            self.tableTreeView.insert('','0',idGrupo,text=idGrupo,values=(claveGrupo, aula, docente, lunes, martes, miercoles, jueves, viernes, sabado))
 
-        self.tableTreeView.insert('','0',index,text=lastIDGroup,values=(horario['GRUPO'],horario['AULA'], horario['DOCENTE'],horario['LUNES'],horario['MARTES'],horario['MIERCOLES'],horario['JUEVES'],horario['VIERNES'],horario['SABADO']))
 
     def returnInscription(self):
         ##Add validations to return or close and open the other window
         window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)
+        self.app = window.Inscription(self.new_root, self.clave)
+
+    def returnAccess(self):
+        ##Add validations to return or close and open the other window
+        window = __import__('Forms.Access',None,None,['Access'], 0)
         self.app = window.Inscription(self.new_root, self.clave)

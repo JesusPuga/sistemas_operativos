@@ -78,7 +78,7 @@ class Inscription:
 
         if self.subject == None:
             messagebox.showinfo("Aviso","Selecciona una materia")
-        elif (self.credits == 5):
+        elif (self.credits == 6):
             messagebox.showinfo("Aviso","Créditos agotados")
         else:
             window = __import__('Forms.Student.GroupsInscription',None,None,['GroupsInscription'], 0)
