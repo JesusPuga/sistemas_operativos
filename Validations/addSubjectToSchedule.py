@@ -17,11 +17,10 @@ def validateInscriptionHour(carnetAlumno):
 
     for inscriptionDate in result:
         if inscriptionDate[0] + timedelta(hours = 2) > datetime.now() or inscriptionDate[0]  < datetime.now() :
-            print(inscriptionDate[0])
-            return False
+            return (False,inscriptionDate[0])
 
     del con
-    return True
+    return (True,inscriptionDate[0])
 
 """
     Verifica si la materia depende de aprobar algún otra
@@ -173,8 +172,9 @@ def findSubjectOportunity(studentClave,subjectClave):
 def addSubjectToSchedule(studentClave, groupId, groupClave, subjectClave):
     estatus = loadStudentStatus(studentClave)
 
-    #if not validateInscriptionHour(studentClave):
-    #    return "No es tu tiempo de inscripción"
+    inscriptionHour = validateInscriptionHour(studentClave)[0]
+    if not inscriptionHour[0]:
+        return "Tiempo terminado, hora: {0}".format(inscriptionHour[1].split(" ")[1])
 
     requiredSubject= isRequiredSubject(subjectClave, studentClave)
     if requiredSubject:

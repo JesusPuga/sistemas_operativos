@@ -68,32 +68,34 @@ INSERT INTO Materia (claveMateria, nombre, creditos, semestre, claveCarrera) VAL
 
 
 INSERT INTO Inscripcion (claveInscripcion, fechaInscripcion) VALUES
-(1, '2018-04-07 15:30:00'),
-(2, '2018-04-07 14:30:00');
+(1, '2018-05-14 19:00:00'),
+(2, '2018-05-14 20:30:00');
 
 
 INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
 (001, 'H', 5512345678, 'a', 'FRANCISCO', 'GUITIERREZ', 'QUINZA', 1),
 (002, 'H', 7772345678, 'a', 'JOSÉ', 'MARTINEZ', 'DIAZ', 1),
-(003, 'M', 7572345678, 'a', 'ANGÉLICA', 'LOPEZ', 'GARZA', 1);
+(003, 'M', 7572345678, 'a', 'ANGÉLICA', 'LOPEZ', 'GARZA', 1),
+(004, 'M', 7572345678, 'a', 'BRENDA', 'PUGA', 'AGUIRRE', 1);
 
 
 INSERT INTO Alumno (carnetAlumno, estatus, claveCarrera, claveInscripcion) VALUES
 (1, 'REINGRESO',1,1),
-(2, 'REINGRESO',1,2),
-(3, 'REINGRESO',1,1);
+(2, 'REINGRESO',1,1),
+(3, 'REINGRESO',1,1),
+(4, 'REINGRESO',1,2);
 
 
 /*CREACIÓN DE EMPLEADOS (EJEMPLO)*/
 
 INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES
-(004, 'H', 7752345678, 'a', 'NOE', 'ESPINOZA', 'PÉREZ', 3),
-(005, 'M', 7372345678, 'a', 'ARACELY', 'GÓMEZ', 'TRUJILLO', 3);
+(005, 'H', 7752345678, 'a', 'NOE', 'ESPINOZA', 'PÉREZ', 3),
+(006, 'M', 7372345678, 'a', 'ARACELY', 'GÓMEZ', 'TRUJILLO', 3);
 
 
 INSERT INTO Empleado (carnetEmpleado, tipoEmpleado) VALUES
-(4, 'Docente'),
-(5, 'Administrativo');
+(5, 'Docente'),
+(6, 'Administrativo');
 
 
 /* CREACIÓN DE LOS GRUPOS*/
@@ -106,15 +108,15 @@ INSERT INTO Empleado (carnetEmpleado, tipoEmpleado) VALUES
 
 INSERT INTO Grupo (claveGrupo, aula, capacidad, contador, periodo, carnetEmpleado, claveMateria) VALUES
 
-(01,104,1,0,'180115',4,1),	/*MATEMÁTICAS I*/
+(01,104,1,0,'180115',5,1),	/*MATEMÁTICAS I*/
 
-(01,104,1,0,'180115',4,2),	/*FUNDAMENTOS	DE ELECTROMAGNETISMO*/
+(01,104,1,0,'180115',5,2),	/*FUNDAMENTOS	DE ELECTROMAGNETISMO*/
 
-(01,104,1,0,'180115',4,3),	/*FUNDAMENTOS DE ALGORITMOS*/
+(01,104,1,0,'180115',5,3),	/*FUNDAMENTOS DE ALGORITMOS*/
 
-(01,102,1,0,'180115',4,4),	/*ARQUITECTURA DE COMPUTADORAS*/
+(01,102,1,0,'180115',5,4),	/*ARQUITECTURA DE COMPUTADORAS*/
 
-(01,104,1,0,'180115',4,5);	/*PROGRAMACIÓN ESTRUCTURADA*/
+(01,104,1,0,'180115',5,5);	/*PROGRAMACIÓN ESTRUCTURADA*/
 
 
 INSERT INTO Horario (horaInicio, horaFin, claveGrupo) VALUES
@@ -165,15 +167,15 @@ INSERT INTO Dia_Horario(IDDIa, IDHorario) VALUES
 
 INSERT INTO Grupo (claveGrupo, aula, capacidad, contador, periodo, carnetEmpleado, claveMateria) VALUES
 
-(01,409,1,0,'180116',4,6),
-(01,408,1,0,'180116',4,7),
-(01,409,1,0,'180116',4,8),
-(01,409,1,0,'180116',4,9),
-(01,411,1,0,'180116',4,10),
-(01,409,1,0,'180116',4,11),
-(02,407,1,0,'180116',4,6),
-(02,407,1,0,'180116',4,8),
-(02,407,1,0,'180116',4,11);
+(01,409,1,0,'180116',5,6),
+(01,408,1,0,'180116',5,7),
+(01,409,1,0,'180116',5,8),
+(01,409,1,0,'180116',5,9),
+(01,411,1,0,'180116',5,10),
+(01,409,1,0,'180116',5,11),
+(02,407,1,0,'180116',5,6),
+(02,407,1,0,'180116',5,8),
+(02,407,1,0,'180116',5,11);
 
 
 INSERT INTO Horario (horaInicio, horaFin, claveGrupo) VALUES
@@ -288,16 +290,16 @@ INSERT INTO Dia_Horario(IDDIa, IDHorario) VALUES
 
 INSERT INTO Grupo (claveGrupo, aula, capacidad, contador, periodo, carnetEmpleado, claveMateria) VALUES
 
-(01,405,1,0,'180116',4,012),
-(01,413,1,0,'180116',4,013),
-(01,405,1,0,'180116',4,014),
-(01,404,1,0,'180116',4,015),
-(01,404,1,0,'180116',4,016),
-(01,404,1,0,'180116',4,017),
-(02,404,1,0,'180116',4,013),
-(02,404,1,0,'180116',4,014),
-(02,404,1,0,'180116',4,015),
-(02,404,1,0,'180116',4,016);
+(01,405,1,0,'180116',5,012),
+(01,413,1,0,'180116',5,013),
+(01,405,1,0,'180116',5,014),
+(01,404,1,0,'180116',5,015),
+(01,404,1,0,'180116',5,016),
+(01,404,1,0,'180116',5,017),
+(02,404,1,0,'180116',5,013),
+(02,404,1,0,'180116',5,014),
+(02,404,1,0,'180116',5,015),
+(02,404,1,0,'180116',5,016);
 
 
 INSERT INTO Horario (horaInicio, horaFin, claveGrupo) VALUES

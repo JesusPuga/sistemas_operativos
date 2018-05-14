@@ -65,6 +65,9 @@ class GroupsInscription:
         message = addSubjectToSchedule(self.clave, groupId, groupClave, self.subject)
         messagebox.showinfo("Aviso",message)
 
+        if "Tiempo terminado" in message:
+            self.returnAccess()
+
         if not ("Horario empalmado " in message or "grupo lleno" in message):
             self.returnInscription()
 
@@ -78,4 +81,9 @@ class GroupsInscription:
     def returnInscription(self):
         ##Add validations to return or close and open the other window
         window = __import__('Forms.Student.Inscription',None,None,['Inscription'], 0)
+        self.app = window.Inscription(self.new_root, self.clave)
+
+    def returnAccess(self):
+        ##Add validations to return or close and open the other window
+        window = __import__('Forms.Access',None,None,['Access'], 0)
         self.app = window.Inscription(self.new_root, self.clave)
