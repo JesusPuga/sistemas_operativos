@@ -16,7 +16,9 @@ def validateInscriptionHour(carnetAlumno):
     result = con.execute_query(query,(carnetAlumno,), True)
 
     for inscriptionDate in result:
-        if inscriptionDate[0] + timedelta(hours = 2) > datetime.now() or inscriptionDate[0]  < datetime.now() :
+        if  datetime.now() > inscriptionDate[0] + timedelta(hours = 2) or datetime.now() < inscriptionDate[0]:
+            print(datetime.now() > inscriptionDate[0] + timedelta(hours = 2))
+            print(datetime.now() < inscriptionDate[0])
             return (False,inscriptionDate[0])
 
     del con
