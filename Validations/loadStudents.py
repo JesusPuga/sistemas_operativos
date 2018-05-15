@@ -1,6 +1,7 @@
 from SQL.BDConexion import *
 import os
 from tkinter import messagebox
+from datetime import *
 
 # Retorna maestro y alumno desde Usuario, por lo tanto se repiten el resto de los datos
 def loadSubjectsForStudent(carnetAlumno, period = "180116"):
@@ -126,3 +127,60 @@ def loadSutdentInf(studentClave):
     result = con.execute_query(query,(studentClave,),True)
     del con
     return result
+
+def loadAllCareers():
+    con = createConection()
+    query="""
+            SELECT nombre
+            FROM Carrera
+          """
+
+    result = con.execute_query(query,(),True)
+
+    del con
+    return result
+
+def loadAvailableDatesInscription():
+    con = createConection()
+    query="""
+            SELECT fechaInscripcion
+            FROM Inscripcion
+            WHERE fechaInscripcion = %s
+          """
+    now = str(datetime.now()).split(".")[0] #quir decimals in date
+    result = con.execute_query(query,(now,),True)
+    del con
+    return result
+
+def insertStudent(clave,status, inscriptionClave,sex,cel, password, name, lastName, lastName2):
+    con = createConection()
+    query = """
+            INSERT INTO Alumno (estatus, claveCarrera, claveInscripcion)
+            VALUES (%s, 1, 1)
+            """
+    con.execute_query(query, (status, inscriptionClave),False,True)
+    ##traer la clave del registro agregado para crear la inf
+
+    query = """
+            INSERT INTO Usuario (sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario)
+            VALUES ( %s, %s, %s,%s, %s, %s, 1)
+            """
+    con.execute_query(query, (sex,cel, password, name, lastName, lastName2),False,True)
+
+    if status = "REINGRESO":
+        ## deben ponerse todas las materias anteriores como pasadas
+    else:
+        #debe tenner creado un horario xD
+
+    del con
+    return result
+
+def insertInscription(fechaInscripcion = True):
+    con = createConection()
+    query = """
+            INSERT INTO Inscription (fechaInscripcion)
+            VALUES (%s)
+            """
+    now = str(datetime.now()).split(".")[0] #quir decimals in date
+    con.execute_query(query, (now,),False,True)
+    del con
