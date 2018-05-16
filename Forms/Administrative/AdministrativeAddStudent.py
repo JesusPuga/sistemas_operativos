@@ -108,7 +108,7 @@ class AdministrativeAddStudent:
                        "lastName2":self.appMaternoENY.get(),
                        "cel": self.telefonoENY.get(),
                        "inscriptionClave": self.inscripcionCBX.get(),
-                       "sex": self.radio,
+                       "sex": self.radio.get(),
                        "password":self.contraseniaENY.get()
                       }
 
@@ -123,8 +123,9 @@ class AdministrativeAddStudent:
         self.appMaternoENY.insert(0, self.values["lastName2"]) #inserts new value assigned by 2nd parameter
         self.telefonoENY.delete(0, END) #deletes the current value
         self.telefonoENY.insert(0, self.values["cel"]) #inserts new value assigned by 2nd parameter
-        self.contraseniaENY.insert(0, END) #inserts new value assigned by 2nd parameter
-        self.contraseniaENY.insert(0, self.values["password"]) #inserts new value assigned by 2nd parameter
+        if self.values["password"] != "":
+            self.contraseniaENY.insert(0, END) #inserts new value assigned by 2nd parameter
+            self.contraseniaENY.insert(0, self.values["password"]) #inserts new value assigned by 2nd parameter
 
         self.radio.set(self.values["sex"])
 
@@ -159,7 +160,7 @@ class AdministrativeAddStudent:
             messagebox.showinfo("Aviso","Debes escribir la contraseña")
             return 0
 
-        message = insertStudent(self.values["inscriptionClave"],self.radio,self.values["cel"],
+        message = insertStudent(self.values["inscriptionClave"],self.radio.get(),self.values["cel"],
                                 self.values["password"], self.values["name"],
                                 self.values["lastName"], self.values["lastName2"])
         messagebox.showinfo("Aviso",message)

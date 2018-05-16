@@ -144,10 +144,12 @@ def loadAvailableDatesInscription():
     query="""
             SELECT fechaInscripcion
             FROM Inscripcion
-            WHERE fechaInscripcion >= %s
+            WHERE fechaInscripcion >= %s OR
+                  fechaInscripcion > %s
           """
     now = str(datetime.now()).split(".")[0] #quir decimals in date
-    result = con.execute_query(query,(now,),True)
+    nowLessTwoHours = str(datetime.now() - timedelta(hours = 2) ).split(".")[0] #quir decimals in date
+    result = con.execute_query(query,(now,nowLessTwoHours),True)
     del con
     return result
 

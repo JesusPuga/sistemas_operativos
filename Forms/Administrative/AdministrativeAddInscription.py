@@ -8,7 +8,7 @@ class AdministrativeAddInscription:
     def __init__(self,old_root,clave,values):
         w = 300
         h = 100
-        self.old_root = old_root
+        old_root.destroy()
         self.clave = clave
         self.values = values
 
@@ -99,6 +99,6 @@ class AdministrativeAddInscription:
         self.returnAdministrativeHome()
 
     def returnAdministrativeHome(self):
-        self.old_root.destroy()
+        print(self.values)
         window = __import__('Forms.Administrative.AdministrativeAddStudent',None,None,['AdministrativeAddStudent'], 0)
         self.app = window.AdministrativeAddStudent(self.new_root,self.clave, self.values)
