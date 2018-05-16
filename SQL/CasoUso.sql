@@ -29,7 +29,7 @@ INSERT INTO Materia (claveMateria, nombre, creditos, semestre, claveCarrera) VAL
 (008, 'FUNDAMENTOS DE REDES', 1, 2, 1),
 (009, 'BASE DE DATOS', 1, 2, 1),
 (010, 'PROGRAMACIÓN ORIENTADA A OBJETOS', 1, 2, 1),
-(011, 'FUNDAMENTOS DE ESTADÁSTICA', 1, 2, 1),
+(011, 'FUNDAMENTOS DE ESTADÍSTICA', 1, 2, 1),
 (012, 'MATEMÁTICAS DISCRETAS', 1, 3, 1),
 (013, 'CIRCUITOS DIGITALES', 1, 3, 1),
 (014, 'ESTRUCTURA DE DATOS', 1, 3, 1),
@@ -68,8 +68,8 @@ INSERT INTO Materia (claveMateria, nombre, creditos, semestre, claveCarrera) VAL
 
 
 INSERT INTO Inscripcion (claveInscripcion, fechaInscripcion) VALUES
-(1, '2018-05-14 19:00:00'),
-(2, '2018-05-14 20:30:00');
+(1, '2018-05-16 20:00:00'),
+(2, '2018-05-16 21:00:00');
 
 
 INSERT INTO Usuario (carnetUsuario, sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario) VALUES

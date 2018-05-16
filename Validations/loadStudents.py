@@ -2,6 +2,7 @@ from SQL.BDConexion import *
 import os
 from tkinter import messagebox
 from datetime import *
+from random import randint
 
 # Retorna maestro y alumno desde Usuario, por lo tanto se repiten el resto de los datos
 def loadSubjectsForStudent(carnetAlumno, period = "180116"):
@@ -23,18 +24,16 @@ def loadSubjectsForStudent(carnetAlumno, period = "180116"):
 
 def loadStudentsForGroup(group,subject, period = "180116"):
     con = createConection()
-    query = """SELECT DISTINCT Alumno_Grupo.carnetAlumno,Usuario.nombre, Usuario.apellidoPaterno,Usuario.apellidoMaterno
-               FROM Materia_Seriada
-               INNER JOIN Materia ON Materia.ClaveMateria = Materia_Seriada.ClaveMateria AND
-                                     Materia.nombre = %s
-               INNER JOIN Grupo ON Grupo.claveMateria = Materia.claveMateria AND
-                                   Grupo.claveGrupo = %s AND
-                                   Grupo.periodo = %s
-               INNER JOIN Alumno_Grupo ON Alumno_Grupo.claveGrupo = Grupo.claveGrupo
-               INNER JOIN Usuario ON Alumno_Grupo.carnetAlumno = Usuario.carnetUsuario
-               ORDER BY Alumno_Grupo.carnetAlumno DESC"""
+    query = """ SELECT Alumno_Grupo.carnetAlumno, Usuario.nombre, Usuario.apellidoPaterno, Usuario.apellidoMaterno
+                FROM Alumno_Grupo
+                INNER JOIN Grupo ON Alumno_Grupo.claveGrupo = Grupo.IDGrupo
+                INNER JOIN Materia ON Materia.claveMateria = Grupo.claveMateria
+                INNER JOIN Alumno ON Alumno.carnetAlumno = Alumno_Grupo.carnetAlumno
+                INNER JOIN Usuario ON Usuario.carnetUsuario = Alumno.carnetAlumno
+                WHERE Grupo.periodo = %s  AND Materia.nombre = %s AND Grupo.claveGrupo = %s
+                ORDER BY Alumno_Grupo.carnetAlumno DESC"""
 
-    result = con.execute_query(query,(subject,group, period), True)
+    result = con.execute_query(query,(period, subject,group), True)
     del con
     return result
 
@@ -145,42 +144,73 @@ def loadAvailableDatesInscription():
     query="""
             SELECT fechaInscripcion
             FROM Inscripcion
-            WHERE fechaInscripcion = %s
+            WHERE fechaInscripcion >= %s
           """
     now = str(datetime.now()).split(".")[0] #quir decimals in date
     result = con.execute_query(query,(now,),True)
     del con
     return result
 
-def insertStudent(clave,status, inscriptionClave,sex,cel, password, name, lastName, lastName2):
+def insertStudent(inscriptionDate,sex ,cel , password, name, lastName, lastName2):
     con = createConection()
+    #treaer la siguiente clave disponible en Usuario
+    query="""
+            SELECT carnetUsuario
+            FROM Usuario
+            ORDER BY carnetUsuario DESC
+            LIMIT 1
+          """
+    result = con.execute_query(query,(),True)
+    clave = int(result.fetchone()[0]) + 1
+
+    #Traer la clave de la fecha seleccionada
+    query="""
+            SELECT claveInscripcion
+            FROM Inscripcion
+            WHERE fechaInscripcion = %s
+          """
+    result = con.execute_query(query,(inscriptionDate,),True)
+
+    #Insertar en Usuario y Alumno
     query = """
-            INSERT INTO Alumno (estatus, claveCarrera, claveInscripcion)
-            VALUES (%s, 1, 1)
+            INSERT INTO Usuario (carnetUsuario,sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario)
+            VALUES ( %s, %s, %s,%s, %s, %s, %s, 1)
             """
-    con.execute_query(query, (status, inscriptionClave),False,True)
-    ##traer la clave del registro agregado para crear la inf
+    con.execute_query(query, (clave, sex, cel, password, name, lastName, lastName2),False,True)
 
     query = """
-            INSERT INTO Usuario (sexo, telefono, contrasenia, nombre, apellidoPaterno, apellidoMaterno, tipoUsuario)
-            VALUES ( %s, %s, %s,%s, %s, %s, 1)
+            INSERT INTO Alumno (carnetAlumno,estatus, claveCarrera, claveInscripcion)
+            VALUES (%s,"REINGRESO", 1, %s)
             """
-    con.execute_query(query, (sex,cel, password, name, lastName, lastName2),False,True)
+    con.execute_query(query, (clave,result.fetchone()),False,True)
 
-    if status = "REINGRESO":
-        ## deben ponerse todas las materias anteriores como pasadas
-    else:
-        #debe tenner creado un horario xD
+    #TRAER MATERIAS DE PRIMER SEMESTRE
+    query="""
+            SELECT claveMateria
+            FROM Materia
+            WHERE semestre = 1 AND claveCarrera = 1
+          """
+    result = con.execute_query(query,(),True)
+    #INSERTAR DEPENDENCIAS
+    for subjectClave in result:
+        cal = randint(50,100)
+        query = """
+                INSERT INTO Oportunidad (calificacion, numOportunidad, carnetAlumno,claveMateria)
+                VALUES (%s, 1, %s, %s)
+                """
+        con.execute_query(query, (cal,clave,subjectClave),False,True)
 
     del con
-    return result
+    return "Registro agregado\nClave de usuario: {0}".format(clave)
 
-def insertInscription(fechaInscripcion = True):
+def insertInscription(month, day, hour, minute):
     con = createConection()
     query = """
-            INSERT INTO Inscription (fechaInscripcion)
+            INSERT INTO Inscripcion (fechaInscripcion)
             VALUES (%s)
             """
-    now = str(datetime.now()).split(".")[0] #quir decimals in date
+    now = datetime.now()
+    date = "{0}-{1}-{2} {3}:{4}".format(now.year,month,day,hour,minute)
     con.execute_query(query, (now,),False,True)
     del con
+    return "Fecha de inscripción agregada"
