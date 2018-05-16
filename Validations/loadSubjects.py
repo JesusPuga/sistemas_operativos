@@ -62,7 +62,7 @@ def loadAvailableSubjects(clave):
                        (Oportunidad.calificacion < 70 AND Oportunidad.calificacion != 0)
                  ORDER BY Materia.claveMateria DESC
               """
-        result = con.execute_query(query,(clave),True,True)
+        result = con.execute_query(query,(clave,),True,True)
 
     if result == 0:
         print("HUBO UN ERROR")

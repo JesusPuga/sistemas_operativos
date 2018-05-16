@@ -17,8 +17,6 @@ def validateInscriptionHour(carnetAlumno):
 
     for inscriptionDate in result:
         if  datetime.now() > inscriptionDate[0] + timedelta(hours = 2) or datetime.now() < inscriptionDate[0]:
-            print(datetime.now() > inscriptionDate[0] + timedelta(hours = 2))
-            print(datetime.now() < inscriptionDate[0])
             return (False,inscriptionDate[0])
 
     del con
@@ -175,7 +173,7 @@ def addSubjectToSchedule(studentClave, groupId, groupClave, subjectClave):
     estatus = loadStudentStatus(studentClave)
 
     inscriptionHour = validateInscriptionHour(studentClave)[0]
-    if not inscriptionHour[0]:
+    if not inscriptionHour:
         return "Tiempo terminado, hora: {0}".format(inscriptionHour[1].split(" ")[1])
 
     requiredSubject= isRequiredSubject(subjectClave, studentClave)
